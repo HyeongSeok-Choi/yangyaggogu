@@ -1,4 +1,4 @@
-package com.myblog.yangyaggogu;
+package com.mes.yangyaggogu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.myblog.yangyaggogu;
+package com.mes.yangyaggogu;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
