@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
+
+    <!-- javascript files for DataTables & Plugins -->
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+    <style>
+        #order_list thead th {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<table id="order_list">
+    <thead>
+    <tr>
+        <th>수주번호</th>
+        <th>생산완료일</th>
+        <th>제품명</th>
+        <th>생산수량</th>
+        <th>입고여부</th>
+    </tr>
+    </thead>
+</table>
+<button id="excel_download">엑셀 다운로드</button>
+
+<script>
+    $(document).ready(function() {
+        var dataSet = [
+            ['20240608-c1', '2024.06.10', '양배추즙', 125, '입고 완료'],
+            ['20240609-c1', '2024.06.10', '양배추즙', 75, '입고 완료'],
+            ['20240609-b1', '2024.06.11', '석류 젤리스틱', 125, ''],
+            ['20240609-p1', '2024.06.12', '매실 젤리스틱', 50, ''],
+            ['20240608-c1', '2024.06.10', '양배추즙', 125, '입고 완료'],
+            ['20240609-c1', '2024.06.10', '양배추즙', 75, '입고 완료'],
+            ['20240609-b1', '2024.06.11', '석류 젤리스틱', 125, ''],
+            ['20240608-c1', '2024.06.10', '양배추즙', 125, '입고 완료'],
+            ['20240609-c1', '2024.06.10', '양배추즙', 75, '입고 완료'],
+            ['20240609-b1', '2024.06.11', '석류 젤리스틱', 125, ''],
+            ['20240608-c1', '2024.06.10', '양배추즙', 125, '입고 완료'],
+            ['20240609-c1', '2024.06.10', '양배추즙', 75, '입고 완료'],
+            ['20240609-b1', '2024.06.11', '석류 젤리스틱', 125, ''],
+            ['20240608-c1', '2024.06.10', '양배추즙', 125, '입고 완료'],
+            ['20240609-c1', '2024.06.10', '양배추즙', 75, '입고 완료'],
+            ['20240609-b1', '2024.06.11', '석류 젤리스틱', 125, '']
+        ];
+
+        var table = $('#order_list').DataTable({
+            data: dataSet,
+            columns: [
+                { title: "수주번호" },
+                { title: "생산완료일" },
+                { title: "제품명" },
+                { title: "생산수량" },
+                { title: "입고여부" }
+            ],
+            lengthChange: false,
+            info: false,
+            displayLength: 10,
+            columnDefs: [
+                {
+                    targets: '_all',
+                    className: 'dt-body-center'
+                },
+                {
+                    targets: 0, width: 120
+                },
+                {
+                    targets: 1, width: 300
+                }
+            ]
+        });
+
+    });
+</script>
+</body>
+</html>
