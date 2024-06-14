@@ -5,9 +5,7 @@ import com.mes.yangyaggogu.constant.productionPlan_state;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
@@ -20,6 +18,8 @@ public class productPlan {
 
     @Id
     private String productionPlanCode;
+
+    private String materials_Name;
 
     @ManyToOne
     @JoinColumn(name = "order_Number")
@@ -34,6 +34,8 @@ public class productPlan {
     private Long now_Output;
 
     private productionPlan_state state;
+
+
 
 
 }
