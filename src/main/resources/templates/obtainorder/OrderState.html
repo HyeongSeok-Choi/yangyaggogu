@@ -1,23 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
 <head>
+    <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/>
+    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
     <meta charset="UTF-8">
     <title>수주현황</title>
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/>
-    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
-    <style>
-        .button-container {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-        .table-bordered th, .table-bordered td {
-            border: 1px solid #ddd !important;
-        }
-    </style>
+    <th:block layout:fragment="css">
+        <style>
+            .button-container {
+                text-align: right;
+                margin-bottom: 20px;
+            }
+            .table-bordered th, .table-bordered td {
+                border: 1px solid #ddd !important;
+            }
+        </style>
+    </th:block>
 </head>
 <body>
-
+<th:block layout:fragment="content">
 <div style="margin:50px">
     <div class="button-container">
         <button class="btn btn-primary">조회</button>
@@ -56,16 +60,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="dto:${result.dtoList}">
-            <th scope="row">[[${dto.id}]]</th>
-            <td>[[${dto.orderNumber]]</td>
-            <td>[[${dto.company_name]]</td>
-            <td>[[${dto.productName]]</td>
-            <td>[[${dto.order_Date]]</td>
-            <td>[[${dto.order_Amount]]</td>
-            <td>[[${dto.delivery_Date]]</td>
-            <td>[[${dto.state}]]</td>
-            <td>[[${dto.writer}]]</td>
+        <tr>
+            <th scope="row"></th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         </tbody>
     </table>
@@ -74,6 +78,7 @@
         <button class="btn btn-primary">수주확정</button>
     </div>
 </div>
+</th:block>
 <script>
     /*jQuery(function($){
         $("#orderMng").DataTable()
