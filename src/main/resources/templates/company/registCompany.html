@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <form action="/company/register" method="post" class="row g-3 mb-6">
+            <div><p>거래처 관리</p></div>
+
+            <div class="col-sm-6 col-md-8">
+                <label>거래처명</label>
+                <input type="text" id="company_name" class="form-control" name="company_name">
+            </div>
+
+            <div class="col-sm-6 col-md-8">
+                <label>연락처</label>
+                <input type="text" id="company_tel_number" class="form-control" name="company_tel_number">
+            </div>
+
+            <div class="col-sm-6 col-md-8">
+                <label>담당자</label>
+                <input type="text" id="company_manager" class="form-control" name="company_manager">
+            </div>
+
+            <div class="col-sm-6 col-md-8">
+                <label>주소</label>
+                <textarea class="form-control" id="company_address" style="height: 100px" name="company_address"></textarea>
+            </div>
+
+            <div class="col-sm-6 col-md-8">
+                <label>주요 거래품</label>
+                <input type="text" id="trade_goods" class="form-control" name="trade_goods">
+            </div>
+
+        <div class="col-auto">
+            <button  id="add" class="btn btn-primary px-5 px-sm-15 submit-button">거래처 등록</button>
+        </div>
+
+
+
+    </form>
+</body>
+</html>

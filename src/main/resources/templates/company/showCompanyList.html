@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
+
+    <!-- javascript files for DataTables & Plugins -->
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.9/js/responsive.bootstrap4.min.js"></script>
+
+</head>
+<body>
+<div class="container">
+<button id="deleteSelected" class="btn btn-danger">선택된 행 삭제</button>
+<table id="company_list" class="display">
+    <thead>
+    <tr>
+        <th></th>
+        <th>거래처명</th>
+        <th>연락처</th>
+        <th>담당자</th>
+        <th>주소</th>
+        <th>주요 거래품</th>
+        <th>거래처 코드</th>
+    </tr>
+    </thead>
+</table>
+</div>
+
+
+<!-- JavaScript 파일은 body 끝 부분에 위치 -->
+<script th:inline="javascript">
+    // 기본적인 스크립트 추가
+    var table = null;
+    $(document).ready(function() {
+        table = $('#company_list').DataTable({
+            responsive: {
+                details: {
+                    type: 'column',
+                    target: -1,
+                }
+            },
+            columnDefs: [ {
+                targets: -1,
+                orderable: false,
+                searchable: false,
+                className: 'control',
+            }, {
+                targets: 0,
+                orderable: false,
+                searchable: false,
+                className: 'selectall-checkbox',
+                render: function (data, type, full, meta) {
+                    return '<input type="checkbox">';
+                }
+            } ],
+            select: {
+                style: 'multi',
+                selector: 'td:first-child',
+            },
+            order: [ 1, 'asc' ],
+            ajax: {
+                url: 'http://localhost:8080/api/company/list', // 서버 API URL
+                type: 'GET'
+            },
+            columns: [
+                { data: null, defaultContent: '' },
+                { data: 'company_name'},
+                { data: 'company_tel_number'},
+                { data: 'company_manager'},
+                { data: 'company_address'},
+                { data: 'trade_goods'},
+                { data: 'company_code', visible: false}
+            ]
+        });
+        $('#deleteSelected').click(function() {
+            var selectedCompany = [];
+            table.rows('.selected').every(function(rowIdx) {
+                var data = this.data();
+                selectedCompany.push(data.company_code); // 각 행의 고유 ID 수집
+            });
+
+
+        if(selectedCompany > 0) {
+
+            $.ajax({
+                url: 'http://localhost:8080/api/company/delete',
+                dataSrc: '',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(selectedCompany), // 선택된 ID 목록을 JSON 형식으로 전송
+                success: function(response) {
+                    table.rows('.selected').remove().draw(false);
+                    alert("거래처가 삭제되었습니다.");
+                },
+                error: function(xhr, status, error) {
+                    alert('삭제 중 오류가 발생했습니다.');
+                }
+                });
+            } else {
+                alert('삭제할 행을 선택해주세요.');
+            }
+        });
+
+
+        $('#company_list tbody').on('click', 'input[type="checkbox"]', function(){
+            var $row = $(this).closest('tr');
+            if (this.checked) {
+                $row.addClass('selected');
+            } else {
+                $row.removeClass('selected');
+            }
+        });
+    });
+
+
+
+</script>
+</body>
+</html>
