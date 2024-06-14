@@ -3,8 +3,8 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layouts/layout1}">
 <head>
-    <link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/>
-    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>
+    <!--<link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/>
+    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>-->
     <meta charset="UTF-8">
     <title>수주현황</title>
 
@@ -15,7 +15,7 @@
                 margin-bottom: 20px;
             }
             .table-bordered th, .table-bordered td {
-                border: 1px solid #ddd !important;
+                border: 1px solid #ddd;
             }
         </style>
     </th:block>
@@ -48,6 +48,7 @@
         <!-- 수주현황 테이블 -->
         <thead>
         <tr>
+            <th></th>
             <th scope="col">번호</th>
             <th scope="col">수주번호</th>
             <th scope="col">거래처</th>
