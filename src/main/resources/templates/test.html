@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en' xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<th:block layout:fragment="content">
+    <div class="container1">
         <h1><i>아 테스트요</i></h1>
+    </div>
+</th:block>
 </body>
 </html>
