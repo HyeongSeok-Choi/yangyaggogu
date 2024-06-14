@@ -20,13 +20,13 @@
     <thead>
     <tr>
         <th>생산계획번호</th>
+        <th>제품명</th>
         <th>수주번호</th>
-        <th>품목</th>
-        <th>생산 시작일</th>
-        <th>생산 종료일</th>
         <th>주문량</th>
         <th>생산량</th>
         <th>상태</th>
+        <th>생산시작일</th>
+        <th>생산종료일</th>
     </tr>
     </thead>
 </table>
@@ -53,6 +53,7 @@
                         'recordsTotal': json.data.recordsTotal,
                         'recordsFiltered': json.data.recordsFiltered,
                         'data': json.data,
+
                     };
 
                     return JSON.stringify(data);
@@ -60,10 +61,13 @@
             },
             columns: [
                 {data: 'productionPlanCode'},
-                {data: 'name'},
-                {data: 'email'},
-                {data: 'TelNumber'},
-                {data: 'telNumber'}
+                {data: 'materials_Name'},
+                {data: 'order_Number'},
+                {data: 'target_Output'},
+                {data: 'now_Output'},
+                {data: 'state'},
+                {data: 'p_startDate'},
+                {data: 'p_endDate'}
             ]
         })
     });
