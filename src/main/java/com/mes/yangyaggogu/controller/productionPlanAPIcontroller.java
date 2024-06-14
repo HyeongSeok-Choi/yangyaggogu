@@ -4,7 +4,6 @@ package com.mes.yangyaggogu.controller;
 import com.mes.yangyaggogu.dto.productPlanDTO;
 import com.mes.yangyaggogu.service.productPlanService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
