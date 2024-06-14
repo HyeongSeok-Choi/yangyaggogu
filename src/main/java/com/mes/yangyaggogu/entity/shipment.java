@@ -22,8 +22,8 @@ public class shipment {
     private String shipment_Number;
 
     @ManyToOne
-    @JoinColumn(name = "productionPlanCode")
-    private obtainorder order_Number;
+    @JoinColumn(name = "order_Number")
+    private obtainorder_number order_Number;
 
     private String company_name;
 

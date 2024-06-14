@@ -21,8 +21,8 @@ public class finishedstock {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "productionPlanCode")
-    private obtainorder orderNumber;
+    @JoinColumn(name = "order_Number")
+    private obtainorder_number orderNumber;
 
     private String materials_Name;
 

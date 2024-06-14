@@ -29,7 +29,7 @@ public class workOrderPlan {
 
     @ManyToOne
     @JoinColumn(name = "order_Number")
-    private obtainorder obtainorder;
+    private obtainorder_number obtainorder_number;
 
     private String producer;
 

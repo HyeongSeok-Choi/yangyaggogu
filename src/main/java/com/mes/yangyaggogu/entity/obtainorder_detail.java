@@ -4,6 +4,8 @@ package com.mes.yangyaggogu.entity;
 import com.mes.yangyaggogu.constant.obtainorder_state;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,10 +16,14 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class obtainorder {
+public class obtainorder_detail {
 
     @Id
-    private String order_Number;
+    private Long id;
+
+    @JoinColumn(name = "order_Number")
+    @ManyToOne
+    private obtainorder_number orderNumber;
 
     private String writer;
 

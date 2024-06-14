@@ -23,7 +23,7 @@ public class productPlan {
 
     @ManyToOne
     @JoinColumn(name = "order_Number")
-    private obtainorder order_Number;
+    private obtainorder_number order_Number;
 
     private LocalDateTime P_startDate;
 
