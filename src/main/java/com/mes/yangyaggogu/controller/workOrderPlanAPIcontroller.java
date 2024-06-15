@@ -2,7 +2,9 @@ package com.mes.yangyaggogu.controller;
 
 
 import com.mes.yangyaggogu.dto.productPlanDTO;
+import com.mes.yangyaggogu.dto.workOrderPlanDTO;
 import com.mes.yangyaggogu.service.productPlanService;
+import com.mes.yangyaggogu.service.workOrderPlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,26 +18,27 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
-public class productionPlanAPIcontroller {
+public class workOrderPlanAPIcontroller {
 
-    private final productPlanService P_planService;
+    private final workOrderPlanService workOrderPlanService;
 
     //생산계획표 모두 출력
-    @GetMapping(value = "/getProductionPlanList")
-    public Map<String, Object> productionPlanList() {
+    @GetMapping(value = "/getWorkOrderPlanList")
+    public Map<String, Object> workOrderPlanList() {
 
         //datatable 사용시 data를 키로 가져야 해서 넣음
-        Map<String, Object> P_plans = new HashMap<String, Object>();
+        Map<String, Object> w_plans = new HashMap<String, Object>();
 
-        List<productPlanDTO> productPlanDTOList = P_planService.getProductPlans().stream()
-                        .map(a -> new productPlanDTO(a))
-                                .collect(Collectors.toList());
+        List<workOrderPlanDTO> workOrderPlanDTOList = workOrderPlanService.getAll().stream()
+                .map(a -> new workOrderPlanDTO(a))
+                .collect(Collectors.toList());
 
 
-        P_plans.put("data",productPlanDTOList);
+        w_plans.put("data",workOrderPlanDTOList);
 
-        return P_plans;
+        return w_plans;
     }
+
 
 
 }

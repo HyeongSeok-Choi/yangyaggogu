@@ -33,6 +33,7 @@ public class obtainorder_detail {
 
     private Long order_Amount;
 
+    @Enumerated(EnumType.STRING)
     private obtainorder_state state;
 
     private LocalDateTime delivery_Date;
