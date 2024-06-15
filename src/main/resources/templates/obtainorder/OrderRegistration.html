@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+<head>
+    <meta charset="UTF-8">
+    <title>수주등록</title>
+    <th:block layout:fragment="css">
+    <style>
+        .button-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .order-add-table {
+            width: 100%;
+            table-layout: fixed;
+        }
+        .order-add-table th, .order-add-table td {
+            padding: 5px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .order-add-table input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+    </th:block>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="container1" style="margin: 40px">
+        <div class="button-container">
+            <button class="btn btn-outline-info">저장</button>
+            <button class="btn btn-outline-danger">닫기</button>
+        </div>
+        <!-- 수주 등록하는 부분 -->
+        <table id="orderAdd" class="table table-striped table-bordered order-add-table">
+            <thead>
+            <tr>
+                <th>거래처</th>
+                <td><input type="text" name="client"></td>
+                <th>제품명</th>
+                <td><input type="text" name="itemName"></td>
+                <th>수량</th>
+                <td><input type="text" name="orderNum"></td>
+                <th>납품일</th>
+                <td><input type="text" name="deliveryDate"></td>
+                <th>등록자</th>
+                <td><input type="text" name="registerPerson"></td>
+            </tr>
+            </thead>
+        </table>
+        <!-- 추가된 수주 테이블 -->
+        <table id="orderMng" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th scope="col">번호</th>
+                    <th scope="col">거래처</th>
+                    <th scope="col">제품명</th>
+                    <th scope="col">수주일자</th>
+                    <th scope="col">수주수량</th>
+                    <th scope="col">납품일</th>
+                    <th scope="col">등록자</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th></th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <th></th>
+                </tr>
+            </tbody>
+        </table>
+        <div class="button-container">
+            <button class="btn btn-outline-warning">삭제</button>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

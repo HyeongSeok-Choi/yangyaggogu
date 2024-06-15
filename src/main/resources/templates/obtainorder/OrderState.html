@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+<head>
+    <!--<link rel="stylesheet" href="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.css"/>
+    <script src="https://cdn.datatables.net/t/bs-3.3.6/jqc-1.12.0,dt-1.10.11/datatables.min.js"></script>-->
+    <meta charset="UTF-8">
+    <title>수주현황</title>
+
+    <th:block layout:fragment="css">
+        <style>
+            .button-container {
+                text-align: right;
+                margin-bottom: 20px;
+            }
+            .table-bordered th, .table-bordered td {
+                border: 1px solid #ddd;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+<th:block layout:fragment="content">
+<div class="container1" style="margin:50px">
+    <div class="button-container">
+        <button class="btn btn-primary">조회</button>
+        <button class="btn btn-primary">수주등록</button>
+        <button class="btn btn-primary">엑셀다운로드</button>
+    </div>
+        <table id="orderSearch" class="table table-striped table-bordered">
+            <!--수주 조회 테이블 -->
+            <thead>
+                <tr>
+                    <th>수주번호 <input type="text" name="orderNum"></th>
+                    <th>수주일 <input type="text" name="orderDate"></th>
+                    <th>등록자 <input type="text" name="registerPerson"></th>
+                </tr>
+                <tr>
+                    <th>제품명 <input type="text" name="itemName"></th>
+                    <th>거래처 <input type="text" name="client"></th>
+                    <th>진행상태 <input type="text" name="status"></th>
+                </tr>
+            </thead>
+        </table>
+    <!--수주현황 테이블-->
+    <table id="orderMng" class="table table-striped table-bordered" style="width:100%">
+        <!-- 수주현황 테이블 -->
+        <thead>
+        <tr>
+            <th></th>
+            <th scope="col">번호</th>
+            <th scope="col">수주번호</th>
+            <th scope="col">거래처</th>
+            <th scope="col">제품명</th>
+            <th scope="col">수주일자</th>
+            <th scope="col">수주수량</th>
+            <th scope="col">납품일</th>
+            <th scope="col">진행상태</th>
+            <th scope="col">등록자</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row"></th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="button-container">
+        <button class="btn btn-primary">캘린더</button>
+        <button class="btn btn-primary">수주확정</button>
+    </div>
+</div>
+</th:block>
+<script>
+    /*jQuery(function($){
+        $("#orderMng").DataTable()
+      /!*  $("#orderSearch").dataTable()*!/});*/
+</script>
+</body>
+</html>

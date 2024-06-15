@@ -4,12 +4,14 @@ package com.mes.yangyaggogu.entity;
 import com.mes.yangyaggogu.constant.obtainorder_state;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,8 +36,6 @@ public class obtainorder_detail {
     private obtainorder_state state;
 
     private LocalDateTime delivery_Date;
-
-    private String company_code;
 
     private String company_name;
 
