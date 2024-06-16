@@ -22,7 +22,7 @@ public class workOrderPlanAPIcontroller {
 
     private final workOrderPlanService workOrderPlanService;
 
-    //생산계획표 모두 출력
+    //작업지시서 모두 출력
     @GetMapping(value = "/getWorkOrderPlanList")
     public Map<String, Object> workOrderPlanList() {
 

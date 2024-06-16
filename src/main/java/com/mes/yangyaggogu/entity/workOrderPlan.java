@@ -18,7 +18,10 @@ import java.time.LocalDateTime;
 public class workOrderPlan {
 
     @Id
-    private String production_Plan_Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
+
+    private String processCode;
 
     @ManyToOne
     @JoinColumn(name = "productionPlanCode")

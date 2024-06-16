@@ -19,7 +19,9 @@ import java.time.LocalDateTime;
 public class workOrderPlanDTO {
 
 
-    private String production_Plan_Id;
+    private Long Id;
+
+    private String processCode;
 
     private String productPlanCode;
 
@@ -43,7 +45,8 @@ public class workOrderPlanDTO {
 
     public workOrderPlanDTO(workOrderPlan workOrderPlan) {
 
-        this.production_Plan_Id = workOrderPlan.getProduction_Plan_Id();
+        this.Id = workOrderPlan.getId();
+        this.processCode = workOrderPlan.getProcessCode();
         this.productPlanCode = workOrderPlan.getProductPlanCode().getProductionPlanCode();
         this.obtainorder_number = workOrderPlan.getObtainorder_number().getOrder_Number();
         this.producer = workOrderPlan.getProducer();
