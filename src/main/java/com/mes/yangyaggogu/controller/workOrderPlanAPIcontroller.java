@@ -45,13 +45,8 @@ public class workOrderPlanAPIcontroller {
     @PostMapping(value = "/Start_workOrder/{id}")
     public ResponseEntity<?> Start_workOrder(@PathVariable Long id ,@RequestParam(name = "producer") String producer){
 
-        workOrderPlan workOrderPlan =workOrderPlanService.start_Work(id,producer);
-
-        if(workOrderPlan == null){
-
-        }
-
-        return ResponseEntity.ok().build();
+        boolean workOrNWork =workOrderPlanService.start_Work(id,producer);
+        return ResponseEntity.ok().body(workOrNWork);
     }
 
     //작업 종료
@@ -60,7 +55,7 @@ public class workOrderPlanAPIcontroller {
 
         workOrderPlanService.stop_Work(id);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("good");
     }
 
 

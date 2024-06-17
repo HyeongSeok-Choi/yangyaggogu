@@ -23,6 +23,8 @@
     <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>
     <script src="https://cdn.datatables.net/rowgroup/1.5.0/js/dataTables.rowGroup.js"></script>
     <script src="https://cdn.datatables.net/rowgroup/1.5.0/js/rowGroup.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
@@ -92,11 +94,14 @@
         var table = null;
         $(document).ready(function() {
             table = $('#Table').DataTable({
-                rowGroup: {
-                    dataSrc: 'productPlanCode'
-                },
-
                 columnDefs: [
+                    {
+                        targets: 11,
+                        render: DataTable.render.date()
+                    }, {
+                        targets: 12,
+                        render: DataTable.render.date()
+                    },
                     {
                         orderable: false,
                         render: DataTable.render.select(),
@@ -109,6 +114,15 @@
                             {
                                 text: '작업 시작',
                                 action: function (e, dt, node, config) {
+                                    if(dt.rows({ selected: true }).data()[0].state === "completed"){
+                                        alert("이미 완료된 작업입니다.");
+                                        return false;
+                                    }else if(dt.rows({ selected: true }).data()[0].state === "proceeding"){
+                                        alert("이미 진행중인 작업입니다.");
+                                        return false;
+                                    }
+
+
                                     const modal = document.querySelector('.modal');
                                     modal.style.display = 'block';
 
@@ -124,24 +138,28 @@
                             {
                                 text: '작업 종료',
                                 action: function (e, dt, node, config) {
-
+                                    if(dt.rows({ selected: true }).data()[0].state === "completed"){
+                                        alert("이미 완료된 작업입니다.");
+                                        return false;
+                                }else if(dt.rows({ selected: true }).data()[0].state === "ready"){
+                                        alert("아직 지시되지 않은 작업입니다.");
+                                        return false;
+                                    }
                                     var SelectedRowId = dt.rows({ selected: true }).data()[0].id;
-
-                                   var workEnd = confirm("작업을 완료 처리 하시겠습니까?");
+                                    var workEnd = confirm("작업을 완료 처리 하시겠습니까?");
 
                                    if(workEnd){
-                                       fetch(`http://localhost:8080/api/Stop_workOrder/${SelectedRowId}`, {
+                                       fetch(`/api/Stop_workOrder/${SelectedRowId}`, {
                                            headers: {
                                                'Content-Type': 'application/json',
                                                'Accept': 'application/json'
                                            },
                                            method: 'POST',
                                        })
-
-                                           .then(response => response.json())
-                                           .then(start => {
-                                               console.log("작업종료 성공");
-                                           })
+                                           .then(stop => {
+                                               alert("작업이 종료 되었습니다.")
+                                               table.ajax.reload();
+                                           });
                                    }else{
                                        return false;
                                    }
@@ -204,7 +222,7 @@
                 scrollX: true,
                 info:false,
                 ajax: {
-                    url: 'http://localhost:8080/api/getWorkOrderPlanList',
+                    url: '/api/getWorkOrderPlanList',
                     type: 'GET',
                     dataFilter: function(res) {
                         var json = $.parseJSON(res);
@@ -282,20 +300,23 @@
 
             console.log(SelectedRow+"이건데");
 
-            fetch(`http://localhost:8080/api/Start_workOrder/${SelectedRow}?producer=`+SelectedProducer, {
+            fetch(`/api/Start_workOrder/${SelectedRow}?producer=`+SelectedProducer, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
                 method: 'POST',
             })
-
                 .then(response => response.json())
                 .then(start => {
-                    console.log("작업시작 성공");
+                    if(start){
+                        alert("작업이 시작됩니다.");
+                        table.ajax.reload();
+                    }else{
+                        alert("선행 공정의 작업이 완료되어야 합니다.")
+                    }
                 })
             modal.style.display = 'none';
-            $('#Table').DataTable().ajax.reload();
         });
         });
 
