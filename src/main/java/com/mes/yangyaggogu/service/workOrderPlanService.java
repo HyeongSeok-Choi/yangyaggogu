@@ -32,6 +32,61 @@ public class workOrderPlanService {
     }
 
 
+    //작업 시작
+    public workOrderPlan start_Work(Long id,String producer){
+
+       workOrderPlan find_WorkPlan= workOrderPlanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such data"));
+
+
+       //공정코드에서 숫자만 추출
+        String[] strArr = find_WorkPlan.getProcessCode().replaceAll("[^0-9]" , "").split("");
+
+        int answer = 0;
+
+        for(String s : strArr) {
+            answer += Integer.parseInt(s);
+        }
+
+        //A2공정부터 조회
+        if(answer>1){
+
+            workOrderPlan find_WorkPlan2 = workOrderPlanRepository.findByProductPlanCodeAndProcessCode(find_WorkPlan.getProductPlanCode(),"A"+(answer-1));
+            if(find_WorkPlan2.getState() == workOrderPlan_state.completed){
+
+                find_WorkPlan.setProducer(producer);
+                find_WorkPlan.setState(workOrderPlan_state.proceeding);
+
+                workOrderPlanRepository.save(find_WorkPlan);
+
+            }
+        }else if(answer==1){
+            find_WorkPlan.setProducer(producer);
+            find_WorkPlan.setState(workOrderPlan_state.proceeding);
+
+            workOrderPlanRepository.save(find_WorkPlan);
+
+        }else{
+            return null;
+
+        }
+        return find_WorkPlan;
+    }
+
+    //작업 종료
+    public workOrderPlan stop_Work(Long id){
+
+        workOrderPlan find_WorkPlan= workOrderPlanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such data"));
+
+        find_WorkPlan.setState(workOrderPlan_state.completed);
+        find_WorkPlan.setP_endDate(LocalDateTime.now());
+
+        workOrderPlanRepository.save(find_WorkPlan);
+
+        return find_WorkPlan;
+    }
+
+
+    //더미 데이터
     public void testWorkOrderPlanData (){
 
         //수주번호의 생성 -> 가상으로 만들어 봅세다.

@@ -1,14 +1,16 @@
 package com.mes.yangyaggogu.controller;
 
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.mes.yangyaggogu.dto.productPlanDTO;
 import com.mes.yangyaggogu.dto.workOrderPlanDTO;
+import com.mes.yangyaggogu.entity.workOrderPlan;
 import com.mes.yangyaggogu.service.productPlanService;
 import com.mes.yangyaggogu.service.workOrderPlanService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,28 @@ public class workOrderPlanAPIcontroller {
         w_plans.put("data",workOrderPlanDTOList);
 
         return w_plans;
+    }
+
+    //작업 시작
+    @PostMapping(value = "/Start_workOrder/{id}")
+    public ResponseEntity<?> Start_workOrder(@PathVariable Long id ,@RequestParam(name = "producer") String producer){
+
+        workOrderPlan workOrderPlan =workOrderPlanService.start_Work(id,producer);
+
+        if(workOrderPlan == null){
+
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    //작업 종료
+    @PostMapping(value = "/Stop_workOrder/{id}")
+    public ResponseEntity<?> Stop_workOrder(@PathVariable Long id){
+
+        workOrderPlanService.stop_Work(id);
+
+        return ResponseEntity.ok().build();
     }
 
 
