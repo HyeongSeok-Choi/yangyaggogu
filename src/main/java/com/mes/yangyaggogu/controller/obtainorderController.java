@@ -1,31 +1,35 @@
 package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.dto.OrderStateDto;
-import com.mes.yangyaggogu.service.ObtainorderService;
+import com.mes.yangyaggogu.service.ObtainOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 @RequiredArgsConstructor
 @Controller
 public class obtainorderController {
 
-    private final ObtainorderService obtainorderService;
+    private final ObtainOrderService obtainOrderService;
     @GetMapping("/orderstate")
     public String orderState() {
+
+        //obtainOrderService.testWorkOrderPlanData();
+
         return "obtainorder/OrderState";
     }
 
-    //수주현황 조회
-    @GetMapping("/orderstatus")
-    public void orderStatus(long id, Model model){
-        System.out.println("id: " + id);
+    //캘린더 팝업창 띄우기
+    @GetMapping("/popup.calendar")
+    public String popup_calendar() {
+        return "productionPlan/popup_calendar";
+    }
 
-        OrderStateDto orderStateDto = obtainorderService.read(id);
-
-        model.addAttribute("dto", orderStateDto);
+    //수주 상세 조회
+    @GetMapping("/order_Detail")
+    public String popup_order_detail() {
+        return "obtainorder/OrderDetail";
     }
 
     //수주 등록 페이지 띄우기(임시)
