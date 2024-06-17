@@ -30,6 +30,7 @@
 </head>
 
 <body>
+<div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
 <div class="container">
 
 
@@ -120,10 +121,26 @@
                 {data: "exp"},
                 {   data: "state",
                     render: function (data, type, row) {
-                        return data === "in" ? "입고" : data;
-                    }},
-                {data: null,defaultContent: ''},
-                // {data: 'id', visible: false}
+                        if (data === "in") {
+                            return "입고";
+                        } else if (data === "out") {
+                            return "출고";
+                        } else {
+                            return data;
+                        }
+                    }
+                    },
+                {
+                    data: null,
+                    defaultContent: '',
+                    render: function (data, type, row) {
+                        if (row.state === "out") {
+                            return "출고 완료";
+                        } else {
+                            return "";
+                        }
+                    }
+                }
             ],
             ordering: true,
             lengthChange: false,
@@ -132,6 +149,9 @@
             rowCallback: function (row, data, index) {
                 var pageInfo = table.page.info();
                 $('td:eq(1)', row).html(pageInfo.start + index + 1);
+                if (data.state === 'out') {
+                    $('td:eq(0)', row).html('');
+                }
             },
             dom: 'Bfrtip',
             buttons: [
@@ -156,20 +176,27 @@
         // });
         $('#releaseStock').on('click', function () {
             var selectedRows = table.rows({selected: true}).data();
-            selectedRows.each(function (data) {
-                data.state = 'out';
-                // 여기서 서버로 업데이트 요청을 보낼 수 있습니다.
-                $.ajax({
-                    url: 'http://localhost:8080/api/finishedStock/update',
-                    type: 'POST',
-                    data: JSON.stringify(data),
-                    contentType: 'application/json',
-                    success: function (response) {
-                        table.ajax.reload(null, false);
-                    }
-                });
-            });
 
+            if (selectedRows.length === 0) {
+                alert("출고할 항목을 선택해 주세요.");
+                return;
+            }
+
+            if (confirm("체크하신 항목을 출고하시겠습니까?")) {
+                selectedRows.each(function (data) {
+                    data.state = 'out';
+                    // 여기서 서버로 업데이트 요청을 보낼 수 있습니다.
+                    $.ajax({
+                        url: 'http://localhost:8080/api/finishedStock/update',
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        success: function (response) {
+                            table.ajax.reload(null, false);
+                        }
+                    });
+                });
+            }
         });
     });
 
