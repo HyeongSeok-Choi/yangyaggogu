@@ -3,6 +3,7 @@ package com.mes.yangyaggogu.service;
 import com.mes.yangyaggogu.dto.AddOrderDto;
 import com.mes.yangyaggogu.dto.OrderDtlDto;
 import com.mes.yangyaggogu.entity.obtainorder_detail;
+import com.mes.yangyaggogu.entity.obtainorder_number;
 import com.mes.yangyaggogu.repository.obtainorder_detailRepository;
 import com.mes.yangyaggogu.repository.obtainorder_numberRepository;
 import lombok.RequiredArgsConstructor;

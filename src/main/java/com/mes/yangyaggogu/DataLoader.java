@@ -20,7 +20,7 @@ public class DataLoader implements CommandLineRunner {
     private final com.mes.yangyaggogu.repository.workOrderPlanRepository workOrderPlanRepository;
     private final obtainorder_numberRepository obtainOrderNumberRepository;
     private final productPlanRepository productPlanRepository;
-    private final com.mes.yangyaggogu.service.workOrderPlanService workOrderPlanService;
+    private final workOrderPlanService workOrderPlanService;
 
     public DataLoader(productPlanRepository productPlanRepository,obtainorder_numberRepository obtainOrderNumberRepository,workOrderPlanRepository workOrderPlanRepository,workOrderPlanService workOrderPlanService) {
         this.workOrderPlanRepository = workOrderPlanRepository;
