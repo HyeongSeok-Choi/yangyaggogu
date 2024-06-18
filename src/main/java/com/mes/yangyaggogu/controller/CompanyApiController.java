@@ -33,9 +33,9 @@ public class CompanyApiController {
     }
 
 
-//    @PostMapping("/company/delete")
-//    public ResponseEntity<Void> deleteCompanies(@RequestBody List<Long> company_codes) {
-//        companyService.deleteCompanies(company_codes);
-//        return ResponseEntity.ok().build();
-//    }
+    @PostMapping("/company/delete")
+    public ResponseEntity<Void> deleteCompanies(@RequestBody List<Long> company_codes) {
+        companyService.deleteCompanies(company_codes);
+        return ResponseEntity.ok().build();
+    }
 }
