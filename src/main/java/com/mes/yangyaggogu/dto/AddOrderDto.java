@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,11 +17,11 @@ public class AddOrderDto {
 
     private String productName;
 
-    private LocalDateTime order_Date;
+    private LocalDate order_Date;
 
     private Long order_Amount;
 
-    private LocalDateTime delivery_Date;
+    private LocalDate delivery_Date;
 
     private String writer;
 
@@ -29,7 +30,7 @@ public class AddOrderDto {
         return obtainorder_detail.builder()
                 .company_name(company_name)
                 .productName(productName)
-                .order_Date(order_Date)
+                .orderDate(order_Date)
                 .order_Amount(order_Amount)
                 .delivery_Date(delivery_Date)
                 .writer(writer)
