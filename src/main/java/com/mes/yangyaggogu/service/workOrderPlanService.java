@@ -14,6 +14,7 @@ import com.mes.yangyaggogu.repository.workOrderPlanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -101,13 +102,13 @@ public class workOrderPlanService {
         obtainorder_detail obtainorder_detail = new obtainorder_detail();
         //어떤 수주번호를 기반으로 하는지 저장, 그냥 수주번호 저장한다 생각
         obtainorder_detail.setOrderNumber(obtainorderNumber);
-        obtainorder_detail.setOrder_Date(LocalDateTime.now());
+        obtainorder_detail.setOrderDate(LocalDate.now());
         obtainorder_detail.setOrder_Amount(500L);
         obtainorder_detail.setWriter("최형석");
         obtainorder_detail.setProductName("양배추즙");
         obtainorder_detail.setCompany_name("삼성");
         obtainorder_detail.setState(obtainorder_state.ready);
-        obtainorder_detail.setDelivery_Date(LocalDateTime.now().plusWeeks(1));
+        obtainorder_detail.setDelivery_Date(LocalDate.now().plusWeeks(1));
 
         obtain_order_DetailRepository.save(obtainorder_detail);
         //----------------------------------------------------------
@@ -240,13 +241,13 @@ public class workOrderPlanService {
         obtainorder_detail obtainorder_detail = new obtainorder_detail();
         //어떤 수주번호를 기반으로 하는지 저장, 그냥 수주번호 저장한다 생각
         obtainorder_detail.setOrderNumber(obtainorderNumber);
-        obtainorder_detail.setOrder_Date(LocalDateTime.now());
+        obtainorder_detail.setOrderDate(LocalDate.now());
         obtainorder_detail.setOrder_Amount(500L);
         obtainorder_detail.setWriter("최형석");
         obtainorder_detail.setProductName("매실스틱");
         obtainorder_detail.setCompany_name("삼성");
         obtainorder_detail.setState(obtainorder_state.ready);
-        obtainorder_detail.setDelivery_Date(LocalDateTime.now().plusWeeks(1));
+        obtainorder_detail.setDelivery_Date(LocalDate.now());
 
         obtain_order_DetailRepository.save(obtainorder_detail);
         //----------------------------------------------------------

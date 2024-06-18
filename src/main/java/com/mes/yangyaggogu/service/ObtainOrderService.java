@@ -8,8 +8,9 @@ import com.mes.yangyaggogu.repository.obtainorder_detailRepository;
 import com.mes.yangyaggogu.repository.obtainorder_numberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -25,7 +26,43 @@ public class ObtainOrderService {
     }
 
     //등록
-    public obtainorder_detail save(AddOrderDto addOrderDto){
-        return obtainorderDetailRepository.save(addOrderDto.toEntity());
+    @Transactional
+    public boolean saveList(List<AddOrderDto> addOrderDtoList){
+
+
+        //수주 번호의 생성
+        obtainorder_number addOrderNumber = new obtainorder_number();
+
+        Long count = getObtainOrderNumber(addOrderDtoList.get(0).getOrder_Date());
+
+        if(count == 0){
+           count = 1L;
+        }
+
+        addOrderNumber.setOrder_Number(LocalDate.now().toString()+"-"+count);
+
+        obtainOrderNumberRepository.save(addOrderNumber);
+
+
+        //수주 디테일 저장
+
+        for (AddOrderDto addOrderDto : addOrderDtoList) {
+
+            obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+
+            obtainorder_detail.setOrderNumber(addOrderNumber);
+
+            obtainorderDetailRepository.save(obtainorder_detail);
+        }
+        return true;
+    }
+
+    //수주번호 인덱스 계산 (but 실패 !! 고쳐야함 )
+    public Long getObtainOrderNumber(LocalDate date){
+
+       Long count = obtainorderDetailRepository.countByOrderDate(date);
+
+       return count;
+
     }
 }

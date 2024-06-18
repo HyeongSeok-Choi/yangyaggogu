@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,14 +30,14 @@ public class obtainorder_detail {
 
     private String productName;
 
-    private LocalDateTime order_Date;
+    private LocalDate orderDate;
 
     private Long order_Amount;
 
     @Enumerated(EnumType.STRING)
     private obtainorder_state state;
 
-    private LocalDateTime delivery_Date;
+    private LocalDate delivery_Date;
 
     private String company_name;
 

@@ -31,19 +31,12 @@ public class obtainorderApiController {
 
     //등록
     @PostMapping("/addOrder")
-    public ResponseEntity<?> AddOrder(@RequestBody AddOrderDto addOrderDto){
+    public ResponseEntity<?> AddOrder(@RequestBody List<AddOrderDto> addOrderDtoList){
 
-        System.out.println(addOrderDto.getOrder_Amount());
-        System.out.println(addOrderDto.getCompany_name());
-        System.out.println(addOrderDto.getDelivery_Date());
-        System.out.println(addOrderDto.getWriter());
-        System.out.println(addOrderDto.getProductName());
-        System.out.println("왔니?");
 
-//        for (AddOrderDto addOrderDto1: addOrderDto){
-//            obtainOrderService.save(addOrderDto1);
-//        }
+            obtainOrderService.saveList(addOrderDtoList);
 
-        return ResponseEntity.ok("created Successfull");
+
+        return ResponseEntity.ok(addOrderDtoList);
     }
 }
