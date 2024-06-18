@@ -59,7 +59,7 @@
     <div class="container1" style="margin: 40px">
         <div class="button-container">
             <button class="btn btn-primary" onclick="addNewOrder()">추가</button>
-            <button class="btn btn-outline-info" id="add-btn">저장</button>
+            <button class="btn btn-outline-info" id="add-btn" >저장</button>
             <button class="btn btn-outline-danger">닫기</button>
         </div>
         <!-- 수주 등록하는 부분 -->
@@ -150,12 +150,12 @@
             var newRowHtml = `
                 <tr>
                 <td><input type="checkbox" class="rowCheckbox"></td>
-                <td>${customer}</td>
-                <td>${product}</td>
-                <td>${year+"-"+month+"-"+date}</td>
-                <td>${orderQuantity} Box</td>
-                <td>${deliveryDate}</td>
-                <td>${registrar}</td>
+                <td class="customer">${customer}</td>
+                <td class="product">${product}</td>
+                <td class="orderDate">${year+"-"+month+"-"+date}</td>
+                <td class="orderQuantity">${orderQuantity} Box</td>
+                <td class="deliveryDate">${deliveryDate}</td>
+                <td class="register">${registrar}</td>
                 </tr>
             `;
 
@@ -190,28 +190,34 @@
     </script>
     <script th:inline="javascript">
         //수주 등록 스크립트
+
+        $(document).on('click','#add-btn',function(){
         const AddButton = document.getElementById("add-btn");
         if (AddButton){
-            addButton.addEventListener("click", (event) => {
-                fetch("api/addOrder", {
+            console.log("작동합니까?")
+            AddButton.addEventListener("click", (event) => {
+                console.log("작동합니까?2")
+                fetch("/api/addOrder", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        company_name: document.getElementById("company_name").value,
-                        productName: document.getElementById("productName").value,
-                        order_Date: document.getElementById("order_Date").value,
-                        order_Amount: document.getElementById("order_Amount").value,
-                        delivery_Date: document.getElementById("delivery_Date").value,
-                        writer: document.getElementById("writer").value,
+                        company_name: document.getElementsByClassName("customer")[0].value,
+                        productName: document.getElementsByClassName("product")[0].value,
+                        order_Date: document.getElementsByClassName("orderDate")[0].value,
+                        order_Amount: document.getElementsByClassName("orderQuantity")[0].value,
+                        delivery_Date: document.getElementsByClassName("deliveryDate")[0].value,
+                        writer: document.getElementsByClassName("register")[0].value
                     }),
                 }).then(() => {
                     alert("수주가 등록되었습니다.");
-                    location.replace("addOrder");
+                    location.replace("order_reg");
                 });
+
             });
         }
+        });
     </script>
 </th:block>
 </body>

@@ -1,11 +1,14 @@
 package com.mes.yangyaggogu.controller;
 
+import com.mes.yangyaggogu.dto.AddOrderDto;
 import com.mes.yangyaggogu.dto.OrderStateDto;
+import com.mes.yangyaggogu.entity.obtainorder_detail;
 import com.mes.yangyaggogu.service.ObtainOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Controller
@@ -34,7 +37,12 @@ public class obtainorderController {
 
     //수주 등록 페이지 띄우기(임시)
     @GetMapping("/order_reg")
-    public String orderReg(){
+    public String orderReg(@RequestParam(required = false) Long id, Model model){
+        if (id == null) {
+            model.addAttribute("obtainorderDetail", new AddOrderDto());
+        }
         return "obtainorder/OrderRegistration";
     }
+
+
 }
