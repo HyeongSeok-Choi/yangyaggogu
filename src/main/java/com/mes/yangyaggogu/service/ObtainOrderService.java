@@ -1,5 +1,6 @@
 package com.mes.yangyaggogu.service;
 
+import com.mes.yangyaggogu.constant.obtainorder_state;
 import com.mes.yangyaggogu.dto.AddOrderDto;
 import com.mes.yangyaggogu.dto.OrderDtlDto;
 import com.mes.yangyaggogu.entity.obtainorder_detail;
@@ -43,19 +44,19 @@ public class ObtainOrderService {
 
 
         //수주 디테일 저장
-
         for (AddOrderDto addOrderDto : addOrderDtoList) {
 
             obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
 
             obtainorder_detail.setOrderNumber(addOrderNumber);
+            obtainorder_detail.setState(obtainorder_state.ready);
 
             obtainorderDetailRepository.save(obtainorder_detail);
         }
         return true;
     }
 
-    //수주번호 인덱스 계산 (but 실패 !! 고쳐야함 )
+    //수주번호 인덱스 계산
     public int getObtainOrderNumber(LocalDate date){
 
         int addNumber = 0;
