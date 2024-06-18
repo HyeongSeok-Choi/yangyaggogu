@@ -17,6 +17,7 @@
     </style>
 </head>
 <body>
+<th:block layout:fragment="content">
 <div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
 <div class="container1">
     <form action="/company/register" method="post" class="row g-3 mb-6">
@@ -55,5 +56,6 @@
 
     </form>
 </div>
+</th:block>
 </body>
 </html>

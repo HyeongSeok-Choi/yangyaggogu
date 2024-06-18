@@ -1,12 +1,10 @@
 package com.mes.yangyaggogu.repository;
 
-import com.mes.yangyaggogu.entity.Company;
+import com.mes.yangyaggogu.entity.company;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CompanyRepository extends JpaRepository<Company,Long> {
+import java.util.List;
 
-
+public interface companyRepository extends JpaRepository<company, String> {
 
 }
-
-

@@ -1,6 +1,6 @@
 package com.mes.yangyaggogu.controller;
 
-import com.mes.yangyaggogu.entity.Company;
+
 import com.mes.yangyaggogu.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.apache.bcel.classfile.Code;
@@ -33,13 +33,9 @@ public class CompanyApiController {
     }
 
 
-
-
-
-
-    @PostMapping("/company/delete")
-    public ResponseEntity<Void> deleteCompanies(@RequestBody List<Long> company_codes) {
-        companyService.deleteCompanies(company_codes);
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/company/delete")
+//    public ResponseEntity<Void> deleteCompanies(@RequestBody List<Long> company_codes) {
+//        companyService.deleteCompanies(company_codes);
+//        return ResponseEntity.ok().build();
+//    }
 }

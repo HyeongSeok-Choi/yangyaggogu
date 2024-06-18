@@ -23,7 +23,7 @@ public class finishedStockApiController {
     @GetMapping("/order_list")
     public Map<String,Object> showOrderList() {
         Map<String,Object> map = new HashMap<>();
-        map.put("data",workOrderPlanService.showWorkOrderPlan());
+        map.put("data",workOrderPlanService.getAll());
 
         return map;
     }

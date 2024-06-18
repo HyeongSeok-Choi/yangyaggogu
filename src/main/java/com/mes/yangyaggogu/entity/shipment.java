@@ -33,8 +33,6 @@ public class shipment {
 
     private String productionName;
 
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime shippingDate;
 
 

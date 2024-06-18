@@ -1,37 +1,32 @@
 package com.mes.yangyaggogu.entity;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
-import lombok.*;
+import java.time.LocalDateTime;
 
-
-@Getter
-@Setter
 @Entity
-@Table(name="company")
-@ToString
+@Data
 @NoArgsConstructor
-public class Company {
+@AllArgsConstructor
+public class company {
 
     @Id
-    @Column(name = "company_code")
     private String company_code;
+
     private String company_name;
+
     private String company_address;
+
     private String company_tel_number;
+
     private String trade_goods;
-    private String deliveryTime;
+
+    private LocalDateTime deliveryTime;
+
     private String company_manager;
-
-
-    public Company(String company_name, String company_tel_number, String company_manager, String company_address, String trade_goods) {
-        this.company_name = company_name;
-        this.company_tel_number = company_tel_number;
-        this.company_manager = company_manager;
-        this.company_address = company_address;
-        this.trade_goods = trade_goods;
-    }
 }
-
-
