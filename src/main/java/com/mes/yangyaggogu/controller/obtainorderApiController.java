@@ -1,22 +1,43 @@
 package com.mes.yangyaggogu.controller;
 
-import com.mes.yangyaggogu.dto.OrderStateDto;
+import com.mes.yangyaggogu.dto.AddOrderDto;
 import com.mes.yangyaggogu.entity.obtainorder_detail;
-import com.mes.yangyaggogu.service.ObtainorderService;
+import com.mes.yangyaggogu.service.ObtainOrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class obtainorderApiController {
 
-    private final ObtainorderService obtainorderService;
+    private final ObtainOrderService obtainOrderService;
 
-    /*@GetMapping("/api/obtainorder/{id}")
-    public ResponseEntity<OrderStateDto> findOrder(@PathVariable long id){
-        obtainorder_detail obtainorderDetail = obtainorderService.findById
-    }*/
+    //조회
+    @GetMapping(value = "/getObtainOrderList")
+    public Map<String, Object> obtainOrderList() {
+        Map<String, Object> O_order = new HashMap<>();
+
+        O_order.put("data", obtainOrderService.getObtainOrderDtl());
+
+        return O_order;
+    }
+
+    //등록
+    @PostMapping("/addOrder")
+    public ResponseEntity<?> AddOrder(@RequestBody List<AddOrderDto> addOrderDto){
+        System.out.println("왔니?");
+
+        for (AddOrderDto addOrderDto1: addOrderDto){
+            obtainOrderService.save(addOrderDto1);
+        }
+
+        return ResponseEntity.ok("created Successfull");
+    }
 }
