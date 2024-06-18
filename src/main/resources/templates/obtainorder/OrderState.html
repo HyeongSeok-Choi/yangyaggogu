@@ -179,8 +179,11 @@
                     {
                         title:"수주번호",
                         data: 'orderNumber.order_Number',
-                        render: function (data) {
-                            return '<a href="/orderstate" onclick="openOrderDetail()">'+data+'</a>';
+                        render: function (data, type, row, meta) {
+
+                            console.log(data);
+
+                            return '<a onclick="openOrderDetail()">'+data+'</a>';
                         }},
                     {
                         title:"거래처",
@@ -206,8 +209,18 @@
                 ]
             })
         });
+
+        var hid =0;
+
+        $(document).on('click', '#orderMng tbody tr', function() {
+            hid= table.row( this ).data().id;
+        });
+
+
+
         //상세 조회 팝업창
         function openOrderDetail() {
+            console.log(hid);
             let popupWidth = 600;
             let popupHeight = 600;
             let screenWidth = window.screen.width;
@@ -216,7 +229,7 @@
             let top = (screenHeight - popupHeight) / 2;
             let popOption = `width=${popupWidth}px, height=${popupHeight}px, top=${top}px, left=${left}px`;
 
-            let openUrl = '/order_Detail';
+            let openUrl = '/order_Detail/'+hid;
 
             window.open(openUrl, 'popup_order_detail', popOption);
         }

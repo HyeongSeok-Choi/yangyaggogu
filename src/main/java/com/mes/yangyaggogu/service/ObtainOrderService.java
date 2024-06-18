@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -54,14 +53,11 @@ public class ObtainOrderService {
             obtainorder_detail.setOrderNumber(addOrderNumber);
 
             obtainorderDetailRepository.save(obtainorder_detail);
-
         }
-
         return true;
     }
 
-
-
+    //수주번호 인덱스 계산 (but 실패 !! 고쳐야함 )
     public Long getObtainOrderNumber(LocalDate date){
 
        Long count = obtainorderDetailRepository.countByOrderDate(date);
