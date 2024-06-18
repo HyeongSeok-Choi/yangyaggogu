@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -23,7 +24,7 @@ public class OrderDtlDto {
 
     private Long order_Amount;
 
-    private LocalDateTime delivery_Date;
+    private LocalDate delivery_Date;
 
     //entity -> dto변환
     public OrderDtlDto(obtainorder_detail obtainorderDetail) {
