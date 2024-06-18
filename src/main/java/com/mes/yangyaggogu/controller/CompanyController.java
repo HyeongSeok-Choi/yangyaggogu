@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Controller
 public class CompanyController {
@@ -20,8 +22,7 @@ public class CompanyController {
 
     @PostMapping("/company/register")
     public String registerCompany(@ModelAttribute Company company,
-
-                                                               RedirectAttributes redirectAttributes) {
+                                  RedirectAttributes redirectAttributes) {
                 companyService.registCompany(company);
                 redirectAttributes.addFlashAttribute("message", "거래처가 성공적으로 등록되었습니다.");
 
@@ -33,6 +34,7 @@ public class CompanyController {
     public String showCompanyList() {
         return "company/showCompanyList";
     }
+
 
 
 

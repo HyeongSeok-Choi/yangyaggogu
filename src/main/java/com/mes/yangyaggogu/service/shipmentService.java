@@ -45,4 +45,9 @@ public class shipmentService {
     public void save(shipment shipment) {
         shipmentRepository.save(shipment);
     }
+
+
+    public shipment findById(String id) {
+        return shipmentRepository.findById(id).orElse(null);
+    }
 }

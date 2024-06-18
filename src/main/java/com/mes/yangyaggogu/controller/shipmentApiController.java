@@ -80,7 +80,10 @@ public class shipmentApiController {
         return map;
     }
 
-
+    @GetMapping("/shipment/{id}")
+    public shipment getShipment(@PathVariable String id) {
+        return shipmentService.findById(id);
+    }
 
 
 }
