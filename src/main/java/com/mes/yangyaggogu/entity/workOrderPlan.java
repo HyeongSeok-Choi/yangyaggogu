@@ -1,6 +1,5 @@
 package com.mes.yangyaggogu.entity;
 
-
 import com.mes.yangyaggogu.constant.workOrderPlan_state;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
