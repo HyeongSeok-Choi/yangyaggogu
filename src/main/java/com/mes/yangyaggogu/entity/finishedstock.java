@@ -29,8 +29,7 @@ public class finishedstock {
 
     private Long amount;
 
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+
     private LocalDateTime exp;
 
     @Enumerated(EnumType.STRING)

@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.controller;
 
-import com.mes.yangyaggogu.entity.Company;
+
+import com.mes.yangyaggogu.entity.company;
 import com.mes.yangyaggogu.entity.shipment;
 import com.mes.yangyaggogu.service.CompanyService;
 import com.mes.yangyaggogu.service.shipmentService;
@@ -39,7 +40,7 @@ public class shipmentController {
         shipment shipment = shipmentService.findById(id);
         model.addAttribute("shipment", shipment);
 
-        List<Company> companyCode = companyService.showCompanies();
+        List<company> companyCode = companyService.showCompanies();
         model.addAttribute("company_code", companyCode);
 
         return "shipment/shipmentDetailRegister";

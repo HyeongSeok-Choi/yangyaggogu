@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+<head>
+    <!-- css files for DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" />
+    <meta charset="UTF-8">
+    <title>수주현황</title>
+
+    <th:block layout:fragment="css">
+        <style>
+            .button-container {
+                text-align: right;
+                margin-bottom: 20px;
+            }
+            .order-search-table th{
+                padding: 5px;
+                text-align: center;
+                vertical-align: middle;
+                width: 5%;
+            }
+            .order-search-table td {
+                padding: 5px;
+                text-align: center;
+                vertical-align: middle;
+                width: 5.5%;
+            }
+            .order-search-table input {
+                width: 50%;
+                box-sizing: border-box;
+            }
+            .checkbox-center {
+                text-align: center;
+                vertical-align: middle;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+<th:block layout:fragment="content">
+<div class="container1" style="margin:50px">
+    <div class="button-container">
+        <button class="btn btn-primary">조회</button>
+        <button class="btn btn-primary" id="orderRegistrationBtn">수주등록</button>
+        <button class="btn btn-primary">엑셀다운로드</button>
+    </div>
+        <table id="orderSearch" class="table table-striped table-bordered order-search-table">
+            <!--수주 조회 테이블 -->
+            <thead>
+                <tr>
+                    <th>수주번호</th>
+                        <td><input type="text" name="orderNum"></td>
+                    <th>수주일</th>
+                        <td><input type="date" name="orderDate"></td>
+                    <th>등록자</th>
+                        <td>
+                            <select>
+                                <option></option>
+                                <option>최형석</option>
+                                <option>강두일</option>
+                                <option>김진영</option>
+                                <option>손현민</option>
+                            </select>
+                        </td>
+                </tr>
+                <tr>
+                    <th>제품명</th>
+                        <td>
+                            <select>
+                                <option></option>
+                                <option>양배추즙</option>
+                                <option>흑마늘즙</option>
+                                <option>매실젤리</option>
+                                <option>석류젤리</option>
+                            </select>
+                        </td>
+                    <th>거래처</th>
+                        <td>
+                            <select>
+                                <option></option>
+                                <option>쿠팡</option>
+                                <option>삼성</option>
+                                <option>옥션</option>
+                            </select>
+                        </td>
+                    <th>진행상태</th>
+                        <td>
+                            <select>
+                                <option></option>
+                                <option>대기</option>
+                                <option>확정</option>
+                                <option>마감</option>
+                            </select>
+                        </td>
+                </tr>
+            </thead>
+        </table>
+    <!--수주현황 테이블-->
+    <table id="orderMng" class="table table-striped table-bordered" style="width:100%">
+        <!-- 수주현황 테이블 -->
+        <thead>
+
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <div class="button-container">
+        <button id="calendarBtn" class="btn btn-primary">캘린더</button>
+        <button class="btn btn-primary">수주확정</button>
+    </div>
+</div>
+    <script th:inline="javascript">
+        //수주 등록 버튼 클릭
+        let orderRegistrationBtn = document.getElementById('orderRegistrationBtn');
+        orderRegistrationBtn.onclick = function (){
+            window.location.href = '/order_reg';
+        };
+
+        //조회
+        var table = null;
+        $(document).ready(function() {
+            table = $('#orderMng').DataTable({
+                searching: false,
+                responsive: true,
+                destroy: true,
+                processing: true,
+                serverSide: false,
+                ordering: true,
+                scrollX: true,
+                ajax: {
+                    url: 'http://localhost:8080/api/getObtainOrderList',
+                    type: 'GET',
+                    dataFilter: function(res) {
+                        var json = $.parseJSON(res);
+
+                        var data = {
+                            'draw': json.data.draw,
+                            'recordsTotal': json.data.recordsTotal,
+                            'recordsFiltered': json.data.recordsFiltered,
+                            'data': json.data,
+                        };
+
+                        return JSON.stringify(data);
+                    },
+                },
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child',
+                    headerCheckbox: 'select-page'
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: DataTable.render.select()
+                    },
+                    {
+                        title:"#",
+                        data: 'id'},
+                    {
+                        title:"수주번호",
+                        data: 'orderNumber.order_Number',
+                        render: function (data, type, row, meta) {
+
+                            console.log(data);
+
+                            return '<a onclick="openOrderDetail()">'+data+'</a>';
+                        }},
+                    {
+                        title:"거래처",
+                        data: 'company_name'},
+                    {
+                        title:"제품명",
+                        data: 'productName'},
+                    {
+                        title:"수주일자",
+                        data: 'orderDate'},
+                    {
+                        title:"수주수량",
+                        data: 'order_Amount'},
+                    {
+                        title:"납품일",
+                        data: 'delivery_Date'},
+                    {
+                        title:"진행상태",
+                        data: 'state'},
+                    {
+                        title:"등록자",
+                        data: 'writer'}
+                ]
+            })
+        });
+
+        var hid =0;
+
+        $(document).on('click', '#orderMng tbody tr', function() {
+            hid= table.row( this ).data().id;
+        });
+
+
+
+        //상세 조회 팝업창
+        function openOrderDetail() {
+            console.log(hid);
+            let popupWidth = 600;
+            let popupHeight = 600;
+            let screenWidth = window.screen.width;
+            let screenHeight = window.screen.height;
+            let left = (screenWidth - popupWidth) / 2;
+            let top = (screenHeight - popupHeight) / 2;
+            let popOption = `width=${popupWidth}px, height=${popupHeight}px, top=${top}px, left=${left}px`;
+
+            let openUrl = '/order_Detail/'+hid;
+
+            window.open(openUrl, 'popup_order_detail', popOption);
+        }
+        // 전체 선택 및 개별 체크박스 기능 통합
+        $('#orderMng').on('click', '#checkAll, .row-checkbox', function() {
+            if ($(this).is('#checkAll')) {
+                var isChecked = $(this).is(':checked');
+                $('.row-checkbox').prop('checked', isChecked);
+            } else {
+                var totalCheckboxes = $('.row-checkbox').length;
+                var checkedCheckboxes = $('.row-checkbox:checked').length;
+                $('#checkAll').prop('checked', totalCheckboxes === checkedCheckboxes);
+            }
+        });
+
+        //캘린더 버튼 클릭 시 캘린더 팝업 창 띄우기
+        let popupBtn = document.querySelector('button#calendarBtn');
+
+        popupBtn.onclick = function () {
+            // 팝업창의 크기 설정
+            let popupWidth = 1000;
+            let popupHeight = 1000;
+
+            // 화면의 너비와 높이 가져오기
+            let screenWidth = window.screen.width;
+            let screenHeight = window.screen.height;
+
+            // 팝업창의 위치 계산 (정중앙)
+            let left = (screenWidth - popupWidth) / 2;
+            let top = (screenHeight - popupHeight) / 2;
+
+            let popOption = `width=${popupWidth}px, height=${popupHeight}px, top=${top}px, left=${left}px`;
+            let openUrl = "/popup.calendar";
+            window.open(openUrl, 'popup_calendar', popOption);
+        }
+    </script>
+</th:block>
+</body>
+</html>

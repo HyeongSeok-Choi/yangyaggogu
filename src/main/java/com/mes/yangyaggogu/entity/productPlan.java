@@ -1,10 +1,9 @@
 package com.mes.yangyaggogu.entity;
 
+
 import com.mes.yangyaggogu.constant.productionPlan_state;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -33,4 +32,8 @@ public class productPlan {
 
     @Enumerated(EnumType.STRING)
     private productionPlan_state state;
+
+
+
+
 }

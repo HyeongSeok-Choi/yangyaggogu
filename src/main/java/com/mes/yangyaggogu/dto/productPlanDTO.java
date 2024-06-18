@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.dto;
 
 import com.mes.yangyaggogu.constant.productionPlan_state;
+import com.mes.yangyaggogu.entity.obtainorder_number;
 import com.mes.yangyaggogu.entity.productPlan;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class productPlanDTO {
-
 
     private String productionPlanCode;
 
