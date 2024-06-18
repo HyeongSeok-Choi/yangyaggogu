@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.dto.AddOrderDto;
+import com.mes.yangyaggogu.dto.OrderDtlDto;
 import com.mes.yangyaggogu.entity.obtainorder_detail;
 import com.mes.yangyaggogu.service.ObtainOrderService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class obtainorderApiController {
 
     private final ObtainOrderService obtainOrderService;
 
-    //조회
+    //수주현황 조회
     @GetMapping(value = "/getObtainOrderList")
     public Map<String, Object> obtainOrderList() {
         Map<String, Object> O_order = new HashMap<>();
@@ -46,4 +47,13 @@ public class obtainorderApiController {
 
         return ResponseEntity.ok("created Successfull");
     }
+
+    //수주 상세 조회
+    /*@GetMapping(value = "/getOrderDtlList/{id}")
+    public ResponseEntity<OrderDtlDto> getOrderDtlById(@PathVariable long id){
+        obtainorder_detail obtainorderDetail = obtainOrderService.getOrderDetailById(id);
+
+        return ResponseEntity.ok()
+                .body(new OrderDtlDto(obtainorderDetail));
+    }*/
 }

@@ -130,6 +130,9 @@
     </div>
 </div>
     <script th:inline="javascript">
+
+        let id = "";
+
         //수주 등록 버튼 클릭
         let orderRegistrationBtn = document.getElementById('orderRegistrationBtn');
         orderRegistrationBtn.onclick = function (){
@@ -139,6 +142,7 @@
         //조회
         var table = null;
         $(document).ready(function() {
+
             table = $('#orderMng').DataTable({
                 searching: false,
                 responsive: true,
@@ -178,10 +182,7 @@
                         data: 'id'},
                     {
                         title:"수주번호",
-                        data: 'orderNumber.order_Number',
-                        render: function (data) {
-                            return '<a href="/orderstate" onclick="openOrderDetail()">'+data+'</a>';
-                        }},
+                        data: 'orderNumber.order_Number'},
                     {
                         title:"거래처",
                         data: 'company_name'},
@@ -205,21 +206,27 @@
                         data: 'writer'}
                 ]
             })
+
         });
-        //상세 조회 팝업창
-        function openOrderDetail() {
-            let popupWidth = 600;
-            let popupHeight = 600;
+
+        //상세 조회 팝업창(행 클릭)
+        $(document).on('click', '#orderMng tr', function() {
+            id= table.row( this ).data().id;
+
+            let popupWidth = 700;
+            let popupHeight = 700;
             let screenWidth = window.screen.width;
             let screenHeight = window.screen.height;
             let left = (screenWidth - popupWidth) / 2;
             let top = (screenHeight - popupHeight) / 2;
             let popOption = `width=${popupWidth}px, height=${popupHeight}px, top=${top}px, left=${left}px`;
 
-            let openUrl = '/order_Detail';
+            let openUrl = '/order_Detail/'+id;
 
             window.open(openUrl, 'popup_order_detail', popOption);
-        }
+        });
+
+
         // 전체 선택 및 개별 체크박스 기능 통합
         $('#orderMng').on('click', '#checkAll, .row-checkbox', function() {
             if ($(this).is('#checkAll')) {
