@@ -34,11 +34,8 @@ public class ObtainOrderService {
         //수주 번호의 생성
         obtainorder_number addOrderNumber = new obtainorder_number();
 
-        Long count = getObtainOrderNumber(addOrderDtoList.get(0).getOrder_Date());
+        int count = getObtainOrderNumber(addOrderDtoList.get(0).getOrder_Date());
 
-        if(count == 0){
-           count = 1L;
-        }
 
         addOrderNumber.setOrder_Number(LocalDate.now().toString()+"-"+count);
 
@@ -59,11 +56,34 @@ public class ObtainOrderService {
     }
 
     //수주번호 인덱스 계산 (but 실패 !! 고쳐야함 )
-    public Long getObtainOrderNumber(LocalDate date){
+    public int getObtainOrderNumber(LocalDate date){
 
-       Long count = obtainorderDetailRepository.countByOrderDate(date);
+        int addNumber = 0;
 
-       return count;
+        //날짜가 있는지 확인
+       boolean checkLocalDate = obtainorderDetailRepository.existsByOrderDate(date);
+
+       //날짜가 존재한다면
+       if(checkLocalDate){
+
+          obtainorder_detail findObtain = obtainorderDetailRepository.findTopByOrderByIdDesc();
+
+          obtainorder_number obtainorderNumber = findObtain.getOrderNumber();
+
+           System.out.println(obtainorderNumber.getOrder_Number());
+
+          String[] num  = obtainorderNumber.getOrder_Number().split("-");
+
+           addNumber = Integer.parseInt(num[3]);
+
+          return addNumber+1;
+
+       }else{
+           addNumber = 1;
+
+       }
+
+       return addNumber;
 
     }
 
