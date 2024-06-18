@@ -14,7 +14,7 @@ public class finishedstockService {
     final private com.mes.yangyaggogu.repository.finishedstockRepository finishedstockRepository;
 
 
-    public List<finishedstock> showWorkOrderPlan() {
+    public List<finishedstock> showFinishedStockList() {
         return finishedstockRepository.findAll();
     }
 

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en' xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
 <head>
 
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
@@ -20,15 +22,26 @@
     <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
     <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>
 
+
+
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" />
 
+    <style>
+
+
+        .container1{
+            padding-left: 300px;
+            padding-top: 50px;
+        }
+    </style>
 </head>
 <body>
+
 <div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
-<div class="container">
+<div class="container1">
 <button id="deleteSelected" class="btn btn-danger">선택된 행 삭제</button>
 <table id="company_list" class="display">
     <thead>

@@ -16,8 +16,7 @@ public class Company {
 
     @Id
     @Column(name = "company_code")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long company_code;
+    private String company_code;
     private String company_name;
     private String company_address;
     private String company_tel_number;

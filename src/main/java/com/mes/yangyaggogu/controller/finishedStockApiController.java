@@ -2,6 +2,7 @@ package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.entity.finishedstock;
 import com.mes.yangyaggogu.service.finishedstockService;
+import com.mes.yangyaggogu.service.workOrderPlanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.util.Optional;
 public class finishedStockApiController {
 
 
-    final private com.mes.yangyaggogu.service.workOrderPlanService workOrderPlanService;
+    final private workOrderPlanService workOrderPlanService;
     final private finishedstockService finishedstockService;
 
     @GetMapping("/order_list")
@@ -30,7 +31,7 @@ public class finishedStockApiController {
     @GetMapping("finishedStock/list")
     public Map<String,Object> showFinishedStockList() {
         Map<String,Object> map = new HashMap<>();
-        map.put("data",finishedstockService.showWorkOrderPlan());
+        map.put("data",finishedstockService.showFinishedStockList());
 
         return map;
     }

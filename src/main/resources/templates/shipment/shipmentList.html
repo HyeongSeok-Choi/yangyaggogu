@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--완제품 입고, 출고 등록 페이지-->
+<!--출하지시서 리스트 페이지 -->
 <html lang='en' xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layouts/layout1}">
@@ -9,8 +9,8 @@
     <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
-        <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>
-        <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
@@ -51,25 +51,24 @@
     <button id="filterButton" class="btn btn-primary">날짜 설정</button>
 
 
-    <table id="finishedStockList" class="display">
+    <table id="shipmentRegisterForm" class="display">
 
         <thead>
         <tr>
             <th></th>
             <th></th>
+            <th>출하지시서 번호</th>
             <th>수주번호</th>
-            <th>품목명</th>
-            <th>재고량</th>
-            <th>유통기한</th>
-            <th>상태</th>
-            <th>출고여부</th>
-<!--            <th></th>-->
+            <th>출하일</th>
+            <th>제품명</th>
+            <th>수량</th>
+            <th>작성일</th>
+            <th>납품일</th>
+            <th>작성 상태</th>
+
+            <!--            <th></th>-->
         </thead>
     </table>
-
-    <button id="releaseStock" class="btn btn-primary">출고 등록</button>
-
-
 
 </div>
 
@@ -77,7 +76,7 @@
 <script th:inline="javascript">
     var table = null;
     $(document).ready(function () {
-        table = $('#finishedStockList').DataTable({
+        table = $('#shipmentRegisterForm').DataTable({
             responsive: {
                 details: {
                     type: 'column',
@@ -95,7 +94,7 @@
                     className: 'dt-body-center'
                 },
                 {
-                    targets: 0, width: 100
+                    targets: 0, width: 200
                 },
                 {
                     targets: 1, width: 100
@@ -109,46 +108,21 @@
             order: [1, 'asc'],
 
             ajax: {
-                url: 'http://localhost:8080/api/finishedStock/list',
-                type: 'GET'
-                // data: function(d) {
-                //     d.startDate = $('#startDate').val();
-                //     d.endDate = $('#endDate').val();
-                //
-                //     console.log(d.startDate + "," + d.endDate);
-                // }
+                url: 'http://localhost:8080/api/shipment/confirmedList',
+                type: 'GET',
+
             },
-            columns: [
+            columns: [// dataLoader 이름 + entity이름
                 {data: null},
                 {data: null, defaultContent: ''},
-                {data: "orderNumber.order_Number"},
-                // dataLoader 이름 + entity이름
-
-                {data: "materials_Name"},
-                {data: "amount"},
-                {data: "exp"},
-                {   data: "state",
-                    render: function (data, type, row) {
-                        if (data === "in") {
-                            return "입고";
-                        } else if (data === "out") {
-                            return "출고";
-                        } else {
-                            return data;
-                        }
-                    }
-                    },
-                {
-                    data: null,
-                    defaultContent: '',
-                    render: function (data, type, row) {
-                        if (row.state === "out") {
-                            return "출고 완료";
-                        } else {
-                            return "";
-                        }
-                    }
-                }
+                {data: "shipment_Number"},
+                {data: "order_Number.order_Number",},
+                {data: "shippingDate"},
+                {data: "productionName"},
+                {data: "shipment_Amount"},
+                {data: "createdAt"},
+                {data: "deliveryDate"},
+                {data: "state"}
             ],
             ordering: true,
             lengthChange: false,
@@ -157,9 +131,8 @@
             rowCallback: function (row, data, index) {
                 var pageInfo = table.page.info();
                 $('td:eq(1)', row).html(pageInfo.start + index + 1);
-                if (data.state === 'out') {
-                    $('td:eq(0)', row).html('');
-                }
+
+
             },
             dom: 'Bfrtip',
             buttons: [
@@ -179,33 +152,10 @@
             ]
         });
 
-        // $('#filterButton').on('click', function () {
-        //     table.ajax.reload(null,false);
-        // });
-        $('#releaseStock').on('click', function () {
-            var selectedRows = table.rows({selected: true}).data();
 
-            if (selectedRows.length === 0) {
-                alert("출고할 항목을 선택해 주세요.");
-                return;
-            }
 
-            if (confirm("체크하신 항목을 출고하시겠습니까?")) {
-                selectedRows.each(function (data) {
-                    data.state = 'out';
-                    // 여기서 서버로 업데이트 요청을 보낼 수 있습니다.
-                    $.ajax({
-                        url: 'http://localhost:8080/api/finishedStock/update',
-                        type: 'POST',
-                        data: JSON.stringify(data),
-                        contentType: 'application/json',
-                        success: function (response) {
-                            table.ajax.reload(null, false);
-                        }
-                    });
-                });
-            }
-        });
+
+
     });
 
 </script>

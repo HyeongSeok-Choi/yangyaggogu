@@ -1,7 +1,11 @@
 package com.mes.yangyaggogu.service;
 
-import com.mes.yangyaggogu.entity.Company;
-import com.mes.yangyaggogu.repository.CompanyRepository;
+import com.mes.yangyaggogu.dto.shipmentDTO;
+import com.mes.yangyaggogu.entity.finishedstock;
+import com.mes.yangyaggogu.entity.shipment;
+import com.mes.yangyaggogu.entity.workOrderPlan;
+import com.mes.yangyaggogu.repository.finishedstockRepository;
+import com.mes.yangyaggogu.repository.shipmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,31 +15,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequiredArgsConstructor
 @Service
-public class CompanyService {
+@RequiredArgsConstructor
+public class shipmentService {
 
-    final private CompanyRepository companyRepository;
 
+    final private shipmentRepository shipmentRepository;
     private final Map<String, Integer> sequenceMap = new HashMap<>();
 
-    public void registCompany(Company company) {
 
-        String companyCode = generateCompanyCode();
 
-        company.setCompany_code(companyCode);
-        companyRepository.save(company);
+    public List<shipment> showShipmentList() {
+        return shipmentRepository.findAll();
     }
 
-    public List<Company> showCompanies() {
-        return companyRepository.findAll();
-    }
-
-
-
-
-    //거래처 코드 어떻게 짤지 정하고 나중에 수정
-    public String generateCompanyCode() {
+    //출하지시서 번호 생성기 ex)20240618-001
+    public String generateShipmentNumber() {
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String datePart = today.format(formatter);
@@ -47,9 +42,7 @@ public class CompanyService {
 
     }
 
-
-
-    public void deleteCompanies(List<Long> company_codes) {
-        companyRepository.deleteAllById(company_codes);
+    public void save(shipment shipment) {
+        shipmentRepository.save(shipment);
     }
 }
