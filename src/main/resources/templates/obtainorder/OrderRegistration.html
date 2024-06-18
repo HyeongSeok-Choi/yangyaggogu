@@ -150,12 +150,18 @@
             var newRowHtml = `
                 <tr>
                 <td><input type="checkbox" class="rowCheckbox"></td>
-                <td class="customer">${customer}</td>
-                <td class="product">${product}</td>
-                <td class="orderDate">${year+"-"+month+"-"+date}</td>
-                <td class="orderQuantity">${orderQuantity} Box</td>
-                <td class="deliveryDate">${deliveryDate}</td>
-                <td class="register">${registrar}</td>
+                <td>${customer}</td>
+                <input class="customer" type="hidden" value="${customer}">
+                <td>${product}</td>
+                <input class="product" type="hidden" value="${product}">
+                <td>${year+"-"+month+"-"+date}</td>
+                <input class="orderDate" type="hidden" value="${year+"-0"+month+"-"+date}">
+                <td>${orderQuantity} Box</td>
+                <input class="orderQuantity" type="hidden" value="${orderQuantity}">
+                <td>${deliveryDate}</td>
+                <input class="deliveryDate" type="hidden" value="${deliveryDate}">
+                <td>${registrar}</td>
+                <input class="register" type="hidden" value="${registrar}">
                 </tr>
             `;
 
@@ -192,31 +198,34 @@
         //수주 등록 스크립트
 
         $(document).on('click','#add-btn',function(){
-        const AddButton = document.getElementById("add-btn");
-        if (AddButton){
-            console.log("작동합니까?")
-            AddButton.addEventListener("click", (event) => {
-                console.log("작동합니까?2")
+
+            var dataArray = [];
+            for (let i = 0; i < $('.customer').length ; i++) {
+
+                var company_name =  $('.customer').eq(i).val();
+                var productName= $('.product').eq(i).val();
+                var order_Date= $('.orderDate').eq(i).val();
+                var order_Amount =$('.orderQuantity').eq(i).val();
+                var delivery_Date =$('.deliveryDate').eq(i).val();
+                var writer = $('.register').eq(i).val();
+
+                dataArray[i] = {company_name,productName,order_Date,order_Amount,delivery_Date,writer};
+            }
+
+            console.log(dataArray[0]);
+            console.log(dataArray[1]);
+            console.log(dataArray[2]);
+
                 fetch("/api/addOrder", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        company_name: document.getElementsByClassName("customer")[0].value,
-                        productName: document.getElementsByClassName("product")[0].value,
-                        order_Date: document.getElementsByClassName("orderDate")[0].value,
-                        order_Amount: document.getElementsByClassName("orderQuantity")[0].value,
-                        delivery_Date: document.getElementsByClassName("deliveryDate")[0].value,
-                        writer: document.getElementsByClassName("register")[0].value
-                    }),
+                    body: JSON.stringify(dataArray),
                 }).then(() => {
                     alert("수주가 등록되었습니다.");
                     location.replace("order_reg");
                 });
-
-            });
-        }
         });
     </script>
 </th:block>

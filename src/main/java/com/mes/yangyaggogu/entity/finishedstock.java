@@ -1,10 +1,7 @@
 package com.mes.yangyaggogu.entity;
 
 import com.mes.yangyaggogu.constant.finishedstock_state;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +27,7 @@ public class finishedstock {
 
     private LocalDateTime exp;
 
+    @Enumerated(EnumType.STRING)
     private finishedstock_state state;
 
 }

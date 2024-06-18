@@ -2,10 +2,7 @@ package com.mes.yangyaggogu.entity;
 
 
 import com.mes.yangyaggogu.constant.workOrderPlan_state;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,11 +18,14 @@ import java.time.LocalDateTime;
 public class workOrderPlan {
 
     @Id
-    private String production_Plan_Id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
+
+    private String processCode;
 
     @ManyToOne
     @JoinColumn(name = "productionPlanCode")
-    private productPlan productPlan;
+    private productPlan productPlanCode;
 
     @ManyToOne
     @JoinColumn(name = "order_Number")
@@ -43,6 +43,7 @@ public class workOrderPlan {
 
     private Long now_Output;
 
+    @Enumerated(EnumType.STRING)
     private workOrderPlan_state state;
 
     private String materials_Name;
