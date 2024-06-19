@@ -24,12 +24,16 @@
     <script src="https://cdn.datatables.net/rowgroup/1.5.0/js/dataTables.rowGroup.js"></script>
     <script src="https://cdn.datatables.net/rowgroup/1.5.0/js/rowGroup.dataTables.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
-
+    <script src="https://cdn.datatables.net/searchbuilder/1.7.1/js/dataTables.searchBuilder.js"></script>
+    <script src="https://cdn.datatables.net/searchbuilder/1.7.1/js/searchBuilder.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.5.2/js/dataTables.dateTime.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.7.1/css/searchBuilder.dataTables.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.5.2/css/dataTables.dateTime.min.css" />
     <style>
 
         /*모달 팝업 영역 스타일링*/
@@ -94,6 +98,28 @@
         var table = null;
         $(document).ready(function() {
             table = $('#Table').DataTable({
+                language: {
+                    searchBuilder: {
+                        add: '+',
+                        condition: 'Comparator',
+                        clearAll: 'Reset',
+                        delete: 'Delete',
+                        deleteTitle: 'Delete Title',
+                        data: 'Column',
+                        left: 'Left',
+                        leftTitle: 'Left Title',
+                        logicAnd: '&&',
+                        logicOr: '||',
+                        right: 'Right',
+                        rightTitle: 'Right Title',
+                        title: {
+                            0: '검색',
+                            _: 'Filters (%d)'
+                        },
+                        value: 'Option',
+                        valueJoiner: 'et'
+                    }
+                },
                 columnDefs: [
                     {
                         targets: 11,
@@ -109,6 +135,7 @@
                     }
                 ],
                 layout: {
+                    top1: 'searchBuilder',
                     topStart: {
                         buttons: [
                             {
@@ -210,7 +237,7 @@
 
                     }
                 },
-                searching: false,
+                searching: true,
                 responsive: true,
                 destroy: true,
                 select: {

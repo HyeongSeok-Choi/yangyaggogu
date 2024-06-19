@@ -117,6 +117,7 @@ public class ObtainOrderService {
         return findedDto;
     }
 
+    //3라인이 넘는지 안넘는지 체크
     public boolean checkPossibleDay(LocalDate localDate,String comeProductName){
 
 
