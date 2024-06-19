@@ -87,7 +87,7 @@
             },
             order: [ 1, 'asc' ],
             ajax: {
-                url: 'http://localhost:8080/api/company/list', // 서버 API URL
+                url: '/api/company/list', // 서버 API URL
                 type: 'GET'
             },
             columns: [
@@ -111,7 +111,7 @@
 
             if (selectedCompany.length > 0) {
                 $.ajax({
-                    url: 'http://localhost:8080/api/company/delete',
+                    url: '/api/company/delete',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(selectedCompany), // 선택된 ID 목록을 JSON 형식으로 전송
