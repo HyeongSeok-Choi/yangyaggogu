@@ -10,11 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,16 +40,38 @@ public class productionPlanAPIcontroller {
     @GetMapping(value = "/getProductionPlanListCalendar")
     public List<P_plan_calendarDTO> productionPlanListCalendar() {
 
+
         List<P_plan_calendarDTO> prdList = new ArrayList<>();
 
         for (productPlan prd_p :P_planService.getProductPlans()){
 
-            System.out.println(prd_p.getP_startDate()+"이거");
             P_plan_calendarDTO pPlanCalendarDTO=new P_plan_calendarDTO();
 
-            pPlanCalendarDTO.setStart(prd_p.getP_startDate().toString());
+            String str =prd_p.getMaterials_Name();
 
-            pPlanCalendarDTO.setEnd(prd_p.getP_endDate().toString());
+            switch (str){
+                    case "양배추즙":
+                    pPlanCalendarDTO.setColor("#66ff66");
+                    break;
+                     case "흑마늘즙":
+                    pPlanCalendarDTO.setColor("#000000");
+                    break;
+
+                    case "매실젤리스틱":
+                    pPlanCalendarDTO.setColor("#669900");
+                    break;
+
+                    case "석류젤리스틱":
+                    pPlanCalendarDTO.setColor("#ff0066");
+                    break;
+                default:
+                    pPlanCalendarDTO.setColor("알수없음");
+                    break;
+            }
+
+            pPlanCalendarDTO.setStart(prd_p.getP_startDate().toLocalDate());
+
+            pPlanCalendarDTO.setEnd(prd_p.getP_endDate().toLocalDate());
 
             pPlanCalendarDTO.setTitle(prd_p.getProductionPlanCode());
 
