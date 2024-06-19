@@ -27,7 +27,5 @@ public class company {
 
     private String trade_goods;
 
-    private LocalDateTime deliveryTime;
-
     private String company_manager;
 }

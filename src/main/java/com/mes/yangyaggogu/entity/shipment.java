@@ -27,8 +27,6 @@ public class shipment {
 
     private String company_Address;
 
-    private String company_code;
-
     private Long shipment_Amount;
 
     private String productionName;

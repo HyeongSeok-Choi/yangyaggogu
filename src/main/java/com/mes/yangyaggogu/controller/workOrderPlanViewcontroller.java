@@ -32,7 +32,7 @@ public class workOrderPlanViewcontroller {
 
             model.addAttribute("producers", producers);
 
-            workPlanService.testWorkOrderPlanData();
+           // workPlanService.testWorkOrderPlanData();
 
             return "WorkOrder/WorkOrder";
         }

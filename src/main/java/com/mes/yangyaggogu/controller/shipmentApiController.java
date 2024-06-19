@@ -1,8 +1,11 @@
 package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.constant.shipment_state;
+import com.mes.yangyaggogu.entity.company;
 import com.mes.yangyaggogu.entity.finishedstock;
+import com.mes.yangyaggogu.entity.obtainorder_detail;
 import com.mes.yangyaggogu.entity.shipment;
+import com.mes.yangyaggogu.service.CompanyService;
 import com.mes.yangyaggogu.service.finishedstockService;
 import com.mes.yangyaggogu.service.shipmentService;
 import com.mes.yangyaggogu.service.workOrderPlanService;
@@ -42,12 +45,14 @@ public class shipmentApiController {
                 updatedStocks.add(existingStock);  //업데이트 된 객체를 리스트에 추가
 
                 shipment shipment = new shipment();
+                obtainorder_detail od = new obtainorder_detail();
                 shipment.setShipment_Number(shipmentService.generateShipmentNumber());
                 //나중에 형식 바꿀수도
                 shipment.setOrder_Number(existingStock.getOrderNumber());
-                shipment.setCompany_name("");
+                shipment.setCompany_name(od.getCompany_name());
                 shipment.setCompany_Address("");
-                shipment.setCompany_code("");
+
+
                 //
                 shipment.setShipment_Amount(existingStock.getAmount());
                 shipment.setProductionName(existingStock.getMaterials_Name());
@@ -84,6 +89,5 @@ public class shipmentApiController {
     public shipment getShipment(@PathVariable String id) {
         return shipmentService.findById(id);
     }
-
 
 }

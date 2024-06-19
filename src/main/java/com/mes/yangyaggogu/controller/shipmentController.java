@@ -40,8 +40,7 @@ public class shipmentController {
         shipment shipment = shipmentService.findById(id);
         model.addAttribute("shipment", shipment);
 
-        List<company> companyCode = companyService.showCompanies();
-        model.addAttribute("company_code", companyCode);
+
 
         return "shipment/shipmentDetailRegister";
     }
