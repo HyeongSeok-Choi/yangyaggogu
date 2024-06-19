@@ -159,7 +159,7 @@
                     }
                 ],
                 ajax: {
-                    url: 'http://localhost:8080/api/getObtainOrderList',
+                    url: '/api/getObtainOrderList',
                     type: 'GET',
                     dataFilter: function(res) {
                         var json = $.parseJSON(res);
@@ -248,7 +248,22 @@
 
         $('#confirmOrderBtn').on('click', function (e){
 
+            //일단 다중 셀렉트시 이미 확정된 건일 경우 알림창 뜨게 설정해놓음
+            table.rows({selected: true}).data(id);
+
+            var SelectedCount = table.rows({selected: true}).data().length;
+            for (let i = 0; i < SelectedCount ; i++) {
+
+                if(table.rows({selected: true}).data(id)[i]["state"] ==="confirmed"){
+                    alert("수주 확정된 건입니다.");
+                    return false;
+                }
+            }
+
+
            var targetIds= getSelectedRows();
+
+           console.log(targetIds);
 
             fetch(`/api/changeObtainState`, {
                 headers: {

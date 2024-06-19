@@ -12,6 +12,7 @@ import com.mes.yangyaggogu.repository.productPlanRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
@@ -40,9 +41,9 @@ public class DataLoader implements CommandLineRunner {
         productPlan plan = new productPlan();
         plan.setProductionPlanCode("PLAN123");
         plan.setOrder_Number(order);
-        plan.setP_startDate(LocalDateTime.now());
+        plan.setP_startDate(LocalDate.now());
         plan.setMaterials_Name("흑마늘즙");
-        plan.setP_endDate(LocalDateTime.now());
+        plan.setP_endDate(LocalDate.now());
         productPlanRepository.save(plan);
 
         // Product Plan 생성

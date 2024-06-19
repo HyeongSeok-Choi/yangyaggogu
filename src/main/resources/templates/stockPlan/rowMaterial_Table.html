@@ -143,12 +143,9 @@
                     .then(response => response.json())
                     .then(searchList => {
                         console.log(searchList);
-
                         table.clear();
                         table.rows.add(searchList);
                         table.draw();
-
-
                     })
 
             }

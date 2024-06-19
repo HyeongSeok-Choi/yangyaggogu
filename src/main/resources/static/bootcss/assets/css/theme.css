@@ -339,8 +339,8 @@
   --phoenix-flatpickr-today-color: #fff;
   --phoenix-flatpickr-calendar-day-selected-bg: rgba(var(--phoenix-primary-rgb), 0.2);
   /* -------------------------------- Fullcalendar ------------------------------- */
-  --phoenix-calendar-bg: #e3e6ed;
-  --phoenix-calendar-border-color: var(--phoenix-body-bg);
+  /*--phoenix-calendar-bg: #e3e6ed;*/
+  /*--phoenix-calendar-border-color: var(--phoenix-body-bg);*/
   /* --------------------------------- wizard --------------------------------- */
   --phoenix-theme-wizard-nav-item-circle-bg: var(
     --phoenix-body-highlight-bg

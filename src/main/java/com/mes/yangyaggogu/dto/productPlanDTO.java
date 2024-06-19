@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -20,9 +21,9 @@ public class productPlanDTO {
 
     private String order_Number;
 
-    private LocalDateTime P_startDate;
+    private LocalDate P_startDate;
 
-    private LocalDateTime P_endDate;
+    private LocalDate P_endDate;
 
     private Long target_Output;
 

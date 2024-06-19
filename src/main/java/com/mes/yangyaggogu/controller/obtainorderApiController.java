@@ -19,6 +19,7 @@ import java.util.*;
 public class obtainorderApiController {
 
     private final ObtainOrderService obtainOrderService;
+    private final com.mes.yangyaggogu.service.workOrderPlanService workOrderPlanService;
 
     //수주현황 조회
     @GetMapping(value = "/getObtainOrderList")
@@ -47,10 +48,7 @@ public class obtainorderApiController {
 
         List<obtainorder_detail> obtainorder_details = new ArrayList<>();
 
-        for (String id : targetIds){
-            System.out.println(id);
-        }
-
+        //반복문을 돌며 id에 해당되는 entity의 상태가 바뀜
         for (String id : targetIds) {
 
             Long findId = Long.valueOf(id);
@@ -63,6 +61,14 @@ public class obtainorderApiController {
 
             obtainorder_details.add(findObtain);
         }
+
+        //수주 확정된 데이터의 생산계획이 자동적으로 만들어짐
+        workOrderPlanService.MakeWorkOrderPlanData(obtainorder_details);
+
+
+
+
+
         return ResponseEntity.ok(obtainorder_details);
     }
 }

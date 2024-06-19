@@ -5,6 +5,7 @@ import com.mes.yangyaggogu.constant.productionPlan_state;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,9 +23,9 @@ public class productPlan {
     @JoinColumn(name = "order_Number")
     private obtainorder_number order_Number;
 
-    private LocalDateTime P_startDate;
+    private LocalDate P_startDate;
 
-    private LocalDateTime P_endDate;
+    private LocalDate P_endDate;
 
     private Long target_Output;
 
