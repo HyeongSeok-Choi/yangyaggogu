@@ -1,6 +1,8 @@
 package com.mes.yangyaggogu.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mes.yangyaggogu.constant.productionPlan_state;
+import com.mes.yangyaggogu.constant.rowStock_state;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +29,9 @@ public class ingredientStock {
     private Long ingredient_Amount;
 
     private LocalDate exp;
+
+    @Enumerated(EnumType.STRING)
+    private rowStock_state state;
 
     private String reason;
 

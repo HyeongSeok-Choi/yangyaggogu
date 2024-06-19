@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,7 +30,7 @@ public class finishedstock {
 
     private Long amount;
 
-    private LocalDateTime exp;
+    private LocalDate exp;
 
     @Enumerated(EnumType.STRING)
     private finishedstock_state state;

@@ -1,6 +1,8 @@
 package com.mes.yangyaggogu.service;
 
+import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.entity.finishedstock;
+import com.mes.yangyaggogu.repository.finishedstockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,7 @@ import java.util.Optional;
 @Service
 public class finishedstockService {
 
-    final private com.mes.yangyaggogu.repository.finishedstockRepository finishedstockRepository;
+    private final finishedstockRepository  finishedstockRepository;
 
 
     public List<finishedstock> showFinishedStockList() {
@@ -24,6 +26,12 @@ public class finishedstockService {
 
     public finishedstock save(finishedstock finishedStock) {
         return finishedstockRepository.save(finishedStock);
+    }
+
+    public List<finishedstock> searchLists(searchDto searchDto){
+        List<finishedstock> searchLists = finishedstockRepository.getFinishedStockPage(searchDto.getStart(), searchDto.getEnd(), searchDto.getKeyword());
+
+        return searchLists;
     }
 
 }

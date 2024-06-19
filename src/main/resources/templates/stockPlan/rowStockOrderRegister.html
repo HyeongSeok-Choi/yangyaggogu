@@ -19,56 +19,58 @@
     <link href="/assets/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
     <link href="/assets/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
     <link href="/assets/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
-    <title>입고 등록 폼</title>
+    <title>발주 등록 폼</title>
 </head>
 <body>
 
-    <h3 style="padding: 30px">원자재 입고 등록</h3>
-    <div class="row mb-5">
-        <label class="col-sm-2 col-form-label col-form-label-sm" for="ingredientCode">발주코드</label>
-        <div class="col-sm-10">
-            <input class="form-control form-control-sm" id="ingredientCode" type="text" placeholder="발주 코드를 입력해주세요"/>
-        </div>
+<h3 style="padding: 30px; text-align: center">원자재 발주 등록</h3>
+<div class="row mb-5 text-center">
+    <label class="col-sm-2 col-form-label col-form-label-sm" for="orderNumber">수주번호</label>
+    <div class="col-sm-10">
+        <input class="form-control form-control-sm" id="orderNumber" type="text" placeholder="수주번호를 입력해주세요"/>
     </div>
-    <div class="row mb-5">
-        <label class="col-sm-2 col-form-label col-form-label-sm" for="materialsName">자재명</label>
-        <div class="col-sm-10">
-            <input class="form-control form-control-sm" id="materialsName" type="text" placeholder="자재명을 입력해주세요"/>
-        </div>
+</div>
+<div class="row mb-5 text-center">
+    <label class="col-sm-2 col-form-label col-form-label-sm" for="ingredientCode">발주코드</label>
+    <div class="col-sm-10">
+        <input class="form-control form-control-sm" id="ingredientCode" type="text" placeholder="발주코드를 입력해주세요"/>
     </div>
-    <div class="row mb-5">
-        <label class="col-sm-2 col-form-label col-form-label-sm" for="ingredientAmount">입고량</label>
-        <div class="col-sm-10">
-            <input class="form-control form-control-sm" id="ingredientAmount" type="text" placeholder="입고량을 입력해주세요"/>
-        </div>
+</div>
+<div class="row mb-5 text-center">
+    <label class="col-sm-2 col-form-label col-form-label-sm" for="materialsName">자재명</label>
+    <div class="col-sm-10">
+        <input class="form-control form-control-sm" id="materialsName" type="text" placeholder="자재명을 입력해주세요"/>
     </div>
-    <div class="row mb-5">
-        <label class="col-sm-2 col-form-label col-form-label-sm" for="companyName">발주처</label>
-        <div class="col-sm-10">
-            <input class="form-control form-control-sm" id="companyName" type="text" placeholder="발주처를 입력해주세요"/>
-        </div>
+</div>
+<div class="row mb-5 text-center">
+    <label class="col-sm-2 col-form-label col-form-label-sm" for="ingredientAmount">발주량</label>
+    <div class="col-sm-10">
+        <input class="form-control form-control-sm" id="ingredientAmount" type="text" placeholder="발주량을 입력해주세요"/>
     </div>
-    <div class="row mb-5">
-        <label class="col-sm-2 col-form-label col-form-label-sm" for="inDate">입고일자</label>
-        <div class="col-sm-10">
-            <input class="form-control form-control-sm" id="inDate" type="text" placeholder="yyyy-MM-dd"/>
-        </div>
+</div>
+<div class="row mb-5 text-center">
+    <label class="col-sm-2 col-form-label col-form-label-sm" for="companyName">발주처</label>
+    <div class="col-sm-10">
+        <input class="form-control form-control-sm" id="companyName" type="text" placeholder="발주처를 입력해주세요"/>
     </div>
-    <button type="submit" class="btn btn-secondary" id="input_stock" onclick="addStock();">입고하기</button>
+</div>
+<div class="text-center">
+    <button type="submit" class="btn btn-secondary" id="order_stock" onclick="ordering();">발주하기</button>
+</div>
 <script>
 
 
-    function addStock() {
-        fetch("/api/registerRowStack", {
+    function ordering() {
+        fetch("/api/registerOrderRowStack", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                orderNumber: document.getElementById("orderNumber").value,
                 ingredientCode: document.getElementById("ingredientCode").value,
                 materialsName: document.getElementById("materialsName").value,
                 ingredientAmount: document.getElementById("ingredientAmount").value,
-                inDate: document.getElementById("inDate").value,
                 companyName:  document.getElementById("companyName").value,
             }),
         })
