@@ -1,10 +1,6 @@
 package com.mes.yangyaggogu.service;
 
-import com.mes.yangyaggogu.dto.shipmentDTO;
-import com.mes.yangyaggogu.entity.finishedstock;
 import com.mes.yangyaggogu.entity.shipment;
-import com.mes.yangyaggogu.entity.workOrderPlan;
-import com.mes.yangyaggogu.repository.finishedstockRepository;
 import com.mes.yangyaggogu.repository.shipmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

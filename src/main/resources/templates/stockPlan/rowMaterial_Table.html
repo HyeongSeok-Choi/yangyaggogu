@@ -16,7 +16,7 @@
             <input class="search-input" type="text" id="ingredientName" th:field="*{keyword}" placeholder="재고명을 입력하세요">
             </label>
             <label>
-                <input class="search-box-icon" type="button" id="search_btn" onclick="getSearchList()" value="조회" style="width: 45px; height: 30px"></label>
+                <input class="btn btn-dark" type="button" onclick="getSearchList()" value="조회"></label>
         </form>
         <button type="button" class="btn btn-primary" id="rowStock_input" value="입고 등록">
         입고 등록</button>
@@ -33,11 +33,9 @@
         <th>자재명</th>
         <th>재고량</th>
         <th>입고일자</th>
+        <th>상태</th>
     </tr>
     </thead>
-    <tbody id="#boardtable">
-
-    </tbody>
 </table>
         <script th:inline="javascript">
             var table = null;
@@ -91,7 +89,7 @@
                         }
                     },
                     ajax: {
-                        url: 'http://localhost:8080/api/getRowStockList',
+                        url: '/api/getRowStockList',
                         type: 'GET',
                         dataFilter: function(res) {
                             var json = $.parseJSON(res);
@@ -115,16 +113,85 @@
                         {data: 'materials_Name'},
                         {data: 'ingredient_Amount'},
                         {data: 'in_date'},
+                        {data: 'state'},
                     ]
-                })
+                });
+
+                document.getElementById("rowStock_input").addEventListener("click", updateRowStockState);
+                document.getElementById("rowStock_output").addEventListener("click", updateRowStockOutState);
+
             });
 
-            $('#rowStock_input').on("click", function(e){
-                let popURL = "/rowStockRegister";
-                let popOption = "width=650px, height=550px, top=300px, left=300px, scrollbars=yes";
+            function getSelectedRow(){
+                return table.rows({
+                    selected: true
+                }).data();
+            }
 
-                window.open(popURL, "입고 등록", popOption);
-            })
+            function updateRowStockState(){
+                const selectedRows = getSelectedRow();
+                if(selectedRows.length === 0){
+                    alert("선택된 행이 없습니다.");
+                }
+
+                // var id = selectedRows.map(row => row.id);
+                const id = selectedRows[0].id;
+
+                fetch('/api/updateRowStockState', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id:id,
+                        state:"in",
+                    })
+                })
+                    .then(response => response.json())
+                    .then(result=>{
+
+                        console.log(result);
+                        table.ajax.reload();
+                    })
+                    .catch(error=>{
+                        console.error("Error updating row stock state" , error);
+                        alert("상태 업데이트 중 오류가 발생했습니다.");
+                    });
+            }
+
+            function updateRowStockOutState(){
+                const selectedRows = getSelectedRow();
+                if(selectedRows.length === 0){
+                    alert("선택된 행이 없습니다.")
+                }
+
+                const id = selectedRows[0].id;
+
+                fetch('/api/updateRowStockOutState',{
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id:id,
+                        state:"out"
+                    })
+                })
+                    .then(response => response.json())
+                    .then(result=>{
+
+                        console.log(result);
+                        table.ajax.reload();
+                    })
+                    .catch(error=>{
+                        console.error("Error updating row stock state" , error);
+                        alert("상태 업데이트 중 오류가 발생했습니다.");
+                    });
+
+            }
+
 
             function getSearchList(){
 

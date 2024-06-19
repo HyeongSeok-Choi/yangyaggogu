@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,7 +21,7 @@ public class workOrderPlanService {
     private final obtainorder_numberRepository obtain_order_numberRepository;
     private final workOrderPlanRepository workOrderPlanRepository;
     private final productPlanRepository productPlanRepository;
-    private final finishedstockRepository finishedstockRepository;
+    private final com.mes.yangyaggogu.repository.finishedstockRepository finishedstockRepository;
 
     public List<workOrderPlan> getAll() {
         return workOrderPlanRepository.findAll();
@@ -32,7 +31,7 @@ public class workOrderPlanService {
     public void saveWorkOrderPlan(workOrderPlan workOrder) {
         workOrderPlanRepository.save(workOrder);
         if ("포장".equals(workOrder.getProcessName()) && workOrderPlan_state.completed.equals(workOrder.getState())) {
-            LocalDateTime expDate = workOrder.getP_endDate().plusMonths(6);
+            LocalDate expDate = LocalDate.from(workOrder.getP_endDate().plusMonths(6));
             finishedstock finished = finishedstock.builder()
                     .orderNumber(workOrder.getObtainorder_number())
                     .amount(workOrder.getTarget_Output())

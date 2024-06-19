@@ -1,8 +1,10 @@
 package com.mes.yangyaggogu.service;
 
+import com.mes.yangyaggogu.constant.rowStock_state;
 import com.mes.yangyaggogu.dto.StockDto;
 import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.entity.ingredientStock;
+import com.mes.yangyaggogu.entity.obtainorder_number;
 import com.mes.yangyaggogu.repository.ingredientStockRepository;
 import com.mes.yangyaggogu.repository.obtainorder_numberRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,24 @@ public class rowStockService {
         return ingredientStockRepository.findAll();
     }
 
-    public ingredientStock saveStock(StockDto stockDto){
+//    public ingredientStock saveStock(StockDto stockDto){
+//        ingredientStock ingredientStock = new ingredientStock();
+////        obtainorder_number obtainorder_number = new obtainorder_number();
+////        ingredientStock.setOrder_Number(obtainorder_number);
+//
+//        ingredientStock.setIngredient_Code(stockDto.getIngredientCode());
+//        ingredientStock.setMaterials_Name(stockDto.getMaterialsName());
+//        ingredientStock.setIngredient_Amount(stockDto.getIngredientAmount());
+//        ingredientStock.setCompany_name(stockDto.getCompanyName());
+//
+//        LocalDate date = LocalDate.parse(stockDto.getInDate());
+//        ingredientStock.setIn_date(date);
+//
+//        return ingredientStockRepository.save(ingredientStock);
+//
+//    }
+
+    public ingredientStock orderStock(StockDto stockDto){
         ingredientStock ingredientStock = new ingredientStock();
 //        obtainorder_number obtainorder_number = new obtainorder_number();
 //        ingredientStock.setOrder_Number(obtainorder_number);
@@ -34,8 +53,6 @@ public class rowStockService {
         ingredientStock.setIngredient_Amount(stockDto.getIngredientAmount());
         ingredientStock.setCompany_name(stockDto.getCompanyName());
 
-        LocalDate date = LocalDate.parse(stockDto.getInDate());
-        ingredientStock.setIn_date(date);
 
         return ingredientStockRepository.save(ingredientStock);
 
@@ -51,6 +68,14 @@ public class rowStockService {
         return searchLists;
     }
 
+    public ingredientStock updateRowStockUpdate(Long id, String state){
+
+       ingredientStock rowStock = ingredientStockRepository.findAllById(id)
+               .orElseThrow(() -> new RuntimeException("RowStock not found"));
+        rowStock.setState(rowStock_state.valueOf(state));
+        rowStock.setIn_date(LocalDate.now());
 
 
+        return ingredientStockRepository.save(rowStock);
+    }
 }
