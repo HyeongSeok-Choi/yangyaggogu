@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Ids;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,12 +42,5 @@ public class obtainorderApiController {
         return ResponseEntity.ok(addOrderDtoList);
     }
 
-    //수주 상세 조회
-    /*@GetMapping(value = "/getOrderDtlList/{id}")
-    public ResponseEntity<OrderDtlDto> getOrderDtlById(@PathVariable long id){
-        obtainorder_detail obtainorderDetail = obtainOrderService.getOrderDetailById(id);
-
-        return ResponseEntity.ok()
-                .body(new OrderDtlDto(obtainorderDetail));
-    }*/
+    //수주 확정 버튼 클릭 시 진행 상태 바꾸기
 }

@@ -100,4 +100,6 @@ public class ObtainOrderService {
         return findedDto;
     }
 
+    //수주확정 클릭 시 진행 상태 변경
+
 }

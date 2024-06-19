@@ -48,10 +48,6 @@
                 width: 50%;
                 box-sizing: border-box;
             }
-            .checkbox-center {
-                text-align: center;
-                vertical-align: middle;
-            }
         </style>
     </th:block>
 </head>
@@ -126,7 +122,7 @@
     </table>
     <div class="button-container">
         <button id="calendarBtn" class="btn btn-primary">캘린더</button>
-        <button class="btn btn-primary">수주확정</button>
+        <button id="confirmOrderBtn" class="btn btn-primary">수주확정</button>
     </div>
 </div>
     <script th:inline="javascript">
@@ -142,7 +138,6 @@
         //조회
         var table = null;
         $(document).ready(function() {
-
             table = $('#orderMng').DataTable({
                 searching: false,
                 responsive: true,
@@ -151,12 +146,23 @@
                 serverSide: false,
                 ordering: true,
                 scrollX: true,
+                select: {
+                    style: 'multi',
+                    selector: 'td:first-child',
+                    headerCheckbox: 'select-page'
+                },
+                columnDefs: [
+                    {
+                        orderable: false,
+                        render: DataTable.render.select(),
+                        targets: 0
+                    }
+                ],
                 ajax: {
                     url: 'http://localhost:8080/api/getObtainOrderList',
                     type: 'GET',
                     dataFilter: function(res) {
                         var json = $.parseJSON(res);
-
                         var data = {
                             'draw': json.data.draw,
                             'recordsTotal': json.data.recordsTotal,
@@ -169,11 +175,18 @@
                 },
                 columns: [
                     {
+                        title: "",
+                        data: null
+                    },
+                    {
                         title:"#",
                         data: 'id'},
                     {
                         title:"수주번호",
-                        data: 'orderNumber.order_Number'},
+                        data: 'orderNumber.order_Number',
+                        render: function(data, type, row) {
+                            return '<a href="#" class="order-number" data-id="' + row.id + '">' + data + '</a>'}
+                    },
                     {
                         title:"거래처",
                         data: 'company_name'},
@@ -201,8 +214,11 @@
         });
 
         //상세 조회 팝업창(행 클릭)
-        $(document).on('click', '#orderMng tr', function() {
-            id= table.row( this ).data().id;
+        /*$(document).on('click', '#orderMng tr', function() {
+            id= table.row( this ).data().id;*/
+        $('#orderMng tbody').on('click', 'a.order-number', function (e){
+            e.preventDefault();
+            id = $(this).data('id');
 
             let popupWidth = 700;
             let popupHeight = 700;

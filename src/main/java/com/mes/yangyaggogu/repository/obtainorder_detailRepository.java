@@ -11,4 +11,5 @@ public interface obtainorder_detailRepository extends JpaRepository<obtainorder_
     Boolean existsByOrderDate(LocalDate obtainOrderDate);
 
     obtainorder_detail findTopByOrderByIdDesc();
+
 }
