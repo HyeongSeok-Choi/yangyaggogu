@@ -42,5 +42,4 @@ public class productPlanDTO {
         this.state = productPlan.getState();
 
     }
-
 }

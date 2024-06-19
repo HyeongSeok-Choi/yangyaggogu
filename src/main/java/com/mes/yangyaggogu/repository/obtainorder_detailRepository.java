@@ -8,5 +8,8 @@ import java.time.LocalDate;
 
 public interface obtainorder_detailRepository extends JpaRepository<obtainorder_detail, Long> {
 
-    long countByOrderDate(LocalDate obtainOrderDate);
+    Boolean existsByOrderDate(LocalDate obtainOrderDate);
+
+    obtainorder_detail findTopByOrderByIdDesc();
+
 }

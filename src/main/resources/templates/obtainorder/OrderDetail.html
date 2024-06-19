@@ -77,15 +77,15 @@
                 </tr>
                 <tr>
                     <th>제품명</th>
-                    <td><p th:text="${orderDtlDto.productName}"></p></td>
+                    <td><input type="text" th:value="${orderDtlDto.productName}"></td>
                 </tr>
                 <tr>
                     <th>수주수량</th>
-                    <td><p th:text="${orderDtlDto.order_Amount}"></p></td>
+                    <td><input type="text" th:value="${orderDtlDto.order_Amount}">Box</td>
                 </tr>
                 <tr>
                     <th>납품일</th>
-                    <td><p th:text="${#temporals.format(orderDtlDto.delivery_Date, 'yyyy-MM-dd')}"></p></td>
+                    <td><input type="date" th:value="${#temporals.format(orderDtlDto.delivery_Date, 'yyyy-MM-dd')}"></td>
                 </tr>
             </thead>
             <tbody>
@@ -93,10 +93,21 @@
         </table>
     </div>
     <div class="button-container">
-        <button class="btn btn-primary">수정</button>
-        <button class="btn btn-primary">삭제</button>
-        <button class="btn btn-primary">닫기</button>
+        <button id="editBtn" class="btn btn-primary" style="display:none;">수정</button>
+        <button id="deleteBtn" class="btn btn-primary" style="display:none;">삭제</button>
     </div>
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderState = urlParams.get('state');      //서버에서 상태를 가져옴
+
+            //상태가 'ready'일 경우에만 버튼을 표시
+            if (orderState == 'ready'){
+                document.getElementById('editBtn').style.display = 'inline-block';
+                document.getElementById('deleteBtn').style.display = 'inline-block';
+            }
+        });
+    </script>
 </th:block>
 </body>
 </html>

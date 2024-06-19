@@ -114,6 +114,8 @@
                             {
                                 text: '작업 시작',
                                 action: function (e, dt, node, config) {
+
+
                                     if(dt.rows({ selected: true }).data()[0].state === "completed"){
                                         alert("이미 완료된 작업입니다.");
                                         return false;
