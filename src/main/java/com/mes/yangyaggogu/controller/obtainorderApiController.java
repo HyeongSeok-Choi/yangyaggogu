@@ -56,7 +56,7 @@ public class obtainorderApiController {
             obtainorder_detail findObtain = obtainOrderService.getObtainOrderDtlById(findId);
 
 
-           boolean check =  obtainOrderService.checkPossibleDay(findObtain.getDelivery_Date());
+           boolean check =  obtainOrderService.checkPossibleDay(findObtain.getDelivery_Date(),findObtain.getProductName());
 
            if(!check){
                return ResponseEntity.ok(check);
