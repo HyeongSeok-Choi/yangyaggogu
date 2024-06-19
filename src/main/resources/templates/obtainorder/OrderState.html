@@ -55,7 +55,6 @@
 <th:block layout:fragment="content">
 <div class="container1" style="margin:50px">
     <div class="button-container">
-        <button class="btn btn-primary">조회</button>
         <button class="btn btn-primary" id="orderRegistrationBtn">수주등록</button>
         <button class="btn btn-primary">엑셀다운로드</button>
     </div>
@@ -64,12 +63,12 @@
             <thead>
                 <tr>
                     <th>수주번호</th>
-                        <td><input type="text" name="orderNum"></td>
+                        <td data-column="0"><input type="text" id="col0_filter" class="column_filter"></td>
                     <th>수주일</th>
-                        <td><input type="date" name="orderDate"></td>
+                        <td data-column="1"><input type="date" id="col1_filter" class="column_filter"></td>
                     <th>등록자</th>
-                        <td>
-                            <select>
+                        <td data-column="2">
+                            <select id="col2_filter" class="column_filter">
                                 <option></option>
                                 <option>최형석</option>
                                 <option>강두일</option>
@@ -80,8 +79,8 @@
                 </tr>
                 <tr>
                     <th>제품명</th>
-                        <td>
-                            <select>
+                        <td data-column="3">
+                            <select id="col3_filter" class="column_filter">
                                 <option></option>
                                 <option>양배추즙</option>
                                 <option>흑마늘즙</option>
@@ -90,8 +89,8 @@
                             </select>
                         </td>
                     <th>거래처</th>
-                        <td>
-                            <select>
+                        <td data-column="4">
+                            <select id="col4_filter" class="column_filter">
                                 <option></option>
                                 <option>쿠팡</option>
                                 <option>삼성</option>
@@ -99,12 +98,12 @@
                             </select>
                         </td>
                     <th>진행상태</th>
-                        <td>
-                            <select>
+                        <td data-column="5">
+                            <select id="col5_filter" class="column_filter">
                                 <option></option>
-                                <option>대기</option>
-                                <option>확정</option>
-                                <option>마감</option>
+                                <option>ready</option>
+                                <option>confirmed</option>
+                                <option>completed</option>
                             </select>
                         </td>
                 </tr>
@@ -136,10 +135,10 @@
         };
 
         //조회
-        var table = null;
         $(document).ready(function() {
+            //데이터 테이블 초기화
             table = $('#orderMng').DataTable({
-                searching: false,
+                searching: true,
                 responsive: true,
                 destroy: true,
                 processing: true,
@@ -209,13 +208,21 @@
                         title:"등록자",
                         data: 'writer'}
                 ]
-            })
+            });
 
+            //필터링 이벤트 설정
+            $('.column_filter').on('keyup change', function (){
+                let columnIndex = $(this).closest('td').data('column');
+                filterColumn(columnIndex);
+            });
+            //검색 기능
+            function filterColumn(i){
+                table.data(i).search($('#col' + i + '_filter').val()).draw();
+            }
         });
 
-        //상세 조회 팝업창(행 클릭)
-        /*$(document).on('click', '#orderMng tr', function() {
-            id= table.row( this ).data().id;*/
+
+        //상세 조회 팝업창(수주번호 클릭)
         $('#orderMng tbody').on('click', 'a.order-number', function (e){
             e.preventDefault();
             id = $(this).data('id');
