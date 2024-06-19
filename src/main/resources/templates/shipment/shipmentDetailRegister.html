@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- 출하지시서 리스트 페이지 -->
+<html lang='en' xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!-- css files for DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+    <style>
+        .container1 {
+            padding-left: 300px;
+            padding-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
+<div class="container1">
+    <form th:object="${shipment}">
+        <div>
+            <label>번호</label>
+            <input type="text" th:value="${shipment.shipment_Number}" readonly>
+        </div>
+        <div>
+            <label>생산완료일</label>
+
+        </div>
+        <div>
+            <label>출하일</label>
+            <input type="text" th:value="${shipment.shippingDate}">
+        </div>
+        <div>
+            <label>납품일</label>
+            <input type="text" th:value="${shipment.deliveryDate}">
+        </div>
+
+        <div>
+            <label>거래처</label>
+            <select th:field="*{company_code}" class="form-select">
+                <option value="">거래처 선택</option>
+                <option th:each="company : ${company_code}" th:value="${company.company_code}" th:text="${company.company_name}">확인용</option>
+            </select>
+        </div>
+        <div>
+            <label>거래처 주소</label>
+            <input type="text">
+        </div>
+        <div>
+            <label>담당자</label>
+            <input type="text">
+        </div>
+
+        <div>
+            <label>수주번호</label>
+            <input type="text" th:value="${shipment.order_Number}">
+        </div>
+        <div>
+            <label>제품명</label>
+            <input type="text" th:value="${shipment.productionName}">
+        </div>
+        <div>
+            <label>출하수량</label>
+            <input type="text" th:value="${shipment.shipment_Amount}">
+        </div>
+        <div>
+            <label>총 중량</label>
+<!--            출하수량 * 2.4-->
+            <input type="text">
+        </div>
+
+        <div>
+            <label>운송업체</label>
+            <input type="text">
+        </div>
+        <div>
+            <label>운송 연락처</label>
+            <input type="text">
+        </div>
+        <div>
+            <label>운송 수단</label>
+            <input type="text">
+        </div>
+        <div>
+            <label>운송 비용</label>
+            <input type="text">
+        </div>
+        <div>
+            <label>담당자</label>
+            <input type="text">
+        </div>
+
+        <div>
+            <button id="registerShipmentDetail" class="btn btn-primary">출하 지시서 등록</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

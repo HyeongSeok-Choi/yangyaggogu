@@ -1,10 +1,13 @@
 package com.mes.yangyaggogu.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mes.yangyaggogu.constant.finishedstock_state;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -12,9 +15,10 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class finishedstock {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -29,5 +33,8 @@ public class finishedstock {
 
     @Enumerated(EnumType.STRING)
     private finishedstock_state state;
+
+    private String shipmentState;
+
 
 }
