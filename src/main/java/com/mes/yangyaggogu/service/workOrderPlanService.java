@@ -35,7 +35,7 @@ public class workOrderPlanService {
             LocalDateTime expDate = workOrder.getP_endDate().plusMonths(6);
             finishedstock finished = finishedstock.builder()
                     .orderNumber(workOrder.getObtainorder_number())
-                    .amount(workOrder.getNow_Output())
+                    .amount(workOrder.getTarget_Output())
                     .exp(expDate)
                     .materials_Name(workOrder.getMaterials_Name())
                     .state(finishedstock_state.in)

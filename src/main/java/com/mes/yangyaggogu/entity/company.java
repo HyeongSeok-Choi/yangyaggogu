@@ -1,10 +1,7 @@
 package com.mes.yangyaggogu.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 public class company {
 
     @Id
+    @Column(name = "company_code")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long company_code;
 
@@ -28,8 +26,6 @@ public class company {
     private String company_tel_number;
 
     private String trade_goods;
-
-    private LocalDateTime deliveryTime;
 
     private String company_manager;
 }
