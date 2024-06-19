@@ -35,9 +35,6 @@
         <th>입고일자</th>
     </tr>
     </thead>
-    <tbody id="#boardtable">
-
-    </tbody>
 </table>
         <script th:inline="javascript">
             var table = null;
@@ -91,7 +88,7 @@
                         }
                     },
                     ajax: {
-                        url: 'http://localhost:8080/api/getRowStockList',
+                        url: '/api/getRowStockList',
                         type: 'GET',
                         dataFilter: function(res) {
                             var json = $.parseJSON(res);
