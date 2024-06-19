@@ -27,6 +27,20 @@ public class ObtainOrderService {
         return obtainorderDetailRepository.findAll();
     }
 
+
+    //아이디로 수주정보 얻기
+    public obtainorder_detail getObtainOrderDtlById(Long id) {
+        return obtainorderDetailRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found :"));
+    }
+
+    
+    //저장
+    public obtainorder_detail save(obtainorder_detail obtainorder_detail) {
+
+        return obtainorderDetailRepository.save(obtainorder_detail);
+    }
+
+
     //등록
     @Transactional
     public boolean saveList(List<AddOrderDto> addOrderDtoList){

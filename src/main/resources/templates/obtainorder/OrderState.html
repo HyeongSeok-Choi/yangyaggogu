@@ -240,6 +240,41 @@
             window.open(openUrl, 'popup_order_detail', popOption);
         });
 
+        function getSelectedRows() {
+
+            var SelectedCount = table.rows({selected: true}).data().length;
+            var ids =[];
+            table.rows({selected: true}).data(id);
+
+            for (let i = 0; i < SelectedCount ; i++) {
+                ids[i]= table.rows({selected: true}).data(id)[i]["id"];
+            }
+
+            return ids;
+        }
+
+        $('#confirmOrderBtn').on('click', function (e){
+
+           var targetIds= getSelectedRows();
+
+            fetch(`/api/changeObtainState`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+               body:JSON.stringify(targetIds),
+                method: 'POST',
+            })
+                .then((response) => response.json())
+                .then(confirm => {
+                    console.log(confirm);
+                    alert("수주가 확정 되었습니다.")
+                    table.ajax.reload();
+
+                });
+
+        });
+
 
         // 전체 선택 및 개별 체크박스 기능 통합
         $('#orderMng').on('click', '#checkAll, .row-checkbox', function() {
