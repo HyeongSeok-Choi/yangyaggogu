@@ -7,6 +7,7 @@ import com.mes.yangyaggogu.entity.obtainorder_detail;
 import com.mes.yangyaggogu.entity.obtainorder_number;
 import com.mes.yangyaggogu.repository.obtainorder_detailRepository;
 import com.mes.yangyaggogu.repository.obtainorder_numberRepository;
+import com.mes.yangyaggogu.repository.productPlanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ public class ObtainOrderService {
 
     public final obtainorder_detailRepository obtainorderDetailRepository;
     public final obtainorder_numberRepository obtainOrderNumberRepository;
+    public final productPlanRepository productPlanRepository;
 
     //수주 현황 조회, 수주 상세 조회
     public List<obtainorder_detail> getObtainOrderDtl() {
@@ -114,6 +116,29 @@ public class ObtainOrderService {
         return findedDto;
     }
 
-    //수주확정 클릭 시 진행 상태 변경
+    public boolean checkPossibleDay(LocalDate localDate){
+
+
+        LocalDate startDate = localDate.minusDays(3);
+        LocalDate endDate = localDate;
+
+
+        //겹치는 생산공정 갯수
+        int checkCount = productPlanRepository.getBestPost(startDate,endDate);
+
+        if(checkCount >= 3){
+
+            return false;
+
+        }
+
+        System.out.println(checkCount);
+        System.out.println(checkCount);
+        System.out.println(checkCount);
+        System.out.println(checkCount);
+
+
+        return true;
+    }
 
 }

@@ -42,9 +42,9 @@ public class productPlanService {
 
             productPlan.setProductionPlanCode("p-100"+i);
             productPlan.setState(productionPlan_state.ready);
-            productPlan.setP_startDate(LocalDate.now());
+            productPlan.setPstartDate(LocalDate.now());
             productPlan.setMaterials_Name("양배추즙");
-            productPlan.setP_endDate(LocalDate.now().plusDays(i));
+            productPlan.setPendDate(LocalDate.now().plusDays(i));
             productPlan.setTarget_Output(500L);
             obtainorder_number obtainorder_number = new obtainorder_number();
             obtainorder_number.setOrder_Number("a-500"+i);

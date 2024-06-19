@@ -23,9 +23,9 @@ public class productPlan {
     @JoinColumn(name = "order_Number")
     private obtainorder_number order_Number;
 
-    private LocalDate P_startDate;
+    private LocalDate pstartDate;
 
-    private LocalDate P_endDate;
+    private LocalDate pendDate;
 
     private Long target_Output;
 

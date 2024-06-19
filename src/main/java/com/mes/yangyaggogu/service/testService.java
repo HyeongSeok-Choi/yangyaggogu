@@ -38,8 +38,8 @@ public class testService {
             productplan.setOrder_Number(obtainorder_detail.getOrderNumber());
             productplan.setProductionPlanCode(LocalDateTime.now() + "prP-001");
             productplan.setState(productionPlan_state.ready);
-            productplan.setP_startDate(LocalDate.now());
-            productplan.setP_endDate(LocalDate.now());
+            productplan.setPstartDate(LocalDate.now());
+            productplan.setPendDate(LocalDate.now());
             productplan.setTarget_Output(obtainorder_detail.getOrder_Amount());
             productPlanRepository.save(productplan);
 

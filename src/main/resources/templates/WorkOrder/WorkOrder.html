@@ -160,7 +160,7 @@
                                        })
                                            .then(stop => {
                                                alert("작업이 종료 되었습니다.")
-                                               table.ajax.reload();
+                                               table.ajax.reload(null,false);
                                            });
                                    }else{
                                        return false;
@@ -314,7 +314,7 @@
                 .then(start => {
                     if(start){
                         alert("작업이 시작됩니다.");
-                        table.ajax.reload();
+                        table.ajax.reload(null,false);
                     }else{
                         alert("선행 공정의 작업이 완료되어야 합니다.")
                     }

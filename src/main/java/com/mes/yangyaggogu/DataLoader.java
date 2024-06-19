@@ -1,8 +1,10 @@
 package com.mes.yangyaggogu;
 
 import com.mes.yangyaggogu.constant.workOrderPlan_state;
+import com.mes.yangyaggogu.entity.employee;
 import com.mes.yangyaggogu.entity.productPlan;
 import com.mes.yangyaggogu.entity.workOrderPlan;
+import com.mes.yangyaggogu.repository.employeeRepository;
 import com.mes.yangyaggogu.repository.obtainorder_numberRepository;
 import com.mes.yangyaggogu.repository.workOrderPlanRepository;
 import com.mes.yangyaggogu.service.workOrderPlanService;
@@ -22,12 +24,14 @@ public class DataLoader implements CommandLineRunner {
     private final obtainorder_numberRepository obtainOrderNumberRepository;
     private final productPlanRepository productPlanRepository;
     private final workOrderPlanService workOrderPlanService;
+    private final employeeRepository employeeRepository;
 
-    public DataLoader(productPlanRepository productPlanRepository,obtainorder_numberRepository obtainOrderNumberRepository,workOrderPlanRepository workOrderPlanRepository,workOrderPlanService workOrderPlanService) {
+    public DataLoader(productPlanRepository productPlanRepository,obtainorder_numberRepository obtainOrderNumberRepository,workOrderPlanRepository workOrderPlanRepository,workOrderPlanService workOrderPlanService,employeeRepository employeeRepository) {
         this.workOrderPlanRepository = workOrderPlanRepository;
         this.obtainOrderNumberRepository = obtainOrderNumberRepository;
         this.productPlanRepository = productPlanRepository;
         this.workOrderPlanService = workOrderPlanService;
+        this.employeeRepository = employeeRepository;
 
     }
 
@@ -41,9 +45,9 @@ public class DataLoader implements CommandLineRunner {
         productPlan plan = new productPlan();
         plan.setProductionPlanCode("PLAN123");
         plan.setOrder_Number(order);
-        plan.setP_startDate(LocalDate.now());
+        plan.setPstartDate(LocalDate.now());
         plan.setMaterials_Name("흑마늘즙");
-        plan.setP_endDate(LocalDate.now());
+        plan.setPendDate(LocalDate.now());
         productPlanRepository.save(plan);
 
         // Product Plan 생성
@@ -64,5 +68,15 @@ public class DataLoader implements CommandLineRunner {
 
             workOrderPlanService.saveWorkOrderPlan(workOrder);
         }
+
+            for (int i = 0; i < 10; i++) {
+                employee emp = new employee();
+                emp.setEmployeeCode("p-"+i);
+                emp.setEmployeeName("안드로이드"+i);
+                emp.setPositionName("생산자");
+                employeeRepository.save(emp);
+
+            }
+
     }
 }

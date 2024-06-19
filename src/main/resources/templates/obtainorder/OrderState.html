@@ -300,6 +300,10 @@
             })
                 .then((response) => response.json())
                 .then(confirm => {
+                    if(confirm === false){
+                        alert("생산가능한 일정이 아닙니다.");
+                        return false;
+                    }
                     console.log(confirm);
                     alert("수주가 확정 되었습니다.")
                     table.ajax.reload();

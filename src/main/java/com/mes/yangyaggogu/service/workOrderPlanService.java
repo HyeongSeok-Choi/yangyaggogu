@@ -111,7 +111,7 @@ public class workOrderPlanService {
             finishedstock finished = finishedstock.builder()
                     .orderNumber(find_WorkPlan.getObtainorder_number())
                     .amount(find_WorkPlan.getNow_Output())
-                    .exp(expDate)
+                    .exp(expDate.toLocalDate())
                     .materials_Name(find_WorkPlan.getMaterials_Name())
                     .state(finishedstock_state.in)
                     .build();
@@ -148,8 +148,8 @@ public class workOrderPlanService {
                 productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrder_Number() + "SS");
             }
             productplan.setState(productionPlan_state.ready);
-            productplan.setP_startDate(obtainorder_detail.getDelivery_Date().minusDays(3));
-            productplan.setP_endDate(obtainorder_detail.getDelivery_Date());
+            productplan.setPstartDate(obtainorder_detail.getDelivery_Date().minusDays(3));
+            productplan.setPendDate(obtainorder_detail.getDelivery_Date());
             productplan.setTarget_Output(obtainorder_detail.getOrder_Amount());
             productPlanRepository.save(productplan);
 

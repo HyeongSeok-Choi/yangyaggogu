@@ -48,12 +48,19 @@ public class obtainorderApiController {
 
         List<obtainorder_detail> obtainorder_details = new ArrayList<>();
 
-        //반복문을 돌며 id에 해당되는 entity의 상태가 바뀜
+        //반복문을 돌며 id에 해당되는 entity의 상태가 confirmed로 바뀜
         for (String id : targetIds) {
 
             Long findId = Long.valueOf(id);
 
             obtainorder_detail findObtain = obtainOrderService.getObtainOrderDtlById(findId);
+
+
+           boolean check =  obtainOrderService.checkPossibleDay(findObtain.getDelivery_Date());
+
+           if(!check){
+               return ResponseEntity.ok(check);
+           }
 
             findObtain.setState(obtainorder_state.confirmed);
 
@@ -64,9 +71,6 @@ public class obtainorderApiController {
 
         //수주 확정된 데이터의 생산계획이 자동적으로 만들어짐
         workOrderPlanService.MakeWorkOrderPlanData(obtainorder_details);
-
-
-
 
 
         return ResponseEntity.ok(obtainorder_details);

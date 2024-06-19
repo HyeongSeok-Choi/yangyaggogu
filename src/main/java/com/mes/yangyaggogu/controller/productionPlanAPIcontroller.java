@@ -69,9 +69,9 @@ public class productionPlanAPIcontroller {
                     break;
             }
 
-            pPlanCalendarDTO.setStart(prd_p.getP_startDate());
+            pPlanCalendarDTO.setStart(prd_p.getPstartDate());
 
-            pPlanCalendarDTO.setEnd(prd_p.getP_endDate());
+            pPlanCalendarDTO.setEnd(prd_p.getPendDate().plusDays(1));
 
             pPlanCalendarDTO.setTitle(prd_p.getProductionPlanCode()+" "+prd_p.getMaterials_Name()+" : "+prd_p.getTarget_Output()+" box");
 
