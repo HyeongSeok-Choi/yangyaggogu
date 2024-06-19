@@ -82,5 +82,6 @@ public class ObtainOrderService {
 
     public obtainorder_detail findByOrderNumber(obtainorder_number orderNumber) {
         return obtainorderDetailRepository.findByOrderNumber(orderNumber);
+        //shipmentApiController에서 사용, 수주 상세 테이블에서 거래처 이름 받아오는데 씀
     }
 }

@@ -38,6 +38,7 @@ public class CompanyService {
 
     public Optional<company> findByCompanyName(String companyName) {
         return companyRepository.findByCompanyName(companyName);
+        //수주상세 테이블에서 받아온 거래처 이름으로 찾기
     }
 
 

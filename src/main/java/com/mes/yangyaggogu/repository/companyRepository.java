@@ -12,4 +12,5 @@ public interface companyRepository extends JpaRepository<company, Long> {
 
     @Query("SELECT c FROM company c WHERE c.company_name = :companyName")
     Optional<company> findByCompanyName(@Param("companyName") String companyName);
+    //findByCompanyName 했는데 안돼서 걍 피티형한테 맡김 기능은같음
 }
