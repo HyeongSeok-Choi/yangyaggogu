@@ -2,11 +2,8 @@ package com.mes.yangyaggogu.entity;
 
 
 import com.mes.yangyaggogu.constant.productionPlan_state;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
-import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 
@@ -33,6 +30,7 @@ public class productPlan {
 
     private Long now_Output;
 
+    @Enumerated(EnumType.STRING)
     private productionPlan_state state;
 
 

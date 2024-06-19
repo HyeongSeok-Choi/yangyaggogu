@@ -42,14 +42,17 @@
                 },
                 editable: true,
                 dayMaxEvents: true,
-        });
+            });
             calendar.render();
         });
     </script>
 </head>
 <body>
-
-<div id='calendar'></div>
+<th:block layout:fragment="content">
+    <div class="container1" style="margin:50px">
+        <div id='calendar'></div>
+    </div>
+</th:block>
 
 </body>
 </html>

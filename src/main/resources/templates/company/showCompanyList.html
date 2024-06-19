@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+<head>
+
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <!-- css files for DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>
+
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" />
+
+    <style>
+
+
+        .container1{
+            padding-left: 300px;
+            padding-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+<th:block layout:fragment="content">
+
+<div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
+<div class="container1">
+<button id="deleteSelected" class="btn btn-danger">선택된 행 삭제</button>
+<table id="company_list" class="display">
+    <thead>
+    <tr>
+        <th></th>
+        <th>거래처명</th>
+        <th>연락처</th>
+        <th>담당자</th>
+        <th>주소</th>
+        <th>주요 거래품</th>
+        <th>거래처 코드</th>
+    </tr>
+    </thead>
+</table>
+</div>
+
+
+<!-- JavaScript 파일은 body 끝 부분에 위치 -->
+<script th:inline="javascript">
+    // 기본적인 스크립트 추가
+    var table = null;
+    $(document).ready(function() {
+        table = $('#company_list').DataTable({
+            responsive: {
+                details: {
+                    type: 'column',
+                    target: -1,
+                }
+            },
+            columnDefs: [
+                {
+                    orderable: false,
+                    render: DataTable.render.select(),
+                    targets: 0
+                }
+            ],
+            select: {
+                style: 'os',
+                selector: 'td:first-child',
+                headerCheckbox: false
+            },
+            order: [ 1, 'asc' ],
+            ajax: {
+                url: '/api/company/list', // 서버 API URL
+                type: 'GET'
+            },
+            columns: [
+                { data: null, defaultContent: '' },
+                { data: 'company_name'},
+                { data: 'company_tel_number'},
+                { data: 'company_manager'},
+                { data: 'company_address'},
+                { data: 'trade_goods'},
+                { data: 'company_code', visible: false}
+            ]
+        });
+
+        $('#deleteSelected').on('click', function () {
+            var selectedRows = table.rows({selected: true}).data();
+            var selectedCompany = [];
+
+            selectedRows.each(function (data) {
+                selectedCompany.push(data.company_code); // 각 행의 고유 ID 수집
+            });
+
+            if (selectedCompany.length > 0) {
+                $.ajax({
+                    url: '/api/company/delete',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(selectedCompany), // 선택된 ID 목록을 JSON 형식으로 전송
+                    success: function (response) {
+                        table.rows({selected: true}).remove().draw(false);
+                        alert("거래처가 삭제되었습니다.");
+                    },
+                    error: function (xhr, status, error) {
+                        alert('삭제 중 오류가 발생했습니다.');
+                    }
+                });
+            } else {
+                alert('삭제할 행을 선택해주세요.');
+            }
+        });
+
+
+        // $('#company_list tbody').on('click', 'input[type="checkbox"]', function(){
+        //     var $row = $(this).closest('tr');
+        //     if (this.checked) {
+        //         $row.addClass('selected');
+        //     } else {
+        //         $row.removeClass('selected');
+        //     }
+        // });
+    });
+
+
+
+</script>
+</th:block>
+</body>
+</html>

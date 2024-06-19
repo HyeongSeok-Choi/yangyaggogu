@@ -1,14 +1,12 @@
 package com.mes.yangyaggogu.entity;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mes.yangyaggogu.constant.shipment_state;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -37,10 +35,12 @@ public class shipment {
 
     private LocalDateTime shippingDate;
 
+
     private LocalDateTime deliveryDate;
 
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
     private shipment_state state;
 
 }

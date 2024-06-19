@@ -27,6 +27,7 @@ public class productPlanService {
     }
 
 
+    //생산계획 50개의 더미 데이터 렛츠 기릿
     public void addProductPlan() {
 
         for (int i = 0; i < 50; i++) {
@@ -37,6 +38,7 @@ public class productPlanService {
             productPlan.setProductionPlanCode("p-100"+i);
             productPlan.setState(productionPlan_state.ready);
             productPlan.setP_startDate(LocalDateTime.now());
+            productPlan.setMaterials_Name("양배추즙");
             productPlan.setP_endDate(LocalDateTime.now().plusDays(i));
             productPlan.setTarget_Output(500L);
             obtainorder_number obtainorder_number = new obtainorder_number();
