@@ -1,20 +1,39 @@
 <main class="main" id="top">
 <header th:fragment="header">
-<!--        <nav class="navbar navbar-top fixed-top navbar-expand" id="navbarDefault">-->
-    <nav class="navbar navbar-vertical navbar-expand-lg" style="height: 100%; position: fixed; top: 0; left: 0; width: 250px; background-color: #edf5ff ">
+    <nav class="navbar navbar-vertical navbar-expand-lg" style="height: 100%; position: fixed; top: 0; left: 0; width: 250px; background-color: #edf5ff;">
         <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
             <!-- scrollbar removed-->
-            <div class="navbar-vertical-content">
+            <div class="navbar-vertical-content" >
                 <ul class="navbar-nav flex-column" id="navbarVerticalNav">
-                    <p><img src="/img/logo.png" alt="logo" style="width: 250px; height: 220px"></p>
-                    <li class="nav-item">
-                        <hr class="navbar-vertical-line" />
+                    <li class="nav-item navbar-logo" >
+                    <a href="/"><img src="/img/logo.png" alt="logo" style="width: 100%; height: 100%;"></a>
+                    </li>
+                    <li class="nav-item" style="padding-top: 100px; font-size: medium;">
+<!--                        <hr class="navbar-vertical-line" />-->
                         <!-- parent pages-->
-                        <div class="nav-item-wrapper"><a class="nav-link dropdown-indicator label-1" href="#nv-e-commerce" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-e-commerce">
+                        <div class="nav-item-wrapper" style="padding-bottom: 25px"><a class="nav-link dropdown-indicator label-1" href="#nv-e-commerce" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-e-commerce">
                             <div class="d-flex align-items-center">
                                 <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="shopping-cart"></span></span><span class="nav-link-text">수주관리</span>
                             </div>
                         </a>
+<!--                            <div class="parent-wrapper label-1">-->
+<!--                                <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-e-commerce">-->
+<!--                                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#nv-admin" data-bs-toggle="collapse" aria-expanded="true" aria-controls="nv-admin">-->
+<!--                                        <div class="d-flex align-items-center">-->
+<!--                                            <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-text">수주등록</span>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                        &lt;!&ndash; more inner pages&ndash;&gt;-->
+<!--                                    </li>-->
+<!--                                    <li class="nav-item"><a class="nav-link dropdown-indicator" href="#nv-customer" data-bs-toggle="collapse" aria-expanded="true" aria-controls="nv-customer">-->
+<!--                                        <div class="d-flex align-items-center">-->
+<!--                                            <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-text">수주현황</span>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                        &lt;!&ndash; more inner pages&ndash;&gt;-->
+<!--                                    </li>-->
+<!--                                </ul>-->
+<!--                            </div>-->
                             <div class="parent-wrapper label-1">
                                 <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-e-commerce">
                                     <li class="collapsed-nav-item-title d-none">
@@ -31,11 +50,17 @@
                                     </a>
                                         <!-- more inner pages-->
                                     </li>
+                                    <li class="nav-item"><a class="nav-link" href="apps/travel-agency/landing.html">
+                                        <div class="d-flex align-items-center"><span class="nav-link-text">작업실적관리</span>
+                                        </div>
+                                    </a>
+                                        <!-- more inner pages-->
                                 </ul>
                             </div>
+
                         </div>
                         <!-- parent pages-->
-                        <div class="nav-item-wrapper"><a class="nav-link dropdown-indicator label-1" href="#nv-CRM" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-CRM">
+                        <div class="nav-item-wrapper" style="padding-bottom: 25px"><a class="nav-link dropdown-indicator label-1" href="#nv-CRM" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-CRM">
                             <div class="d-flex align-items-center">
                                 <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="phone"></span></span><span class="nav-link-text">발주관리</span>
                             </div>
@@ -55,7 +80,7 @@
                             </div>
                         </div>
                         <!-- parent pages-->
-                        <div class="nav-item-wrapper"><a class="nav-link dropdown-indicator label-1" href="#nv-project-management" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-project-management">
+                        <div class="nav-item-wrapper" style="padding-bottom: 25px"><a class="nav-link dropdown-indicator label-1" href="#nv-project-management" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-project-management">
                             <div class="d-flex align-items-center">
                                 <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="clipboard"></span></span><span class="nav-link-text">재고관리</span>
                             </div>
@@ -64,7 +89,7 @@
                                 <ul class="nav collapse parent" data-bs-parent="#navbarVerticalCollapse" id="nv-project-management">
                                     <li class="collapsed-nav-item-title d-none">
                                     </li>
-                                    <li class="nav-item"><a class="nav-link" href="apps/project-management/create-new.html">
+                                    <li class="nav-item"><a class="nav-link" href="/rowMaterial">
                                         <div class="d-flex align-items-center"><span class="nav-link-text">원자재 입/출고</span>
                                         </div>
                                     </a>
@@ -86,7 +111,7 @@
                             </div>
                         </div>
                         <!-- parent pages-->
-                        <div class="nav-item-wrapper"><a class="nav-link dropdown-indicator label-1" href="#nv-travel-agency" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-travel-agency">
+                        <div class="nav-item-wrapper" style="padding-bottom: 25px"><a class="nav-link dropdown-indicator label-1" href="#nv-travel-agency" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-travel-agency">
                             <div class="d-flex align-items-center">
                                 <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="briefcase"></span></span><span class="nav-link-text">생산관리</span><span class="fa-solid fa-circle text-info ms-1 new-page-indicator" style="font-size: 6px"></span>
                             </div>
@@ -116,7 +141,7 @@
                             </div>
                         </div>
                         <!-- parent pages-->
-                        <div class="nav-item-wrapper"><a class="nav-link dropdown-indicator label-1" href="#nv-email" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-email">
+                        <div class="nav-item-wrapper" style="padding-bottom: 25px"><a class="nav-link dropdown-indicator label-1" href="#nv-email" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-email">
                             <div class="d-flex align-items-center">
                                 <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="mail"></span></span><span class="nav-link-text">설비관리</span>
                             </div>
@@ -145,7 +170,7 @@
                             </div>
                         </div>
                         <!-- parent pages-->
-                        <div class="nav-item-wrapper"><a class="nav-link dropdown-indicator label-1" href="#nv-events" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-events">
+                        <div class="nav-item-wrapper" style="padding-bottom: 25px"><a class="nav-link dropdown-indicator label-1" href="#nv-events" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="nv-events">
                             <div class="d-flex align-items-center">
                                 <div class="dropdown-indicator-icon-wrapper"><span class="fas fa-caret-right dropdown-indicator-icon"></span></div><span class="nav-link-icon"><span data-feather="bookmark"></span></span><span class="nav-link-text">거래처관리</span>
                             </div>

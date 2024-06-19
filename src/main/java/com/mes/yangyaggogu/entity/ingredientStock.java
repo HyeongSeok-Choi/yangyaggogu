@@ -1,5 +1,6 @@
 package com.mes.yangyaggogu.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,13 +36,13 @@ public class ingredientStock {
 
     @JoinColumn(name = "order_Number")
     @ManyToOne
-    private obtainorder_number orderNumber;
+    private obtainorder_number order_Number;
 
     private String company_code;
 
     private String company_name;
 
-    private LocalDateTime in_date;
+    private LocalDate in_date;
 
 
 }

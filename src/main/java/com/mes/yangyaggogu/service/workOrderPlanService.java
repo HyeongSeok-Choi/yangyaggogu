@@ -1,16 +1,11 @@
 package com.mes.yangyaggogu.service;
 
+import com.mes.yangyaggogu.constant.finishedstock_state;
 import com.mes.yangyaggogu.constant.obtainorder_state;
 import com.mes.yangyaggogu.constant.productionPlan_state;
 import com.mes.yangyaggogu.constant.workOrderPlan_state;
-import com.mes.yangyaggogu.entity.obtainorder_detail;
-import com.mes.yangyaggogu.entity.obtainorder_number;
-import com.mes.yangyaggogu.entity.productPlan;
-import com.mes.yangyaggogu.entity.workOrderPlan;
-import com.mes.yangyaggogu.repository.obtainorder_detailRepository;
-import com.mes.yangyaggogu.repository.obtainorder_numberRepository;
-import com.mes.yangyaggogu.repository.productPlanRepository;
-import com.mes.yangyaggogu.repository.workOrderPlanRepository;
+import com.mes.yangyaggogu.entity.*;
+import com.mes.yangyaggogu.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +22,29 @@ public class workOrderPlanService {
     private final obtainorder_numberRepository obtain_order_numberRepository;
     private final workOrderPlanRepository workOrderPlanRepository;
     private final productPlanRepository productPlanRepository;
+    private final finishedstockRepository finishedstockRepository;
 
     public List<workOrderPlan> getAll() {
         return workOrderPlanRepository.findAll();
     }
+
+
+    public void saveWorkOrderPlan(workOrderPlan workOrder) {
+        workOrderPlanRepository.save(workOrder);
+        if ("포장".equals(workOrder.getProcessName()) && workOrderPlan_state.completed.equals(workOrder.getState())) {
+            LocalDateTime expDate = workOrder.getP_endDate().plusMonths(6);
+            finishedstock finished = finishedstock.builder()
+                    .orderNumber(workOrder.getObtainorder_number())
+                    .amount(workOrder.getNow_Output())
+                    .exp(expDate)
+                    .materials_Name(workOrder.getMaterials_Name())
+                    .state(finishedstock_state.in)
+                    .build();
+
+            finishedstockRepository.save(finished);
+        }
+    }
+
 
 
     //작업 시작

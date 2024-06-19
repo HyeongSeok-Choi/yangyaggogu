@@ -21,7 +21,7 @@ public class productionPlanViewcontroller {
     @GetMapping(value = "productionPlan_table")
     public String productionPlan_table() {
 
-        //productPlanService.addProductPlan();
+        productPlanService.addProductPlan();
         return "productionPlan/productionPlan_Table";
 
     }

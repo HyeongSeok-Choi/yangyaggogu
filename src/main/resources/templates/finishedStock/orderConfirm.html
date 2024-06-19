@@ -37,6 +37,7 @@
 </head>
 
 <body>
+<th:block layout:fragment="content">
 <div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
     <div class="container1">
     <table id="order_list" class="display">
@@ -131,5 +132,6 @@
         });
 
 </script>
+</th:block>
 </body>
 </html>

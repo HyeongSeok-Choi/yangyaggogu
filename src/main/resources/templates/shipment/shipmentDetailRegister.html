@@ -17,6 +17,7 @@
 </head>
 
 <body>
+<th:block layout:fragment="content">
 <div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
 <div class="container1">
     <form th:object="${shipment}">
@@ -92,10 +93,12 @@
             <input type="text">
         </div>
 
+
         <div>
             <button id="registerShipmentDetail" class="btn btn-primary">출하 지시서 등록</button>
         </div>
     </form>
 </div>
+</th:block>
 </body>
 </html>

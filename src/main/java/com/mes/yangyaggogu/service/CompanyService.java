@@ -1,7 +1,9 @@
 package com.mes.yangyaggogu.service;
 
-import com.mes.yangyaggogu.entity.Company;
-import com.mes.yangyaggogu.repository.CompanyRepository;
+
+import com.mes.yangyaggogu.entity.company;
+
+import com.mes.yangyaggogu.repository.companyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,11 @@ import java.util.Map;
 @Service
 public class CompanyService {
 
-    final private CompanyRepository companyRepository;
+    final private companyRepository companyRepository;
 
     private final Map<String, Integer> sequenceMap = new HashMap<>();
 
-    public void registCompany(Company company) {
+    public void registCompany(company company) {
 
         String companyCode = generateCompanyCode();
 
@@ -27,7 +29,7 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
-    public List<Company> showCompanies() {
+    public List<company> showCompanies() {
         return companyRepository.findAll();
     }
 
@@ -47,9 +49,7 @@ public class CompanyService {
 
     }
 
-
-
-    public void deleteCompanies(List<Long> company_codes) {
-        companyRepository.deleteAllById(company_codes);
-    }
+//    public void deleteCompanies(List<Long> company_codes) {
+//        companyRepository.deleteAllById(company_codes);
+//    }
 }
