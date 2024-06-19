@@ -9,4 +9,6 @@ import java.time.LocalDate;
 public interface obtainorder_detailRepository extends JpaRepository<obtainorder_detail, Long> {
 
     long countByOrderDate(LocalDate obtainOrderDate);
+
+    obtainorder_detail findByOrderNumber(obtainorder_number orderNumber);
 }

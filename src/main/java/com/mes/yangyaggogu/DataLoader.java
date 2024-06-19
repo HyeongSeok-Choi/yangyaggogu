@@ -34,7 +34,7 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Obtain Order 생성
         obtainorder_number order = new obtainorder_number();
-        order.setOrder_Number("20240615-001");
+        order.setOrder_Number("2024-06-19-1");
         obtainOrderNumberRepository.save(order);
 
         productPlan plan = new productPlan();

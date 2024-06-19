@@ -1,14 +1,8 @@
 package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.constant.shipment_state;
-import com.mes.yangyaggogu.entity.company;
-import com.mes.yangyaggogu.entity.finishedstock;
-import com.mes.yangyaggogu.entity.obtainorder_detail;
-import com.mes.yangyaggogu.entity.shipment;
-import com.mes.yangyaggogu.service.CompanyService;
-import com.mes.yangyaggogu.service.finishedstockService;
-import com.mes.yangyaggogu.service.shipmentService;
-import com.mes.yangyaggogu.service.workOrderPlanService;
+import com.mes.yangyaggogu.entity.*;
+import com.mes.yangyaggogu.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +17,7 @@ public class shipmentApiController {
 
     final private finishedstockService finishedstockService;
     final private shipmentService shipmentService;
+    final private ObtainOrderService obtainOrderService;
 
     @GetMapping("/shipment/list")
     public Map<String,Object> showShipmentRegisterForm() {
@@ -34,7 +29,7 @@ public class shipmentApiController {
 
 
     @PostMapping("shipment/register")
-    public ResponseEntity<?> registerShipment(@RequestBody List<Long>ids) {
+    public ResponseEntity<?> registerShipment(@RequestBody List<Long> ids) {
         List<finishedstock> updatedStocks = new ArrayList<>();
         for (Long id : ids) { //list 돌면서 검사
             Optional<finishedstock> optionalFinishedStock = finishedstockService.findById(id);
@@ -45,15 +40,15 @@ public class shipmentApiController {
                 updatedStocks.add(existingStock);  //업데이트 된 객체를 리스트에 추가
 
                 shipment shipment = new shipment();
-                obtainorder_detail od = new obtainorder_detail();
+                obtainorder_number orderNumber = existingStock.getOrderNumber();
+                obtainorder_detail od = obtainOrderService.findByOrderNumber(orderNumber);
+
                 shipment.setShipment_Number(shipmentService.generateShipmentNumber());
                 //나중에 형식 바꿀수도
-                shipment.setOrder_Number(existingStock.getOrderNumber());
-                shipment.setCompany_name(od.getCompany_name());
+                shipment.setOrder_Number(orderNumber);
+                shipment.setCompany_name(od != null ? od.getCompany_name() : null);
                 shipment.setCompany_Address("");
 
-
-                //
                 shipment.setShipment_Amount(existingStock.getAmount());
                 shipment.setProductionName(existingStock.getMaterials_Name());
                 shipment.setShippingDate(LocalDateTime.now());
@@ -64,17 +59,16 @@ public class shipmentApiController {
                 shipment.setState(shipment_state.ready);
 
                 shipmentService.save(shipment);
-
-
-
             }
         }
+
         if (updatedStocks.isEmpty()) {
             return ResponseEntity.notFound().build(); //업데이트 된 객체가 없으면 404 반환
         } else {
             return ResponseEntity.ok(updatedStocks);  // 업데이트 된 객체 리스트 반환
         }
-  }
+    }
+
 
 
     @GetMapping("/shipment/confirmedList")

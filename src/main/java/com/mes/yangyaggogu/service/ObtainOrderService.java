@@ -79,4 +79,8 @@ public class ObtainOrderService {
         return findedDto;
     }
 
+
+    public obtainorder_detail findByOrderNumber(obtainorder_number orderNumber) {
+        return obtainorderDetailRepository.findByOrderNumber(orderNumber);
+    }
 }
