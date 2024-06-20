@@ -11,6 +11,7 @@ import com.mes.yangyaggogu.service.ObtainOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.expression.Ids;
 
@@ -56,6 +57,8 @@ public class obtainorderApiController {
     @PostMapping("/changeObtainState")
     public ResponseEntity<?> changeObtainState(@RequestBody String[] targetIds){
 
+
+        //id와 연관된 디테일 리스트 선언
         List<obtainorder_detail> obtainorder_details = new ArrayList<>();
 
         //반복문을 돌며 id에 해당되는 entity의 상태가 confirmed로 바뀜
@@ -63,9 +66,12 @@ public class obtainorderApiController {
 
             Long findId = Long.valueOf(id);
 
+            //id에 해당하는 디테일 객체 찾아옴
             obtainorder_detail findObtain = obtainOrderService.getObtainOrderDtlById(findId);
 
+            //해당 디테일 객체의 시작일 계산
             LocalDate StartDay =findObtain.getDelivery_Date().minusDays(3);
+
 
             if(obtainOrderService.checkPossibleAddPlan(StartDay,findObtain.getProductName(),findObtain.getOrder_Amount())){
 
@@ -81,6 +87,7 @@ public class obtainorderApiController {
                   return   ResponseEntity.ok(productPlan);
                 }
             };
+
 
            boolean check =  obtainOrderService.checkPossibleDay(findObtain.getDelivery_Date(),findObtain.getProductName(),findObtain.getOrder_Amount());
 

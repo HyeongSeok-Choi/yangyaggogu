@@ -122,6 +122,7 @@ public class ObtainOrderService {
     public boolean checkPossibleDay(LocalDate localDate,String comeProductName,Long targetOutput){
 
 
+        //시작일과 끝일을 계산
         LocalDate startDate = localDate.minusDays(3);
         LocalDate endDate = localDate;
 
@@ -159,36 +160,50 @@ public class ObtainOrderService {
     //계획이 합쳐질 수 있을지 파악
     public boolean checkPossibleAddPlan(LocalDate StartDate,String comeProductName,Long targetOutput){
 
+
+        //들어온 확정예정건의 시작일과 이름이 일치하는 계획을 불러옴
           List<productPlan> productPlanList = productPlanRepository.getEqualStartDatePlan(StartDate,comeProductName);
 
+
+          //계획들을 반복해서 검사
           for(productPlan productPlan : productPlanList) {
 
+              //비교 하려는 제품이름이 같은지 파악
               if (productPlan.getMaterials_Name().equals(comeProductName)) {
 
+                  //즙일 때
                   if (comeProductName.equals("양배추즙") || comeProductName.equals("흑마늘즙")) {
 
+                      //두 캡파를 더함
                       Long capacity = productPlan.getTarget_Output() + targetOutput;
 
+                      //더한 캡파가 250박스 이하면 합칠 수 있으니 true
                       if (capacity <= 250L) {
 
                           return true;
 
+                          //아니라면 false
                       } else return false;
 
+                      //젤리일때
                   } else if (comeProductName.equals("매실젤리") || comeProductName.equals("석류젤리")) {
 
+                      //두 캡파를 더함
                       Long capacity = productPlan.getTarget_Output() + targetOutput;
 
+                      //더한 캡파가 160박스 이하면 합칠 수 있으니 true
                       if (capacity <= 160) {
 
                           return true;
 
+                          //아니라면 false
                       } else return false;
 
 
                   }
               }
           }
+          //이런 경우는 없겠지 ?
         return true;
     }
 
