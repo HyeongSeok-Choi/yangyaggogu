@@ -45,8 +45,12 @@ public class rowStockService {
 
     public ingredientStock orderStock(StockDto stockDto){
         ingredientStock ingredientStock = new ingredientStock();
-//        obtainorder_number obtainorder_number = new obtainorder_number();
-//        ingredientStock.setOrder_Number(obtainorder_number);
+        obtainorder_number obtainorder_number = new obtainorder_number();
+        obtainorder_number.setOrder_Number(stockDto.getOrderNumber());
+        obtainorderNumberRepository.save(obtainorder_number);
+
+        ingredientStock.setOrder_Number(obtainorder_number);
+
 
         ingredientStock.setIngredient_Code(stockDto.getIngredientCode());
         ingredientStock.setMaterials_Name(stockDto.getMaterialsName());

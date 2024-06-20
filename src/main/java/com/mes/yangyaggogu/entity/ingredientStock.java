@@ -5,6 +5,7 @@ import com.mes.yangyaggogu.constant.productionPlan_state;
 import com.mes.yangyaggogu.constant.rowStock_state;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ingredientStock {
 
 
@@ -28,16 +30,14 @@ public class ingredientStock {
 
     private Long ingredient_Amount;
 
-    private LocalDate exp;
-
     @Enumerated(EnumType.STRING)
     private rowStock_state state;
 
-    private String reason;
+//    private String reason;
 
-    private Long avaliable_Amount;
+//    private Long avaliable_Amount;
 
-    private Long out_Amount;
+//    private Long out_Amount;
 
     @JoinColumn(name = "order_Number")
     @ManyToOne
