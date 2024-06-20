@@ -152,6 +152,4 @@ public class ObtainOrderService {
         return obtainorderDetailRepository.findByOrderNumber(orderNumber);
         //shipmentApiController에서 사용, 수주 상세 테이블에서 거래처 이름 받아오는데 씀
     }
-    //수주확정 클릭 시 진행 상태 변경
-
 }

@@ -4,21 +4,11 @@
       layout:decorate="~{/layouts/layout1}">
 <head>
     <meta charset="UTF-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <style>
 
-
-        .container1{
-            padding-left: 300px;
-            padding-top: 50px;
-        }
-    </style>
 </head>
 <body>
 <th:block layout:fragment="content">
-<div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
+
 <div class="container1">
     <form action="/company/register" method="post" class="row g-3 mb-6">
             <div><p>거래처 관리</p></div>

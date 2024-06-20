@@ -54,7 +54,6 @@
         <th>담당자</th>
         <th>주소</th>
         <th>주요 거래품</th>
-        <th>거래처 코드</th>
     </tr>
     </thead>
 </table>
@@ -78,8 +77,26 @@
                     orderable: false,
                     render: DataTable.render.select(),
                     targets: 0
-                }
-            ],
+                },
+                {
+                    targets: 0, width: 200
+                },
+                {
+                    targets: 1, width: 200
+                },
+                {
+                    targets: 2, width: 200
+                },
+                {
+                    targets: 3, width: 200
+                },
+                {
+                    targets: 4, width: 200
+                },
+                {
+                    targets: 5, width: 200
+                },
+                ],
             select: {
                 style: 'os',
                 selector: 'td:first-child',
@@ -97,7 +114,7 @@
                 { data: 'company_manager'},
                 { data: 'company_address'},
                 { data: 'trade_goods'},
-                { data: 'company_code', visible: false}
+
             ]
         });
 
