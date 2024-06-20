@@ -41,13 +41,26 @@ public class shipmentApiController {
 
                 shipment shipment = new shipment();
                 obtainorder_number orderNumber = existingStock.getOrderNumber();
-                obtainorder_detail od = obtainOrderService.findByOrderNumber(orderNumber);
+                List<obtainorder_detail> odList = obtainOrderService.findByOrderNumber(orderNumber);
 
                 shipment.setShipment_Number(shipmentService.generateShipmentNumber());
-                //나중에 형식 바꿀수도
-                shipment.setOrder_Number(orderNumber);
-                shipment.setCompany_name(od != null ? od.getCompany_name() : null);
-                shipment.setCompany_Address("");
+
+                if (odList != null && !odList.isEmpty()) {
+                    // 각 거래처별로 적절한 데이터를 처리
+                    Map<String, obtainorder_detail> companyDetailsMap = new HashMap<>();
+                    for (obtainorder_detail od : odList) {
+                        companyDetailsMap.put(od.getCompany_name(), od);
+                    }
+
+                    // 여기서는 예를 들어 첫 번째 거래처 데이터를 선택합니다.
+                    obtainorder_detail od = companyDetailsMap.values().iterator().next();
+
+                    shipment.setCompany_name(od.getCompany_name());
+                    shipment.setCompany_Address("");
+                } else {
+                    shipment.setCompany_name(null);
+                    shipment.setCompany_Address("");
+                }
 
                 shipment.setShipment_Amount(existingStock.getAmount());
                 shipment.setProductionName(existingStock.getMaterials_Name());

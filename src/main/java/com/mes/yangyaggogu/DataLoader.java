@@ -34,7 +34,7 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Obtain Order 생성
         obtainorder_number order = new obtainorder_number();
-        order.setOrder_Number("2024-06-19-1");
+        order.setOrder_Number("2024-06-20-1");
         obtainOrderNumberRepository.save(order);
 
         productPlan plan = new productPlan();
@@ -48,7 +48,7 @@ public class DataLoader implements CommandLineRunner {
                     .productPlanCode(plan)
                     .obtainorder_number(order)
                     .producer(null)
-                    .processName("포장" )
+                    .processName("포장")
                     .P_startDate(LocalDateTime.now().minusDays(i))
                     .P_endDate(LocalDateTime.now().plusDays(i))
                     .target_Output(100L)
