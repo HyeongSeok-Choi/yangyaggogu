@@ -24,6 +24,8 @@ public class CompanyService {
     private final Map<String, Integer> sequenceMap = new HashMap<>();
 
     public void registCompany(company company) {
+
+
         companyRepository.save(company);
     }
 
@@ -43,4 +45,13 @@ public class CompanyService {
 
 
 
+
+
+
+    //거래처 코드 어떻게 짤지 정하고 나중에 수정
+
+
+    public void deleteCompanies(List<Long> company_codes) {
+        companyRepository.deleteAllById(company_codes);
+    }
 }

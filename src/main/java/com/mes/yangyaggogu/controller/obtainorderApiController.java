@@ -1,5 +1,6 @@
 package com.mes.yangyaggogu.controller;
 
+import com.mes.yangyaggogu.constant.obtainorder_state;
 import com.mes.yangyaggogu.dto.AddOrderDto;
 import com.mes.yangyaggogu.dto.OrderDtlDto;
 import com.mes.yangyaggogu.entity.obtainorder_detail;
@@ -8,10 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Ids;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,12 +41,28 @@ public class obtainorderApiController {
         return ResponseEntity.ok(addOrderDtoList);
     }
 
-    //수주 상세 조회
-    /*@GetMapping(value = "/getOrderDtlList/{id}")
-    public ResponseEntity<OrderDtlDto> getOrderDtlById(@PathVariable long id){
-        obtainorder_detail obtainorderDetail = obtainOrderService.getOrderDetailById(id);
+    //수주 확정 버튼 클릭 시 진행 상태 바꾸기
+    @PostMapping("/changeObtainState")
+    public ResponseEntity<?> changeObtainState(@RequestBody String[] targetIds){
 
-        return ResponseEntity.ok()
-                .body(new OrderDtlDto(obtainorderDetail));
-    }*/
+        List<obtainorder_detail> obtainorder_details = new ArrayList<>();
+
+        for (String id : targetIds){
+            System.out.println(id);
+        }
+
+        for (String id : targetIds) {
+
+            Long findId = Long.valueOf(id);
+
+            obtainorder_detail findObtain = obtainOrderService.getObtainOrderDtlById(findId);
+
+            findObtain.setState(obtainorder_state.confirmed);
+
+            obtainOrderService.save(findObtain);
+
+            obtainorder_details.add(findObtain);
+        }
+        return ResponseEntity.ok(obtainorder_details);
+    }
 }
