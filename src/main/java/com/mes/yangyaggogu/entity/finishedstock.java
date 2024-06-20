@@ -22,7 +22,7 @@ public class finishedstock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_Number")
     private obtainorder_number orderNumber;
 

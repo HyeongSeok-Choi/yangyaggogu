@@ -21,19 +21,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
     <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>
-    <script src="https://cdn.datatables.net/rowgroup/1.5.0/js/dataTables.rowGroup.js"></script>
     <script src="https://cdn.datatables.net/rowgroup/1.5.0/js/rowGroup.dataTables.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
     <script src="https://cdn.datatables.net/searchbuilder/1.7.1/js/dataTables.searchBuilder.js"></script>
     <script src="https://cdn.datatables.net/searchbuilder/1.7.1/js/searchBuilder.dataTables.js"></script>
     <script src="https://cdn.datatables.net/datetime/1.5.2/js/dataTables.dateTime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/searchbuilder/1.7.1/js/searchBuilder.bootstrap5.js"></script>
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.7.1/css/searchBuilder.dataTables.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.5.2/css/dataTables.dateTime.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.7.1/css/searchBuilder.bootstrap5.css" />
     <style>
 
         /*모달 팝업 영역 스타일링*/
@@ -100,21 +102,21 @@
             table = $('#Table').DataTable({
                 language: {
                     searchBuilder: {
-                        add: '+',
-                        condition: 'Comparator',
-                        clearAll: 'Reset',
-                        delete: 'Delete',
+                        add: '검색',
+                        condition: '조건',
+                        clearAll: '초기화',
+                        delete: '삭제',
                         deleteTitle: 'Delete Title',
-                        data: 'Column',
+                        data: '컬럼 선택',
                         left: 'Left',
                         leftTitle: 'Left Title',
-                        logicAnd: '&&',
+                        logicAnd: 'And',
                         logicOr: '||',
                         right: 'Right',
                         rightTitle: 'Right Title',
                         title: {
-                            0: '검색',
-                            _: 'Filters (%d)'
+                            0: '',
+                            _: '검색 (%d)'
                         },
                         value: 'Option',
                         valueJoiner: 'et'
@@ -208,19 +210,7 @@
                             {
                                 extend: 'excel',
                                 text: "엑셀",
-                            },
-                            {
-                                extend: 'collection',
-                                text: '생산 계획 번호',
-                                buttons: [
-                                    {
-                                        text: 'Toggle start date',
-                                        action: function (e, dt, node, config) {
-                                            dt.column(-2).visible(!dt.column(-2).visible());
-                                        }
-                                    }
-                                ]
-                            },
+                            }
                         ]
                     },
                     topEnd: {
@@ -291,7 +281,9 @@
                         data: 'processName'},
                     {
                         title:"목표량",
-                        data: 'target_Output'},
+                        data: 'target_Output',render:function (data,type,row){
+                            return data+"kg";
+                        }},
                     {
                         title:"생산량",
                         data: 'now_Output'},

@@ -57,11 +57,11 @@ public class productionPlanAPIcontroller {
                     pPlanCalendarDTO.setColor("#000000");
                     break;
 
-                    case "매실젤리스틱":
+                    case "매실젤리":
                     pPlanCalendarDTO.setColor("#669900");
                     break;
 
-                    case "석류젤리스틱":
+                    case "석류젤리":
                     pPlanCalendarDTO.setColor("#ff0066");
                     break;
                 default:

@@ -13,6 +13,9 @@ public interface productPlanRepository extends JpaRepository<productPlan, String
     @Query("select p from productPlan p where (p.pstartDate <= :end) and (:start <= p.pendDate)")
     List<productPlan> getBestPost(LocalDate start, LocalDate end);
 
+    @Query("select p from productPlan p where (p.pstartDate = :start) and (p.materials_Name = :productName)")
+    List<productPlan> getEqualStartDatePlan(LocalDate start,String productName);
+
    // boolean existsByPstartDateLessThanEqualAndPendDateGreaterThanEqual(LocalDate start, LocalDate end);
     
 }

@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.service;
 
 import com.mes.yangyaggogu.constant.obtainorder_state;
+import com.mes.yangyaggogu.constant.productionPlan_state;
 import com.mes.yangyaggogu.dto.AddOrderDto;
 import com.mes.yangyaggogu.dto.OrderDtlDto;
 import com.mes.yangyaggogu.entity.obtainorder_detail;
@@ -36,7 +37,7 @@ public class ObtainOrderService {
         return obtainorderDetailRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found :"));
     }
 
-    
+
     //저장
     public obtainorder_detail save(obtainorder_detail obtainorder_detail) {
 
@@ -118,15 +119,11 @@ public class ObtainOrderService {
     }
 
     //3라인이 넘는지 안넘는지 체크
-    public boolean checkPossibleDay(LocalDate localDate,String comeProductName){
+    public boolean checkPossibleDay(LocalDate localDate,String comeProductName,Long targetOutput){
 
 
         LocalDate startDate = localDate.minusDays(3);
         LocalDate endDate = localDate;
-
-
-        //겹치는 생산공정 갯수
-//        int checkCount = productPlanRepository.getBestPost(startDate,endDate);
 
         List<productPlan> productPlanList = productPlanRepository.getBestPost(startDate,endDate);
 
@@ -157,6 +154,125 @@ public class ObtainOrderService {
         }
 
         return true;
+    }
+
+    //계획이 합쳐질 수 있을지 파악
+    public boolean checkPossibleAddPlan(LocalDate StartDate,String comeProductName,Long targetOutput){
+
+          List<productPlan> productPlanList = productPlanRepository.getEqualStartDatePlan(StartDate,comeProductName);
+
+          for(productPlan productPlan : productPlanList) {
+
+              if (productPlan.getMaterials_Name().equals(comeProductName)) {
+
+                  if (comeProductName.equals("양배추즙") || comeProductName.equals("흑마늘즙")) {
+
+                      Long capacity = productPlan.getTarget_Output() + targetOutput;
+
+                      if (capacity <= 250L) {
+
+                          return true;
+
+                      } else return false;
+
+                  } else if (comeProductName.equals("매실젤리") || comeProductName.equals("석류젤리")) {
+
+                      Long capacity = productPlan.getTarget_Output() + targetOutput;
+
+                      if (capacity <= 160) {
+
+                          return true;
+
+                      } else return false;
+
+
+                  }
+              }
+          }
+        return true;
+    }
+
+    //계획이 합쳐질 수 있을지 파악한 걸 합치는 작업
+    public productPlan JoinProductPlan(LocalDate StartDate,String comeProductName,Long targetOutput,obtainorder_number obtainorderNumber){
+
+        List<productPlan> productPlanList = productPlanRepository.getEqualStartDatePlan(StartDate,comeProductName);
+
+        for(productPlan productPlan : productPlanList){
+            if (productPlan.getMaterials_Name().equals(comeProductName)) {
+
+                if (comeProductName.equals("양배추즙") || comeProductName.equals("흑마늘즙")) {
+
+                    Long capacity = productPlan.getTarget_Output() + targetOutput;
+
+                    if (capacity <= 250L) {
+
+                        productPlan existedPlan = productPlan;
+
+                        productPlan newJoinProducePlan = new productPlan();
+
+                        if (comeProductName.equals("양배추즙")) {
+                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "CB"+","+existedPlan.getProductionPlanCode());
+                        } else if (comeProductName.equals("흑마늘즙")) {
+                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "BG"+","+existedPlan.getProductionPlanCode());
+                        }
+
+                        obtainorder_number fakeOrderNum = new obtainorder_number();
+                        fakeOrderNum.setOrder_Number("복수 수주번호");
+
+                        obtainOrderNumberRepository.save(fakeOrderNum);
+                        newJoinProducePlan.setOrder_Number(fakeOrderNum);
+                        newJoinProducePlan.setMaterials_Name(comeProductName);
+                        newJoinProducePlan.setState(productionPlan_state.ready);
+                        newJoinProducePlan.setTarget_Output(capacity);
+
+                        newJoinProducePlan.setPstartDate(StartDate);
+                        newJoinProducePlan.setPendDate(existedPlan.getPendDate());
+
+                        productPlanRepository.delete(existedPlan);
+
+                        return productPlanRepository.save(newJoinProducePlan);
+
+                    } else return null;
+
+                } else if (comeProductName.equals("매실젤리") || comeProductName.equals("석류젤리")) {
+
+                    Long capacity = productPlan.getTarget_Output() + targetOutput;
+
+                    productPlan existedPlan = productPlan;
+
+                    productPlan newJoinProducePlan = new productPlan();
+
+                    if (capacity <= 160L) {
+                        if (comeProductName.equals("매실젤리")) {
+                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "MS" + "," + existedPlan.getProductionPlanCode());
+                        } else if (comeProductName.equals("석류젤리")) {
+                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "SS" + "," + existedPlan.getProductionPlanCode());
+                        }
+
+                        obtainorder_number fakeOrderNum = new obtainorder_number();
+                        fakeOrderNum.setOrder_Number("복수 수주번호");
+
+                        obtainOrderNumberRepository.save(fakeOrderNum);
+                        newJoinProducePlan.setOrder_Number(fakeOrderNum);
+                        newJoinProducePlan.setMaterials_Name(comeProductName);
+                        newJoinProducePlan.setState(productionPlan_state.ready);
+                        newJoinProducePlan.setTarget_Output(capacity);
+
+                        newJoinProducePlan.setPstartDate(StartDate);
+                        newJoinProducePlan.setPendDate(existedPlan.getPendDate());
+
+                        productPlanRepository.delete(existedPlan);
+
+                        return productPlanRepository.save(newJoinProducePlan);
+
+
+                    }
+
+                }
+
+            }
+        }
+        return null;
     }
 
 }
