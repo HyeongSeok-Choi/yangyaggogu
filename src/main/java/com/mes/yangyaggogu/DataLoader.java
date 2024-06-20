@@ -34,31 +34,27 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Obtain Order 생성
         obtainorder_number order = new obtainorder_number();
-        order.setOrder_Number("ORDER123");
+        order.setOrder_Number("2024-06-20-1");
         obtainOrderNumberRepository.save(order);
 
         productPlan plan = new productPlan();
-        plan.setProductionPlanCode("PLAN123");
-        plan.setOrder_Number(order);
-        plan.setP_startDate(LocalDateTime.now());
-        plan.setMaterials_Name("흑마늘즙");
-        plan.setP_endDate(LocalDateTime.now());
+        plan.setProductionPlanCode("2024-06-19T09:34:45.192947400prP-001");
         productPlanRepository.save(plan);
 
         // Product Plan 생성
         for (int i = 1; i <= 10; i++) {
             workOrderPlan workOrder = workOrderPlan.builder()
-                    .processCode("PROCESS" + i)
+                    .processCode("A8")
                     .productPlanCode(plan)
                     .obtainorder_number(order)
-                    .producer("Producer " + i)
-                    .processName("포장" )
+                    .producer(null)
+                    .processName("포장")
                     .P_startDate(LocalDateTime.now().minusDays(i))
                     .P_endDate(LocalDateTime.now().plusDays(i))
-                    .target_Output(100L + i)
-                    .now_Output(50L + i)
+                    .target_Output(100L)
+                    .now_Output(null)
                     .state(workOrderPlan_state.completed)
-                    .materials_Name("Material " + i)
+                    .materials_Name("양배추즙")
                     .build();
 
             workOrderPlanService.saveWorkOrderPlan(workOrder);

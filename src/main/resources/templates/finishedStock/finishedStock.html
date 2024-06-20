@@ -52,7 +52,7 @@
     <button id="filterButton" class="btn btn-primary">날짜 설정</button>
 
 
-    <table id="finishedStockList" class="display">
+    <table id="finishedStockList" class="table table-striped table-bordered order-detail-table">
 
         <thead>
         <tr>
@@ -113,7 +113,7 @@
             order: [1, 'asc'],
 
             ajax: {
-                url: 'http://localhost:8080/api/finishedStock/list',
+                url: '/api/finishedStock/list',
                 type: 'GET'
                 // data: function(d) {
                 //     d.startDate = $('#startDate').val();

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Controller
@@ -40,9 +41,15 @@ public class shipmentController {
         shipment shipment = shipmentService.findById(id);
         model.addAttribute("shipment", shipment);
 
-        List<company> companyCode = companyService.showCompanies();
-        model.addAttribute("company_code", companyCode);
+        String companyName = shipment.getCompany_name();
+        Optional<company> company = companyService.findByCompanyName(companyName);
 
+        // company 데이터를 모델에 추가합니다.
+        if (company.isPresent()) {
+            model.addAttribute("company", company.get());
+        } else {
+            model.addAttribute("company", new company()); // 기본 빈 객체를 추가하여 NPE 방지
+        }
         return "shipment/shipmentDetailRegister";
     }
 

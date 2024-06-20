@@ -6,8 +6,28 @@
 <head>
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- css files for DataTables -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
+    <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" />
     <style>
         .container1 {
             padding-left: 300px;
@@ -15,6 +35,7 @@
         }
     </style>
 </head>
+
 
 <body>
 <th:block layout:fragment="content">
@@ -31,46 +52,59 @@
         </div>
         <div>
             <label>출하일</label>
-            <input type="text" th:value="${shipment.shippingDate}">
+            <input type="text" th:field="*{shippingDate}">
         </div>
         <div>
             <label>납품일</label>
-            <input type="text" th:value="${shipment.deliveryDate}">
+            <input type="text" th:field="*{deliveryDate}">
+        </div>
+
+    <div>
+        <div>
+            <label>거래처</label>
+            <input type="text" th:field="*{company_name}">
         </div>
 
         <div>
-            <label>거래처</label>
-            <select th:field="*{company_code}" class="form-select">
-                <option value="">거래처 선택</option>
-                <option th:each="company : ${company_code}" th:value="${company.company_code}" th:text="${company.company_name}">확인용</option>
-            </select>
-        </div>
-        <div>
             <label>거래처 주소</label>
-            <input type="text">
+            <input id="companyAddress" th:value="${company.company_address}"  type="text" readonly>
         </div>
         <div>
             <label>담당자</label>
-            <input type="text">
+            <input type="text" th:value="${company.company_manager}" readonly>
         </div>
+        <div>
+            <label>연락처</label>
+            <input type="text" th:value="${company.company_tel_number}" readonly>
+        </div>
+    </div>
+
+
+
 
         <div>
             <label>수주번호</label>
-            <input type="text" th:value="${shipment.order_Number}">
+            <input type="text" th:field="*{order_Number.order_Number}">
         </div>
         <div>
             <label>제품명</label>
-            <input type="text" th:value="${shipment.productionName}">
+            <input type="text" th:field="*{productionName}">
         </div>
         <div>
             <label>출하수량</label>
-            <input type="text" th:value="${shipment.shipment_Amount}">
+            <input type="text" th:field="*{shipment_Amount}">
         </div>
         <div>
             <label>총 중량</label>
 <!--            출하수량 * 2.4-->
             <input type="text">
         </div>
+
+
+
+
+
+
 
         <div>
             <label>운송업체</label>
@@ -100,5 +134,7 @@
     </form>
 </div>
 </th:block>
+<
 </body>
+
 </html>

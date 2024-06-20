@@ -2,9 +2,11 @@ package com.mes.yangyaggogu.controller;
 
 
 import com.mes.yangyaggogu.entity.company;
+import com.mes.yangyaggogu.entity.shipment;
 import com.mes.yangyaggogu.service.CompanyService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,7 +29,7 @@ public class CompanyController {
                 companyService.registCompany(company);
                 redirectAttributes.addFlashAttribute("message", "거래처가 성공적으로 등록되었습니다.");
 
-        return "main";
+        return "index";
     }
 
 
@@ -35,8 +37,6 @@ public class CompanyController {
     public String showCompanyList() {
         return "company/showCompanyList";
     }
-
-
 
 
 }
