@@ -201,6 +201,7 @@
 
         // 삭제 버튼 클릭 시 삭제
         function deleteSelectedRows() {
+
             //체크된 체크박스가 있는지 확인
             if ($('.rowCheckbox:checked').length == 0){
                 alert('삭제할 항목을 선택해 주세요.');
@@ -252,9 +253,21 @@
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(dataArray),
-                }).then(() => {
-                    alert("수주가 등록되었습니다.");
-                });
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("수주가 등록되었습니다.");
+                            if ($('#orderMng tbody tr').length == 0){
+                                $("#customerSelect").html(originalCustomerOptions);
+                                isFirstOrder = true;
+                            }
+                        } else {
+                            return response.json().then(err => { throw new Error(err.message);});
+                        }
+                    })
+                    .catch(error => {
+                        alert("수주 등록 중 오류가 발생 했습니다: " + error.message);
+                    });
         });
 
         //거래처 이름 불러오기
