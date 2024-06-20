@@ -7,42 +7,13 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     <!-- css files for DataTables -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
-    <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>
 
-
-
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" />
-
-    <style>
-
-
-        .container1{
-            padding-left: 300px;
-            padding-top: 50px;
-        }
-    </style>
 </head>
 
 <body>
 <th:block layout:fragment="content">
 
-<div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
+
 <div class="container1">
 <button id="deleteSelected" class="btn btn-danger">거래처 삭제</button>
 <table id="company_list" class="table table-striped table-bordered order-detail-table">
@@ -54,7 +25,7 @@
         <th>담당자</th>
         <th>주소</th>
         <th>주요 거래품</th>
-        <th>거래처 코드</th>
+
     </tr>
     </thead>
 </table>
@@ -78,7 +49,27 @@
                     orderable: false,
                     render: DataTable.render.select(),
                     targets: 0
-                }
+                },
+                {
+                    targets: 0, width: 200
+                },
+                {
+                    targets: 1, width: 200
+                },
+                // {
+                //     targets: 2, width: 200
+                // },
+                // {
+                //     targets: 3, width: 200
+                // },
+                // {
+                //     targets: 4, width: 200
+                // },
+                // {
+                //     targets: 5, width: 200
+                // },
+
+
             ],
             select: {
                 style: 'os',
@@ -96,8 +87,7 @@
                 { data: 'company_tel_number'},
                 { data: 'company_manager'},
                 { data: 'company_address'},
-                { data: 'trade_goods'},
-                { data: 'company_code', visible: false}
+                { data: 'trade_goods'}
             ]
         });
 
@@ -128,15 +118,6 @@
             }
         });
 
-
-        // $('#company_list tbody').on('click', 'input[type="checkbox"]', function(){
-        //     var $row = $(this).closest('tr');
-        //     if (this.checked) {
-        //         $row.addClass('selected');
-        //     } else {
-        //         $row.removeClass('selected');
-        //     }
-        // });
     });
 
 

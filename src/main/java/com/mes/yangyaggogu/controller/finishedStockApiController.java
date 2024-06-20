@@ -1,5 +1,7 @@
 package com.mes.yangyaggogu.controller;
 
+import com.mes.yangyaggogu.dto.FinishedStockDTO;
+import com.mes.yangyaggogu.dto.shipmentDTO;
 import com.mes.yangyaggogu.entity.finishedstock;
 import com.mes.yangyaggogu.service.finishedstockService;
 import com.mes.yangyaggogu.service.workOrderPlanService;
@@ -8,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequestMapping(value = "/api")
 @RestController
@@ -31,7 +35,11 @@ public class finishedStockApiController {
     @GetMapping("finishedStock/list")
     public Map<String,Object> showFinishedStockList() {
         Map<String,Object> map = new HashMap<>();
-        map.put("data",finishedstockService.showFinishedStockList());
+
+        List<FinishedStockDTO> finishedStockDTOList = finishedstockService.showFinishedStockList().stream()
+                .map(a -> new FinishedStockDTO(a))
+                .collect(Collectors.toList());
+        map.put("data",finishedStockDTOList);
 
         return map;
     }

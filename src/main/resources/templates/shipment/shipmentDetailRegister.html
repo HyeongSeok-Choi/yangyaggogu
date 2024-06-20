@@ -59,82 +59,88 @@
             <input type="text" th:field="*{deliveryDate}">
         </div>
 
-    <div>
         <div>
-            <label>거래처</label>
-            <input type="text" th:field="*{company_name}">
+            <div>
+                <label>거래처</label>
+                <input type="text" th:field="*{company_name}">
+            </div>
+
+            <div>
+                <label>거래처 주소</label>
+                <input id="companyAddress" th:value="${company.company_address}"  type="text" readonly>
+            </div>
+            <div>
+                <label>담당자</label>
+                <input type="text" th:value="${company.company_manager}" readonly>
+            </div>
+            <div>
+                <label>연락처</label>
+                <input type="text" th:value="${company.company_tel_number}" readonly>
+            </div>
         </div>
 
+
+
+
+            <div>
+                <label>수주번호</label>
+                <input type="text" th:field="*{order_Number.order_Number}">
+            </div>
+            <div>
+                <label>제품명</label>
+                <input type="text" th:field="*{productionName}">
+            </div>
+            <div>
+                <label>출하수량</label>
+                <input type="text" th:field="*{shipment_Amount}">
+            </div>
+            <div>
+                <label>총 중량</label>
+    <!--            출하수량 * 2.4-->
+                <input type="text">
+            </div>
+
+    </form>
+    <form action="/carrier/register" method="post" th:object="${carrier}">
+
+
+        <input type="hidden" name="shipment_Number" th:value="${shipment.shipment_Number}">
+
         <div>
-            <label>거래처 주소</label>
-            <input id="companyAddress" th:value="${company.company_address}"  type="text" readonly>
+            <label>운송업체명</label>
+            <input type="text" name="carrier_Name" th:field="*{carrier_Name}">
         </div>
-        <div>
-            <label>담당자</label>
-            <input type="text" th:value="${company.company_manager}" readonly>
-        </div>
+
         <div>
             <label>연락처</label>
-            <input type="text" th:value="${company.company_tel_number}" readonly>
+            <input type="text" name="carrier_PhoneNumber" th:field="*{carrier_PhoneNumber}">
         </div>
-    </div>
-
-
-
 
         <div>
-            <label>수주번호</label>
-            <input type="text" th:field="*{order_Number.order_Number}">
-        </div>
-        <div>
-            <label>제품명</label>
-            <input type="text" th:field="*{productionName}">
-        </div>
-        <div>
-            <label>출하수량</label>
-            <input type="text" th:field="*{shipment_Amount}">
-        </div>
-        <div>
-            <label>총 중량</label>
-<!--            출하수량 * 2.4-->
-            <input type="text">
+            <label>운송수단</label>
+            <input type="text" name="carrier_Vehicle"  th:field="*{carrier_Vehicle}">
         </div>
 
-
-
-
-
-
-
         <div>
-            <label>운송업체</label>
-            <input type="text">
+            <label>운송가격</label>
+            <input type="text" name="carrier_Price" th:field="*{carrier_Price}">
         </div>
-        <div>
-            <label>운송 연락처</label>
-            <input type="text">
-        </div>
-        <div>
-            <label>운송 수단</label>
-            <input type="text">
-        </div>
-        <div>
-            <label>운송 비용</label>
-            <input type="text">
-        </div>
+
         <div>
             <label>담당자</label>
-            <input type="text">
+            <input type="text" name="carrier_manager" th:field="*{carrier_manager}">
         </div>
 
-
         <div>
-            <button id="registerShipmentDetail" class="btn btn-primary">출하 지시서 등록</button>
+            <button id="registerShipmentDetail" class="submit-button">출하 지시서 등록</button>
         </div>
     </form>
 </div>
 </th:block>
-<
+
+
+
+
 </body>
 
 </html>
