@@ -30,7 +30,7 @@ public class finishedstock {
 
     private Long amount;
 
-    private LocalDate exp;
+    private LocalDateTime exp;
 
     @Enumerated(EnumType.STRING)
     private finishedstock_state state;

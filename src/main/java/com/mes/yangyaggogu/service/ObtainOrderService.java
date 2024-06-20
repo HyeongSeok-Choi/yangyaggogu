@@ -210,11 +210,11 @@ public class ObtainOrderService {
     }
 
     //계획이 합쳐질 수 있을지 파악한 걸 합치는 작업
-    public productPlan JoinProductPlan(LocalDate StartDate,String comeProductName,Long targetOutput,obtainorder_number obtainorderNumber){
+    public productPlan JoinProductPlan(LocalDate StartDate,String comeProductName,Long targetOutput,obtainorder_number obtainorderNumber) {
 
-        List<productPlan> productPlanList = productPlanRepository.getEqualStartDatePlan(StartDate,comeProductName);
+        List<productPlan> productPlanList = productPlanRepository.getEqualStartDatePlan(StartDate, comeProductName);
 
-        for(productPlan productPlan : productPlanList){
+        for (productPlan productPlan : productPlanList) {
             if (productPlan.getMaterials_Name().equals(comeProductName)) {
 
                 if (comeProductName.equals("양배추즙") || comeProductName.equals("흑마늘즙")) {
@@ -228,9 +228,9 @@ public class ObtainOrderService {
                         productPlan newJoinProducePlan = new productPlan();
 
                         if (comeProductName.equals("양배추즙")) {
-                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "CB"+","+existedPlan.getProductionPlanCode());
+                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "CB" + "," + existedPlan.getProductionPlanCode());
                         } else if (comeProductName.equals("흑마늘즙")) {
-                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "BG"+","+existedPlan.getProductionPlanCode());
+                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "BG" + "," + existedPlan.getProductionPlanCode());
                         }
 
                         obtainorder_number fakeOrderNum = new obtainorder_number();
@@ -290,6 +290,7 @@ public class ObtainOrderService {
             }
         }
         return null;
+    }
    //팝업창 데이터 수정
     public boolean updateOrder(OrderDtlDto orderDtlDto){
         try {
@@ -326,4 +327,5 @@ public class ObtainOrderService {
         return obtainorderDetailRepository.findByOrderNumber(orderNumber);
         //shipmentApiController에서 사용, 수주 상세 테이블에서 거래처 이름 받아오는데 씀
     }
+
 }

@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.dto.FinishedStockDTO;
+import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.dto.shipmentDTO;
 import com.mes.yangyaggogu.entity.finishedstock;
 import com.mes.yangyaggogu.entity.ingredientStock;
