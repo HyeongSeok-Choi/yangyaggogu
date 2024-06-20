@@ -1,5 +1,6 @@
 package com.mes.yangyaggogu.controller;
 
+import com.mes.yangyaggogu.constant.shipment_state;
 import com.mes.yangyaggogu.entity.carrier;
 import com.mes.yangyaggogu.entity.company;
 import com.mes.yangyaggogu.entity.shipment;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Controller
@@ -51,13 +54,28 @@ public class carrierController {
             carrierService.registerCarrier(carrier);
         }
 
+        if(checkCarrier(carrier)) {
+            shipment.setState(shipment_state.completed);
+            shipment.setCreatedAt(LocalDateTime.now());
+            shipmentService.save(shipment);
+        }
 
+        redirectAttributes.addFlashAttribute("message", "성공적으로 등록되었습니다.");
+        redirectAttributes.addAttribute("shipment_Number", shipment_Number);
 
         return "shipment/shipmentList";
     }
 
 
 
+    public boolean checkCarrier(carrier carrier) {
+        //carrier의 모든 데이터 베이스 칼럼이 입력되었으면
+        return carrier.getCarrier_Name() != null && !carrier.getCarrier_Name().isEmpty()
+                && carrier.getCarrier_PhoneNumber() != null && !carrier.getCarrier_PhoneNumber().isEmpty()
+                && carrier.getCarrier_Vehicle() != null && !carrier.getCarrier_Vehicle().isEmpty()
+                && carrier.getCarrier_Price() != null
+                && carrier.getCarrier_manager() != null && !carrier.getCarrier_manager().isEmpty();
+    }
 
 
 
