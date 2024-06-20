@@ -18,11 +18,11 @@ public class productPlan {
     @Id
     private String productionPlanCode;
 
-    private String materials_Name;
+    private String materialsName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_Number")
-    private obtainorder_number order_Number;
+    private obtainorder_number orderNumber;
 
     private LocalDate pstartDate;
 

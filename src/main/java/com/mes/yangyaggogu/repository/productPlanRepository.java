@@ -1,5 +1,6 @@
 package com.mes.yangyaggogu.repository;
 
+import com.mes.yangyaggogu.entity.obtainorder_number;
 import com.mes.yangyaggogu.entity.productPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,9 +14,13 @@ public interface productPlanRepository extends JpaRepository<productPlan, String
     @Query("select p from productPlan p where (p.pstartDate <= :end) and (:start <= p.pendDate)")
     List<productPlan> getBestPost(LocalDate start, LocalDate end);
 
-    @Query("select p from productPlan p where (p.pstartDate = :start) and (p.materials_Name = :productName)")
+    @Query("select p from productPlan p where (p.pstartDate = :start) and (p.materialsName = :productName)")
     List<productPlan> getEqualStartDatePlan(LocalDate start,String productName);
 
    // boolean existsByPstartDateLessThanEqualAndPendDateGreaterThanEqual(LocalDate start, LocalDate end);
-    
+
+    //productPlan findByMaterialsNameAndOrderNumber(String name, obtainorder_number obtainorderNumber);
+
+
+
 }

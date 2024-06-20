@@ -21,7 +21,7 @@ public class obtainorder_number {
     @Id
     private String order_Number;
 
-    @OneToMany(mappedBy = "order_Number",  cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "orderNumber",  cascade = CascadeType.REMOVE)
     private List<productPlan> productPlanList;
 
 }

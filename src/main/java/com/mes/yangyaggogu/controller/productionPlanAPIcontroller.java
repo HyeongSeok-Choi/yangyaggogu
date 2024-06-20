@@ -47,7 +47,7 @@ public class productionPlanAPIcontroller {
 
             P_plan_calendarDTO pPlanCalendarDTO=new P_plan_calendarDTO();
 
-            String str =prd_p.getMaterials_Name();
+            String str =prd_p.getMaterialsName();
 
             switch (str){
                     case "양배추즙":
@@ -73,7 +73,7 @@ public class productionPlanAPIcontroller {
 
             pPlanCalendarDTO.setEnd(prd_p.getPendDate().plusDays(1));
 
-            pPlanCalendarDTO.setTitle(prd_p.getProductionPlanCode()+" "+prd_p.getMaterials_Name()+" : "+prd_p.getTarget_Output()+" box");
+            pPlanCalendarDTO.setTitle(prd_p.getProductionPlanCode()+" "+prd_p.getMaterialsName()+" : "+prd_p.getTarget_Output()+" box");
 
             prdList.add(pPlanCalendarDTO);
 

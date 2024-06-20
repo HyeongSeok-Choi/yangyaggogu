@@ -43,7 +43,7 @@ public class productPlanService {
             productPlan.setProductionPlanCode("p-100"+i);
             productPlan.setState(productionPlan_state.ready);
             productPlan.setPstartDate(LocalDate.now());
-            productPlan.setMaterials_Name("양배추즙");
+            productPlan.setMaterialsName("양배추즙");
             productPlan.setPendDate(LocalDate.now().plusDays(i));
             productPlan.setTarget_Output(500L);
             obtainorder_number obtainorder_number = new obtainorder_number();
@@ -51,7 +51,7 @@ public class productPlanService {
             o_planRepository.save(obtainorder_number);
 
 
-            productPlan.setOrder_Number(obtainorder_number);
+            productPlan.setOrderNumber(obtainorder_number);
 
             P_planRepository.save(productPlan);
 
