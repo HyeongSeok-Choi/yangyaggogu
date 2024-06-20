@@ -1,6 +1,9 @@
 package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.constant.shipment_state;
+import com.mes.yangyaggogu.dto.FinishedStockDTO;
+import com.mes.yangyaggogu.dto.shipmentDTO;
+import com.mes.yangyaggogu.dto.workOrderPlanDTO;
 import com.mes.yangyaggogu.entity.*;
 import com.mes.yangyaggogu.service.*;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequestMapping(value = "/api")
 @RestController
@@ -22,7 +26,11 @@ public class shipmentApiController {
     @GetMapping("/shipment/list")
     public Map<String,Object> showShipmentRegisterForm() {
         Map<String,Object> map = new HashMap<>();
-        map.put("data",finishedstockService.showFinishedStockList());
+
+        List<FinishedStockDTO> finishedStockDTOList = finishedstockService.showFinishedStockList().stream()
+                .map(a -> new FinishedStockDTO(a))
+                .collect(Collectors.toList());
+        map.put("data",finishedStockDTOList);
 
         return map;
     }
@@ -41,6 +49,7 @@ public class shipmentApiController {
 
                 shipment shipment = new shipment();
                 obtainorder_number orderNumber = existingStock.getOrderNumber();
+                System.out.println(orderNumber+"!!!!!!!!");
                 List<obtainorder_detail> odList = obtainOrderService.findByOrderNumber(orderNumber);
 
                 shipment.setShipment_Number(shipmentService.generateShipmentNumber());
@@ -61,7 +70,7 @@ public class shipmentApiController {
                     shipment.setCompany_name(null);
                     shipment.setCompany_Address("");
                 }
-
+                shipment.setOrder_Number(orderNumber);
                 shipment.setShipment_Amount(existingStock.getAmount());
                 shipment.setProductionName(existingStock.getMaterials_Name());
                 shipment.setShippingDate(LocalDateTime.now());
@@ -87,12 +96,18 @@ public class shipmentApiController {
     @GetMapping("/shipment/confirmedList")
     public Map<String,Object> showShipmentList() {
         Map<String,Object> map = new HashMap<>();
-        map.put("data",shipmentService.showShipmentList());
+
+
+        List<shipmentDTO> shipmentDtoList = shipmentService.showShipmentList().stream()
+                .map(a -> new shipmentDTO(a))
+                .collect(Collectors.toList());
+
+        map.put("data",shipmentDtoList);
 
         return map;
     }
 
-    @GetMapping("/shipment/{id}")
+    @GetMapping("/shipment/confirmedList/{id}")
     public shipment getShipment(@PathVariable String id) {
         return shipmentService.findById(id);
     }

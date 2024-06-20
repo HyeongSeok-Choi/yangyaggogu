@@ -126,14 +126,25 @@
             columns: [// dataLoader 이름 + entity이름
                 {data: null},
                 {data: null, defaultContent: ''},
-                {data: "shipment_Number"},
-                {data: "order_Number.order_Number",},
+                {data: "shipment_Number",render: function (data, type, row, meta) {
+                        return '<a href="/shipment/confirmedList/' + data + '">' + data + '</a>';
+                    }},
+                {data: "order_Number",},
                 {data: "shippingDate"},
                 {data: "productionName"},
                 {data: "shipment_Amount"},
                 {data: "createdAt"},
                 {data: "deliveryDate"},
-                {data: "state"}
+                {data: "state",
+                    render: function (data, type, row) {
+                        if (data === "ready") {
+                            return "ready";
+                        } else if (data === "completed") {
+                            return "작성 완료";
+                        } else {
+                            return data;
+                        }
+                    }}
             ],
             ordering: true,
             lengthChange: false,

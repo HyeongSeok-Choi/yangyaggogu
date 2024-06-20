@@ -115,7 +115,7 @@
             columns: [
                 {data: null},
                 {data: null, defaultContent: ''},
-                {data: "orderNumber.order_Number"},
+                {data: "orderNumber"},
                 // dataLoader 이름 + entity이름
 
                 {data: "materials_Name"},
@@ -189,7 +189,7 @@
                     data.state = 'out';
                     // 여기서 서버로 업데이트 요청을 보낼 수 있습니다.
                     $.ajax({
-                        url: 'http://localhost:8080/api/finishedStock/update',
+                        url: '/api/finishedStock/update',
                         type: 'POST',
                         data: JSON.stringify(data),
                         contentType: 'application/json',
