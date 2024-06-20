@@ -57,11 +57,11 @@ public class productionPlanAPIcontroller {
                     pPlanCalendarDTO.setColor("#000000");
                     break;
 
-                    case "매실젤리스틱":
+                    case "매실젤리":
                     pPlanCalendarDTO.setColor("#669900");
                     break;
 
-                    case "석류젤리스틱":
+                    case "석류젤리":
                     pPlanCalendarDTO.setColor("#ff0066");
                     break;
                 default:
@@ -69,11 +69,11 @@ public class productionPlanAPIcontroller {
                     break;
             }
 
-            pPlanCalendarDTO.setStart(prd_p.getP_startDate().toLocalDate());
+            pPlanCalendarDTO.setStart(prd_p.getPstartDate());
 
-            pPlanCalendarDTO.setEnd(prd_p.getP_endDate().toLocalDate());
+            pPlanCalendarDTO.setEnd(prd_p.getPendDate().plusDays(1));
 
-            pPlanCalendarDTO.setTitle(prd_p.getProductionPlanCode());
+            pPlanCalendarDTO.setTitle(prd_p.getProductionPlanCode()+" "+prd_p.getMaterials_Name()+" : "+prd_p.getTarget_Output()+" box");
 
             prdList.add(pPlanCalendarDTO);
 

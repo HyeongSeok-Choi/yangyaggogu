@@ -43,6 +43,12 @@ public class CompanyApiController {
         return ResponseEntity.ok().build();
     }
 
+    //거래처 이름 가져오기
+    @GetMapping("/companies/name")
+    public List<String> getCompanies() {
+        return companyService.getAllCompanyNames();
+    }
+
 
 
 }

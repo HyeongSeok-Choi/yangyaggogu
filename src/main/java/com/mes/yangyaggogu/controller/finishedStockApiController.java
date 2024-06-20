@@ -1,8 +1,10 @@
 package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.dto.FinishedStockDTO;
+import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.dto.shipmentDTO;
 import com.mes.yangyaggogu.entity.finishedstock;
+import com.mes.yangyaggogu.entity.ingredientStock;
 import com.mes.yangyaggogu.service.finishedstockService;
 import com.mes.yangyaggogu.service.workOrderPlanService;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +34,7 @@ public class finishedStockApiController {
         return map;
     }
 
-    @GetMapping("finishedStock/list")
+    @GetMapping("/finishedStock/list")
     public Map<String,Object> showFinishedStockList() {
         Map<String,Object> map = new HashMap<>();
 
@@ -55,5 +57,19 @@ public class finishedStockApiController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping(value = "/productMaterial/search")
+    public ResponseEntity<?> SearchFinishedStockList(@RequestBody searchDto search) {
+
+        System.out.println("아예 안오니 ?");
+
+        System.out.println(search.getEnd());
+        System.out.println(search.getStart());
+        System.out.println(search.getKeyword());
+
+        List<finishedstock> searchLists =finishedstockService.searchLists(search);
+
+        return ResponseEntity.ok(searchLists);
     }
 }

@@ -3,36 +3,220 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layouts/layout1}">
 <head>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js'></script>
     <meta charset='utf-8' />
-    <th:block layout:fragment="javascript">
-    <script>
-
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                eventDidMount : function (info){
-                    tippy(info.el,{
-                        content:info.event._def.title,
-                        placement:"bottom",
-                        offset:[0,0],
-                        interactive: true,
-                    })
-                }
-            });
-            calendar.render();
-        });
-
-    </script>
-    </th:block>
-    <title>layout Example</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Main</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!--    <link-->
+<!--            rel="stylesheet"-->
+<!--            href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"-->
+<!--    />-->
+    <link
+            href="https://fonts.googleapis.com/css?family=Montserrat"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <style>
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+        .chart-box {
+            flex: 1 0 20%;
+            /*min-width: 300px;*/
+            max-width: 20%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
 <th:block layout:fragment="content">
     <div class="container1">
-    <div class="content" id="calendar" style="width: 1300px"></div>
+        <div id="wrapper">
+            <div class="content-area">
+                <div class="container-fluid">
+                    <div class="main">
+                        <div class="row mt-4">
+                            <div class="col-md-5">
+                                <div class="box columnbox mt-4">
+                                    <div id="barChart" style="min-height:300px"></div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="box mt-4">
+                                    <div id="myChart" style="min-height:300px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="box mt-4">
+                            <h4 style="padding-bottom: 20px">설비별 가동율</h4>
+                            <div class="box mt-4 chart-container">
+                                <div class="chart-box" th:each="i : ${#numbers.sequence(1,10)}">
+                                        <div th:id="'circleChart' + ${i}" style="min-height:300px"></div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
+
+    <script>
+        var options = {
+            series: [{
+                name: '흑마늘',
+                data: [44, 55, 41, 37, 22, 43, 21]
+            }, {
+                name: '양배추',
+                data: [53, 32, 33, 52, 13, 43, 32]
+            }, {
+                name: '매실 젤리스틱',
+                data: [12, 17, 11, 9, 15, 11, 20]
+            }, {
+                name: '석류 젤리스틱',
+                data: [9, 7, 5, 8, 6, 9, 4]
+            }, ],
+            chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    dataLabels: {
+                        total: {
+                            enabled: true,
+                            offsetX: 0,
+                            style: {
+                                fontSize: '13px',
+                                fontWeight: 900
+                            }
+                        }
+                    }
+                },
+            },
+            stroke: {
+                width: 1,
+                colors: ['#fff']
+            },
+            title: {
+                text: '월간 생산량'
+            },
+            xaxis: {
+                categories: [1, 2, 3, 4, 5, 6, 7,8,9,10,11,12],
+                labels: {
+                    formatter: function (val) {
+                        return val + "BOX"
+                    }
+                }
+            },
+            yaxis: {
+                title: {
+                    text: undefined
+                },
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val + "BOX"
+                    }
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            legend: {
+                position: 'top',
+                horizontalAlign: 'left',
+                offsetX: 40
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#myChart"), options);
+        chart.render();
+    </script>
+    <script>
+        var options = {
+            series: [{
+                data: [21, 22, 10, 28]
+            }],
+            chart: {
+                height: 350,
+                type: 'bar',
+                events: {
+                    click: function(chart, w, e) {
+                        // console.log(chart, w, e)
+                    }
+                }
+            },
+            colors: ["red", "yellow", "blue", "red"],
+            plotOptions: {
+                bar: {
+                    columnWidth: '30%',
+                    distributed: true,
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            legend: {
+                show: false
+            },
+            title:{
+                text:'일일 생산량',
+            },
+            xaxis: {
+                categories: [
+                    '양배추즙',
+                    '흑마늘즙',
+                    '석류젤리스틱',
+                    '매실젤리스틱',
+                ],
+                labels: {
+                    style: {
+                        colors: ["red", "yellow", "blue", "red"],
+                        fontSize: '12px'
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#barChart"), options);
+        chart.render();
+    </script>
+    <script>
+        var options = {
+            series: [70],
+            chart: {
+                height: 350,
+                type: 'radialBar',
+            },
+            plotOptions: {
+                radialBar: {
+                    hollow: {
+                        size: '70%',
+                    }
+                },
+            },
+            labels: ['Cricket'],
+        };
+
+        for (var i = 1; i <= 10; i++) {
+            var chart = new ApexCharts(document.querySelector("#circleChart" + i), options);
+            chart.render();
+        }
+    </script>
 </th:block>
 </body>
 </html>

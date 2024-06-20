@@ -23,7 +23,7 @@ public class obtainorder_detail {
     private Long id;
 
     @JoinColumn(name = "order_Number")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private obtainorder_number orderNumber;
 
     private String writer;

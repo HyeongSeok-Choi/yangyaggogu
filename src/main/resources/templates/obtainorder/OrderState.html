@@ -90,10 +90,7 @@
                     <th>거래처</th>
                         <td data-column="4">
                             <select id="col4_filter" class="column_filter">
-                                <option></option>
-                                <option>쿠팡</option>
-                                <option>삼성</option>
-                                <option>옥션</option>
+                                <option value=""></option>
                             </select>
                         </td>
                     <th>진행상태</th>
@@ -167,10 +164,14 @@
                         orderable: false,
                         render: DataTable.render.select(),
                         targets: 0
+                    },
+                    {
+                        targets: 1,
+                        visible: false
                     }
                 ],
                 ajax: {
-                    url: 'http://localhost:8080/api/getObtainOrderList',
+                    url: '/api/getObtainOrderList',
                     type: 'GET',
                     dataFilter: function(res) {
                         var json = $.parseJSON(res);
@@ -180,7 +181,6 @@
                             'recordsFiltered': json.data.recordsFiltered,
                             'data': json.data,
                         };
-
                         return JSON.stringify(data);
                     },
                 },
@@ -194,7 +194,7 @@
                         data: 'id'},
                     {
                         title:"수주번호",
-                        data: 'orderNumber.order_Number',
+                        data: 'orderNumber',
                         render: function(data, type, row) {
                             return '<a href="#" class="order-number" data-id="' + row.id + '">' + data + '</a>'}
                     },
@@ -206,7 +206,7 @@
                         data: 'productName'},
                     {
                         title:"수주일자",
-                        data: 'orderDate'},
+                        data: 'order_Date'},
                     {
                         title:"수주수량",
                         data: 'order_Amount',
@@ -231,6 +231,7 @@
                 let columnIndex = $(this).closest('td').data('column');
                 filterColumn(columnIndex);
             });
+
             //검색 기능
             function filterColumn(i){
                 table.data(i).search($('#col' + i + '_filter').val()).draw();
@@ -273,7 +274,22 @@
 
         $('#confirmOrderBtn').on('click', function (e){
 
+            //일단 다중 셀렉트시 이미 확정된 건일 경우 알림창 뜨게 설정해놓음
+            table.rows({selected: true}).data(id);
+
+            var SelectedCount = table.rows({selected: true}).data().length;
+            for (let i = 0; i < SelectedCount ; i++) {
+
+                if(table.rows({selected: true}).data(id)[i]["state"] ==="confirmed"){
+                    alert("수주 확정된 건입니다.");
+                    return false;
+                }
+            }
+
+
            var targetIds= getSelectedRows();
+
+           console.log(targetIds);
 
             fetch(`/api/changeObtainState`, {
                 headers: {
@@ -285,6 +301,10 @@
             })
                 .then((response) => response.json())
                 .then(confirm => {
+                    if(confirm === false){
+                        alert("생산가능한 일정이 아닙니다.");
+                        return false;
+                    }
                     console.log(confirm);
                     alert("수주가 확정 되었습니다.")
                     table.ajax.reload();
@@ -326,6 +346,25 @@
             let openUrl = "/popup.calendar";
             window.open(openUrl, 'popup_calendar', popOption);
         }
+
+        //거래처 이름 불러오기
+        $(document).ready(function() {
+            $.ajax({
+                url: '/api/companies/name',
+                method: 'GET',
+                success: function (data){
+                    var $customerSelect = $('#col4_filter');
+                    $customerSelect.empty();
+                    $customerSelect.append('<option value=""></option>');
+                    data.forEach(function (company) {
+                        $customerSelect.append('<option value="'+company+'">'+company+'</option>');
+                    });
+                },
+                error: function (err) {
+                    console.error('거래처 목록을 가져오는 중 오류가 발생했습니다:', err);
+                }
+            });
+        });
     </script>
 </th:block>
 </body>

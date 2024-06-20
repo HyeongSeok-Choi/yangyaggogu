@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -42,8 +43,12 @@ public class CompanyService {
         //수주상세 테이블에서 받아온 거래처 이름으로 찾기
     }
 
+    //거래처 코드 어떻게 짤지 정하고 나중에 수정
 
-
-
-
+    //거래처 이름 가져오기
+    public List<String> getAllCompanyNames(){
+        return companyRepository.findAll().stream()
+                .map(company ::getCompany_name)
+                .collect(Collectors.toList());
+    }
 }
