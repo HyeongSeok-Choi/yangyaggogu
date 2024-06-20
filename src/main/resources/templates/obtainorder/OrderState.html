@@ -180,7 +180,6 @@
                             'recordsFiltered': json.data.recordsFiltered,
                             'data': json.data,
                         };
-
                         return JSON.stringify(data);
                     },
                 },
@@ -231,6 +230,7 @@
                 let columnIndex = $(this).closest('td').data('column');
                 filterColumn(columnIndex);
             });
+
             //검색 기능
             function filterColumn(i){
                 table.data(i).search($('#col' + i + '_filter').val()).draw();

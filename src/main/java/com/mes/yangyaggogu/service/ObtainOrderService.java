@@ -11,8 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -114,6 +116,36 @@ public class ObtainOrderService {
         return findedDto;
     }
 
-    //수주확정 클릭 시 진행 상태 변경
+   //팝업창 데이터 수정
+    public boolean updateOrder(OrderDtlDto orderDtlDto){
+        try {
+            Optional<obtainorder_detail> optionalObtainorderDetail = obtainorderDetailRepository.findById(orderDtlDto.getId());
+            if (optionalObtainorderDetail.isPresent()) {
+                obtainorder_detail obtainorderDetail = optionalObtainorderDetail.get();
+                obtainorderDetail.setOrder_Amount(orderDtlDto.getOrder_Amount());
+                obtainorderDetail.setDelivery_Date(orderDtlDto.getDelivery_Date());
+                obtainorderDetailRepository.save(obtainorderDetail);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //팝업창 데이터 삭제
+    @Transactional
+    public boolean deleteOrder(Long id) {
+        try {
+            obtainorder_detail obtainorderDetail = obtainorderDetailRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("not found : " + id));
+            obtainorderDetailRepository.delete(obtainorderDetail);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
