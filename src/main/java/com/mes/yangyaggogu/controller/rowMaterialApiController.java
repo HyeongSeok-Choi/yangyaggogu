@@ -8,11 +8,13 @@ import com.mes.yangyaggogu.service.rowStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +29,12 @@ public class rowMaterialApiController {
         //datatable 사용시 data를 키로 가져야 해서 넣음
         Map<String, Object> rowStock = new HashMap<String, Object>();
 
-        rowStock.put("data", rowStockService.getRowStockList());
+        List<StockDto> rowMaterialList = rowStockService.getRowStockList().stream()
+                        .map(a -> new StockDto(a))
+                                .collect(Collectors.toList());
+
+        rowStock.put("data", rowMaterialList);
+
 
         return rowStock;
     }
@@ -38,7 +45,10 @@ public class rowMaterialApiController {
         //datatable 사용시 data를 키로 가져야 해서 넣음
         Map<String, Object> rowOrderStock = new HashMap<String, Object>();
 
-        rowOrderStock.put("data", rowStockService.getRowStockList());
+        List<StockDto> getRowStockOrderList = rowStockService.getRowStockList().stream()
+                        .map(a->new StockDto(a))
+                                .collect(Collectors.toList());
+        rowOrderStock.put("data", getRowStockOrderList);
 
         return rowOrderStock;
     }
@@ -76,6 +86,7 @@ public class rowMaterialApiController {
         System.out.println(stockDto.getIngredientAmount());
 
         HashMap<String, Object> rowOrderStock = new HashMap<>();
+
         rowOrderStock.put("StockDto", stockDto);
 
         rowStockService.orderStock(stockDto);
