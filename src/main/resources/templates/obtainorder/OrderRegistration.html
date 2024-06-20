@@ -60,7 +60,6 @@
         <div class="button-container">
             <button class="btn btn-primary" onclick="addNewOrder()">추가</button>
             <button class="btn btn-outline-info" id="add-btn" >저장</button>
-            <button class="btn btn-outline-danger">닫기</button>
         </div>
         <!-- 수주 등록하는 부분 -->
         <table id="orderAdd" class="table table-striped table-bordered order-add-table">
@@ -68,17 +67,14 @@
             <tr>
                 <th>거래처</th>
                 <td>
-                    <select id="customer">
-                        <option></option>
-                        <option>쿠팡</option>
-                        <option>삼성</option>
-                        <option>옥션</option>
+                    <select id="customerSelect">
+                        <option value="">선택하세요</option>
                     </select>
                 </td>
                 <th>제품명</th>
                 <td>
                     <select id="product">
-                        <option></option>
+                        <option>선택하세요</option>
                         <option>양배추즙</option>
                         <option>흑마늘즙</option>
                         <option>석류젤리</option>
@@ -93,7 +89,7 @@
                 <th>등록자</th>
                 <td>
                     <select id="registrar">
-                        <option></option>
+                        <option>선택하세요</option>
                         <option>최형석</option>
                         <option>강두일</option>
                         <option>김진영</option>
@@ -126,16 +122,19 @@
 
     <!-- script -->
     <script th:inline="javascript">
+        var isFirstOrder =true;
+        var originalCustomerOptions = [];
+
         // 추가 버튼 클릭 시 실행될 함수
         function addNewOrder() {
             //각 입력 필드의 값을 가져오기
-            var customer = $('#customer').val();
+            var customer = $('#customerSelect').val();
             var product = $('#product').val();
             var orderDate = new Date;
             let year = orderDate.getFullYear(); // 년도
             let month = orderDate.getMonth() + 1;  // 월
             let date = orderDate.getDate();  // 날짜
-            console.log(orderDate+ "여기")
+
             var orderQuantity = $('#orderQuantity').val();
             var deliveryDate = $('#deliveryDate').val();
             var registrar = $('#registrar').val();
@@ -145,6 +144,29 @@
                 alert('수주를 등록해주세요.');
                 return;
             }
+
+            //중복 제품 확인
+            var isDuplicate = false;
+            $('#orderMng tbody tr').each(function () {
+                var existingProduct = $(this).find('td:eq(2)').text();
+                if (existingProduct == product) {
+                    isDuplicate = true;
+                    return false;
+                }
+            });
+            if (isDuplicate){
+                alert('중복 되는 제품입니다.');
+                return;
+            }
+
+            // 첫 번째 주문 추가 후 거래처 선택 비활성화
+            if (isFirstOrder){
+                originalCustomerOptions = $('#customerSelect').html();
+                $('#customerSelect').empty();
+                $('#customerSelect').append('<option value="'+customer+'">'+customer+'</option>');
+                isFirstOrder = false;
+            }
+
 
             //새로운 행을 생성하고 값 삽입
             var newRowHtml = `
@@ -169,7 +191,7 @@
             $('#orderMng tbody').append(newRowHtml);
 
             //입력 필드 초기화
-            $('#customer').val('');
+            $('#customerSelect').val('');
             $('#product').val('');
             $('#orderDate').val('');
             $('#orderQuantity').val('');
@@ -179,6 +201,7 @@
 
         // 삭제 버튼 클릭 시 삭제
         function deleteSelectedRows() {
+
             //체크된 체크박스가 있는지 확인
             if ($('.rowCheckbox:checked').length == 0){
                 alert('삭제할 항목을 선택해 주세요.');
@@ -187,6 +210,13 @@
             $('.rowCheckbox:checked').each(function (){
                 $(this).closest('tr').remove();
             });
+
+            //추가된 수주 테이블이 비어있는지 확인
+            if ($('#orderMng tbody tr').length == 0) {
+                //거래처 선택 옵션 원상복구
+                $('#customerSelect').html(originalCustomerOptions);
+                isFirstOrder = true;
+            }
         }
 
         //체크박스 전체 선택/해제
@@ -196,25 +226,26 @@
     </script>
     <script th:inline="javascript">
         //수주 등록 스크립트
-
         $(document).on('click','#add-btn',function(){
 
             var dataArray = [];
-            for (let i = 0; i < $('.customer').length ; i++) {
 
-                var company_name =  $('.customer').eq(i).val();
-                var productName= $('.product').eq(i).val();
-                var order_Date= $('.orderDate').eq(i).val();
-                var order_Amount =$('.orderQuantity').eq(i).val();
-                var delivery_Date =$('.deliveryDate').eq(i).val();
-                var writer = $('.register').eq(i).val();
+            $('.rowCheckbox:checked').each(function () {
+                var $row = $(this).closest('tr');
+                var company_name = $row.find('.customer').val();
+                var productName = $row.find('.product').val();
+                var order_Date = $row.find('.orderDate').val();
+                var order_Amount = $row.find('.orderQuantity').val();
+                var delivery_Date = $row.find('.deliveryDate').val();
+                var writer = $row.find('.register').val();
 
-                dataArray[i] = {company_name,productName,order_Date,order_Amount,delivery_Date,writer};
+                dataArray.push({company_name, productName, order_Date, order_Amount, delivery_Date, writer});
+                $row.remove();
+            });
+            if (dataArray.length == 0){
+                alert('저장할 항목을 선택해 주세요.');
+                return;
             }
-
-            console.log(dataArray[0]);
-            console.log(dataArray[1]);
-            console.log(dataArray[2]);
 
                 fetch("/api/addOrder", {
                     method: "POST",
@@ -222,10 +253,40 @@
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(dataArray),
-                }).then(() => {
-                    alert("수주가 등록되었습니다.");
-                    location.replace("order_reg");
-                });
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("수주가 등록되었습니다.");
+                            if ($('#orderMng tbody tr').length == 0){
+                                $("#customerSelect").html(originalCustomerOptions);
+                                isFirstOrder = true;
+                            }
+                        } else {
+                            return response.json().then(err => { throw new Error(err.message);});
+                        }
+                    })
+                    .catch(error => {
+                        alert("수주 등록 중 오류가 발생 했습니다: " + error.message);
+                    });
+        });
+
+        //거래처 이름 불러오기
+        $(document).ready(function() {
+            $.ajax({
+                url: '/api/companies/name',
+                method: 'GET',
+                success: function (data){
+                    var $customerSelect = $('#customerSelect');
+                    $customerSelect.empty();
+                    $customerSelect.append('<option value="">선택하세요</option>');
+                    data.forEach(function (company) {
+                        $customerSelect.append('<option value="'+company+'">'+company+'</option>');
+                    });
+                },
+                error: function (err) {
+                    console.error('거래처 목록을 가져오는 중 오류가 발생했습니다:', err);
+                }
+            });
         });
     </script>
 </th:block>

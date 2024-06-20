@@ -108,4 +108,33 @@ public class obtainorderApiController {
 
         return ResponseEntity.ok(obtainorder_details);
     }
+
+    //팝업창 데이터 수정
+    @PostMapping("/updateOrder")
+    public ResponseEntity<Map<String, Object>> updateOrder(@RequestBody OrderDtlDto orderDtlDto){
+        Map<String, Object> response = new HashMap<>();
+        try {
+            //주문 업데이트 로직 구현
+            boolean success = obtainOrderService.updateOrder(orderDtlDto);
+            response.put("success", success);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    //팝업창 데이터 삭제
+    @DeleteMapping("/deleteOrder/{id}")
+    public ResponseEntity<Map<String, Object>> deleteOrder(@PathVariable Long id){
+        Map<String, Object> response = new HashMap<>();
+        try {
+            boolean success = obtainOrderService.deleteOrder(id);
+            response.put("success", success);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
 }

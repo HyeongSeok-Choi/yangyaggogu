@@ -90,10 +90,7 @@
                     <th>거래처</th>
                         <td data-column="4">
                             <select id="col4_filter" class="column_filter">
-                                <option></option>
-                                <option>쿠팡</option>
-                                <option>삼성</option>
-                                <option>옥션</option>
+                                <option value=""></option>
                             </select>
                         </td>
                     <th>진행상태</th>
@@ -167,6 +164,10 @@
                         orderable: false,
                         render: DataTable.render.select(),
                         targets: 0
+                    },
+                    {
+                        targets: 1,
+                        visible: false
                     }
                 ],
                 ajax: {
@@ -180,7 +181,6 @@
                             'recordsFiltered': json.data.recordsFiltered,
                             'data': json.data,
                         };
-
                         return JSON.stringify(data);
                     },
                 },
@@ -231,6 +231,7 @@
                 let columnIndex = $(this).closest('td').data('column');
                 filterColumn(columnIndex);
             });
+
             //검색 기능
             function filterColumn(i){
                 table.data(i).search($('#col' + i + '_filter').val()).draw();
@@ -345,6 +346,25 @@
             let openUrl = "/popup.calendar";
             window.open(openUrl, 'popup_calendar', popOption);
         }
+
+        //거래처 이름 불러오기
+        $(document).ready(function() {
+            $.ajax({
+                url: '/api/companies/name',
+                method: 'GET',
+                success: function (data){
+                    var $customerSelect = $('#col4_filter');
+                    $customerSelect.empty();
+                    $customerSelect.append('<option value=""></option>');
+                    data.forEach(function (company) {
+                        $customerSelect.append('<option value="'+company+'">'+company+'</option>');
+                    });
+                },
+                error: function (err) {
+                    console.error('거래처 목록을 가져오는 중 오류가 발생했습니다:', err);
+                }
+            });
+        });
     </script>
 </th:block>
 </body>
