@@ -72,19 +72,36 @@
     </div>
 
     <script>
+
+        $(document).ready(function(){
+
+            function getMonth(){
+                const dates=[];
+                const now = new Date();
+                for( let i=0; i<3; i++){
+                    const date = new Date();
+                    date.setMonth(now.getMonth()+i);
+                    dates.push(`${date}`);
+                }
+                return dates;
+            }
+            const datesArr = getMonth();
+
+
+
         var options = {
             series: [{
                 name: '흑마늘',
-                data: [44, 55, 41, 37, 22, 43, 21]
+                data: [44, 55, 41]
             }, {
                 name: '양배추',
-                data: [53, 32, 33, 52, 13, 43, 32]
+                data: [53, 32, 33]
             }, {
                 name: '매실 젤리스틱',
-                data: [12, 17, 11, 9, 15, 11, 20]
+                data: [12, 17, 11]
             }, {
                 name: '석류 젤리스틱',
-                data: [9, 7, 5, 8, 6, 9, 4]
+                data: [9, 7, 5]
             }, ],
             chart: {
                 type: 'bar',
@@ -114,11 +131,11 @@
                 text: '월간 생산량'
             },
             xaxis: {
-                categories: [1, 2, 3, 4, 5, 6, 7,8,9,10,11,12],
+                categories: datesArr,
                 labels: {
                     formatter: function (val) {
                         return val + "BOX"
-                    }
+                    },
                 }
             },
             yaxis: {
@@ -145,6 +162,7 @@
 
         var chart = new ApexCharts(document.querySelector("#myChart"), options);
         chart.render();
+        })
     </script>
     <script>
         var options = {
