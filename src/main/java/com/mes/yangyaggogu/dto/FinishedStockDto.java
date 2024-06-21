@@ -2,6 +2,7 @@ package com.mes.yangyaggogu.dto;
 
 import com.mes.yangyaggogu.constant.finishedstock_state;
 import com.mes.yangyaggogu.entity.finishedstock;
+import com.mes.yangyaggogu.entity.obtainorder_number;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +10,8 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class FinishedStockDTO {
 
     private Long id;
