@@ -1,5 +1,6 @@
 package com.mes.yangyaggogu.controller;
 
+import com.mes.yangyaggogu.constant.finishedstock_state;
 import com.mes.yangyaggogu.dto.FinishedStockDTO;
 import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.dto.shipmentDTO;
@@ -46,18 +47,45 @@ public class finishedStockApiController {
         return map;
     }
 
+//    @PostMapping("finishedStock/update")
+//    public ResponseEntity<?> updateFinishedStock(@RequestBody finishedstock finishedstock) {
+//        Optional<finishedstock> optionalFinishedStock = finishedstockService.findById(finishedstock.getId());
+//        if (optionalFinishedStock.isPresent()) {
+//            finishedstock existingStock = optionalFinishedStock.get();
+//            existingStock.setState(finishedstock.getState());
+//            finishedstockService.save(existingStock);
+//            return ResponseEntity.ok(existingStock);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+
     @PostMapping("finishedStock/update")
-    public ResponseEntity<?> updateFinishedStock(@RequestBody finishedstock finishedstock) {
-        Optional<finishedstock> optionalFinishedStock = finishedstockService.findById(finishedstock.getId());
+    public ResponseEntity<?> updateFinishedStock(@RequestBody FinishedStockDTO finishedStockDTO) {
+        Optional<finishedstock> optionalFinishedStock = finishedstockService.findById(finishedStockDTO.getId());
         if (optionalFinishedStock.isPresent()) {
             finishedstock existingStock = optionalFinishedStock.get();
-            existingStock.setState(finishedstock.getState());
+            existingStock.setState(finishedStockDTO.getState());
             finishedstockService.save(existingStock);
-            return ResponseEntity.ok(existingStock);
+            FinishedStockDTO responseDTO = convertToDTO(existingStock);
+            return ResponseEntity.ok(responseDTO);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
+    private FinishedStockDTO convertToDTO(finishedstock stock) {
+        FinishedStockDTO dto = new FinishedStockDTO();
+        dto.setId(stock.getId());
+        dto.setOrderNumber(stock.getOrderNumber().getOrder_Number());
+        dto.setMaterials_Name(stock.getMaterials_Name());
+        dto.setAmount(stock.getAmount());
+        dto.setExp(stock.getExp());
+        dto.setState(finishedstock_state.out);
+        dto.setShipmentState(stock.getShipmentState());
+        return dto;
+    }
+
 
     @PostMapping(value = "/productMaterial/search")
     public ResponseEntity<?> SearchFinishedStockList(@RequestBody searchDto search) {
@@ -68,7 +96,7 @@ public class finishedStockApiController {
         System.out.println(search.getStart());
         System.out.println(search.getKeyword());
 
-        List<finishedstock> searchLists =finishedstockService.searchLists(search);
+        List<FinishedStockDTO> searchLists =finishedstockService.searchLists(search);
 
         return ResponseEntity.ok(searchLists);
     }

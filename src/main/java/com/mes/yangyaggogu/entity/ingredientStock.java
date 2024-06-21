@@ -40,7 +40,7 @@ public class ingredientStock {
 //    private Long out_Amount;
 
     @JoinColumn(name = "order_Number")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private obtainorder_number order_Number;
 
     private String company_code;

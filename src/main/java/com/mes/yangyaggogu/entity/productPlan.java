@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mes.yangyaggogu.constant.productionPlan_state;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class productPlan {

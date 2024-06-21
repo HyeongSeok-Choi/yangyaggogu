@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,7 +23,7 @@ public class FinishedStockDTO {
 
     private Long amount;
 
-    private LocalDateTime exp;
+    private LocalDate exp;
 
     private finishedstock_state state;
 

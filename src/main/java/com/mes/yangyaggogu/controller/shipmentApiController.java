@@ -24,13 +24,13 @@ public class shipmentApiController {
     final private ObtainOrderService obtainOrderService;
 
     @GetMapping("/shipment/list")
-    public Map<String,Object> showShipmentRegisterForm() {
-        Map<String,Object> map = new HashMap<>();
+    public Map<String, Object> showShipmentRegisterForm() {
+        Map<String, Object> map = new HashMap<>();
 
         List<FinishedStockDTO> finishedStockDTOList = finishedstockService.showFinishedStockList().stream()
                 .map(a -> new FinishedStockDTO(a))
                 .collect(Collectors.toList());
-        map.put("data",finishedStockDTOList);
+        map.put("data", finishedStockDTOList);
 
         return map;
     }
@@ -40,16 +40,27 @@ public class shipmentApiController {
     public ResponseEntity<?> registerShipment(@RequestBody List<Long> ids) {
         List<finishedstock> updatedStocks = new ArrayList<>();
         for (Long id : ids) { //list 돌면서 검사
+
+            System.out.println(id);
             Optional<finishedstock> optionalFinishedStock = finishedstockService.findById(id);
+
             if (optionalFinishedStock.isPresent()) {
+
                 finishedstock existingStock = optionalFinishedStock.get(); //존재하면 객체를 가져옴
                 existingStock.setShipmentState("출하 완료");
                 finishedstockService.save(existingStock);
                 updatedStocks.add(existingStock);  //업데이트 된 객체를 리스트에 추가
 
+                System.out.println(existingStock.getAmount());
+                System.out.println(existingStock.getShipmentState());
+                System.out.println(existingStock.getOrderNumber());
+
                 shipment shipment = new shipment();
+                System.out.println("요기");
                 obtainorder_number orderNumber = existingStock.getOrderNumber();
-                System.out.println(orderNumber+"!!!!!!!!");
+                System.out.println(orderNumber);
+                System.out.println("자기");
+                System.out.println(orderNumber + "!!!!!!!!");
                 List<obtainorder_detail> odList = obtainOrderService.findByOrderNumber(orderNumber);
 
                 shipment.setShipment_Number(shipmentService.generateShipmentNumber());
@@ -61,6 +72,7 @@ public class shipmentApiController {
                         companyDetailsMap.put(od.getCompany_name(), od);
                     }
 
+
                     // 여기서는 예를 들어 첫 번째 거래처 데이터를 선택합니다.
                     obtainorder_detail od = companyDetailsMap.values().iterator().next();
 
@@ -70,6 +82,7 @@ public class shipmentApiController {
                     shipment.setCompany_name(null);
                     shipment.setCompany_Address("");
                 }
+
                 shipment.setOrder_Number(orderNumber);
                 shipment.setShipment_Amount(existingStock.getAmount());
                 shipment.setProductionName(existingStock.getMaterials_Name());
@@ -79,8 +92,8 @@ public class shipmentApiController {
                 //납품일은 나중에 수주상태 테이블에서 받아오기
                 shipment.setCreatedAt(null);
                 shipment.setState(shipment_state.ready);
-
                 shipmentService.save(shipment);
+
             }
         }
 
@@ -91,6 +104,12 @@ public class shipmentApiController {
         }
     }
 
+
+//    private shipmentDTO convertToDTO(shipment shipment) {
+//        shipmentDTO shipmentDTO = new shipmentDTO();
+//
+//
+//    }
 
 
     @GetMapping("/shipment/confirmedList")
