@@ -106,10 +106,10 @@
                     target: 4 ,render: DataTable.render.date()
                 },
                 {
-                    target: 8 ,render: DataTable.render.date()
+                    target: 7 ,render: DataTable.render.date()
                 },
                 {
-                    target: 9 ,render: DataTable.render.date()
+                    target: 8 ,render: DataTable.render.date()
                 }
             ],
             select: {
@@ -149,7 +149,7 @@
                         if (data === "ready") {
                             return "ready";
                         } else if (data === "completed") {
-                            return "작성 완료";
+                            return '<a href="/shipment/confirmedList/' + row.shipment_Number + '?status=completed">작성 완료</a>';
                         } else {
                             return data;
                         }

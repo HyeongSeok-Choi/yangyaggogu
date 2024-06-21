@@ -7,27 +7,27 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- css files for DataTables -->
 
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
-    <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
+<!--    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />-->
+<!--    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>-->
+<!--    <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>-->
 
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" />
+<!--    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />-->
+<!--    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />-->
+<!--    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css" />-->
+<!--    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" />-->
     <style>
         .container1 {
             padding-left: 300px;
@@ -84,7 +84,7 @@
 
             <div>
                 <label>수주번호</label>
-                <input type="text" th:field="*{order_Number.order_Number}">
+                <input type="text" th:field="*{order_Number}">
             </div>
             <div>
                 <label>제품명</label>
@@ -132,7 +132,7 @@
         </div>
 
         <div>
-            <button id="registerShipmentDetail" class="submit-button">출하 지시서 등록</button>
+            <button id="registerShipmentDetail" class="submit-button" th:text="${shipment.state == 'completed' ? '출하지시서 수정' : '출하지시서 등록'}"></button>
         </div>
     </form>
 </div>
