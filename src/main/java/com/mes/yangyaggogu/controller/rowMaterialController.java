@@ -46,12 +46,27 @@ public class rowMaterialController {
     }
 
     @GetMapping(value = "/rowStockOrderRegister")
-    public String orderRegister(Model model) throws Exception{
+    public String orderRegister(Model model, String ProductPlanCode ) throws Exception{
 
 
        List<productPlan> productPlanList = productPlanservice.getProductPlansBeforeOrder();
 
        model.addAttribute("productPlanListBefore", productPlanList);
+
+       if(ProductPlanCode != null){
+
+           if(ProductPlanCode.equals("선택없음")){
+
+               model.addAttribute("ProductPlan", new productPlan());
+
+           }else {
+               productPlan findProductPlan = productPlanservice.getProductPlan(ProductPlanCode);
+               model.addAttribute("ProductPlanCode", ProductPlanCode);
+               model.addAttribute("ProductPlan", findProductPlan);
+           }
+       }else {
+           model.addAttribute("ProductPlan", new productPlan());
+       }
 
 
         return "/stockPlan/rowStockOrderRegister";

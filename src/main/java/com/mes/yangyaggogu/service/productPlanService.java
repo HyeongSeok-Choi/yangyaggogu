@@ -29,11 +29,25 @@ public class productPlanService {
         return P_planRepository.findAll();
     }
 
+    //생산 계획 얻기
+    public productPlan getProductPlan(String productPlanId) {
+
+       productPlan productPlan=  P_planRepository.findById(productPlanId).orElseThrow();
+
+
+        return productPlan;
+    }
+
 
     //생산 시작적 계획 모두 출력
     public List<productPlan> getProductPlansBeforeOrder() {
 
         return P_planRepository.findAllByState(productionPlan_state.beforeOrder);
+    }
+    
+    //저장
+    public productPlan save(productPlan productPlan) {
+        return P_planRepository.save(productPlan);
     }
 
 

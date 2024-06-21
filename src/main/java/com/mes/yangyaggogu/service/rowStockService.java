@@ -1,10 +1,12 @@
 package com.mes.yangyaggogu.service;
 
+import com.mes.yangyaggogu.constant.productionPlan_state;
 import com.mes.yangyaggogu.constant.rowStock_state;
 import com.mes.yangyaggogu.dto.StockDto;
 import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.entity.ingredientStock;
 import com.mes.yangyaggogu.entity.obtainorder_number;
+import com.mes.yangyaggogu.entity.productPlan;
 import com.mes.yangyaggogu.repository.ingredientStockRepository;
 import com.mes.yangyaggogu.repository.obtainorder_numberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class rowStockService {
 
     private final ingredientStockRepository ingredientStockRepository;
     private final obtainorder_numberRepository obtainorderNumberRepository;
+    private final productPlanService productPlanService;
 
     public List<ingredientStock> getRowStockList(){
 
@@ -46,12 +49,12 @@ public class rowStockService {
 
     public ingredientStock orderStock(StockDto stockDto){
         ingredientStock ingredientStock = new ingredientStock();
-        obtainorder_number obtainorder_number = new obtainorder_number();
-        obtainorder_number.setOrderNumber(stockDto.getOrderNumber());
-        obtainorderNumberRepository.save(obtainorder_number);
+        System.out.println(stockDto.getProductPlanCodes()+"요거");
+        productPlan productPlan =productPlanService.getProductPlan(stockDto.getProductPlanCodes());
+        productPlan.setState(productionPlan_state.ready);
+        productPlanService.save(productPlan);
 
-        ingredientStock.setOrder_Number(obtainorder_number);
-
+        ingredientStock.setProductionPlanCode(productPlan);
 
         ingredientStock.setIngredient_Code(stockDto.getIngredientCode());
         ingredientStock.setMaterials_Name(stockDto.getMaterialsName());

@@ -44,5 +44,8 @@ public class productPlan {
     @OneToMany(mappedBy = "productionPlanCode",fetch = FetchType.LAZY,  cascade = CascadeType.REMOVE)
     private List<workPerform> workPerformList;
 
+    @OneToMany(mappedBy = "productionPlanCode",fetch = FetchType.LAZY,  cascade = CascadeType.REMOVE)
+    private List<ingredientStock> productPlanList;
+
 
 }

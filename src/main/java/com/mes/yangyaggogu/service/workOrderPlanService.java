@@ -78,6 +78,7 @@ public class workOrderPlanService {
 
                 find_WorkPlan.setProducer(producer);
                 find_WorkPlan.setState(workOrderPlan_state.proceeding);
+                find_WorkPlan.setP_startDate(LocalDateTime.now());
 
                 workOrderPlanRepository.save(find_WorkPlan);
                 return true;
@@ -89,6 +90,7 @@ public class workOrderPlanService {
         }else if(answer==1){
             find_WorkPlan.setProducer(producer);
             find_WorkPlan.setState(workOrderPlan_state.proceeding);
+            find_WorkPlan.setP_startDate(LocalDateTime.now());
 
             workOrderPlanRepository.save(find_WorkPlan);
 
@@ -104,6 +106,7 @@ public class workOrderPlanService {
 
         find_WorkPlan.setState(workOrderPlan_state.completed);
         find_WorkPlan.setP_endDate(LocalDateTime.now());
+        find_WorkPlan.setNow_Output(find_WorkPlan.getTarget_Output());
 
         if(find_WorkPlan.getProcessName().equals("포장")){
 
@@ -386,7 +389,7 @@ public class workOrderPlanService {
             } else if (productplan.getMaterialsName().equals("석류젤리")) {
                 productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrderNumber() + "SS");
             }
-            productplan.setState(productionPlan_state.ready);
+            productplan.setState(productionPlan_state.beforeOrder);
             productplan.setPstartDate(obtainorder_detail.getDelivery_Date().minusDays(3));
             productplan.setPendDate(obtainorder_detail.getDelivery_Date());
             productplan.setTarget_Output(obtainorder_detail.getOrder_Amount());

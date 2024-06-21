@@ -77,13 +77,6 @@ public class rowMaterialApiController {
     @PostMapping(value = "/registerOrderRowStack")
     public ResponseEntity<Map<String, Object>> rowStockOrderList(@RequestBody StockDto stockDto) {
 
-        System.out.println("들어옸어?");
-
-        System.out.println(stockDto.getOrderNumber());
-        System.out.println(stockDto.getIngredientCode());
-        System.out.println(stockDto.getCompanyName());
-        System.out.println(stockDto.getMaterialsName());
-        System.out.println(stockDto.getIngredientAmount());
 
         HashMap<String, Object> rowOrderStock = new HashMap<>();
 

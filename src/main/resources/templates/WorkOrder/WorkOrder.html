@@ -125,10 +125,10 @@
                 columnDefs: [
                     {
                         targets: 11,
-                        render: DataTable.render.date()
+                        render: DataTable.render.datetime('yyyy-MM-DD HH:mm')
                     }, {
                         targets: 12,
-                        render: DataTable.render.date()
+                        render: DataTable.render.datetime('yyyy-MM-DD HH:mm')
                     },
                     {
                         orderable: false,
@@ -286,7 +286,13 @@
                         }},
                     {
                         title:"생산량",
-                        data: 'now_Output'},
+                        data: 'now_Output',render:function (data,type,row){
+                            if(data == null){
+                                data = " ";
+                            }else{
+                                data = data+"kg";
+                            }
+                            return data}},
                     {
                         title:"상태",
                         data: 'state'},
@@ -298,7 +304,7 @@
                         data: 'p_startDate'},
                     {
                         title:"생산종료일",
-                        data: 'p_startDate'},
+                        data: 'p_endDate'},
 
 
                 ]

@@ -39,9 +39,9 @@ public class ingredientStock {
 
 //    private Long out_Amount;
 
-    @JoinColumn(name = "order_Number")
+    @JoinColumn(name = "productionPlanCode")
     @ManyToOne
-    private obtainorder_number order_Number;
+    private productPlan productionPlanCode;
 
     private String company_code;
 
