@@ -25,6 +25,14 @@
 
 <h3 style="padding: 30px; text-align: center">원자재 발주 등록</h3>
 <div class="row mb-5 text-center">
+    <label class="col-sm-2 col-form-label col-form-label-sm" for="productPlanCodes">생산계획번호</label>
+    <div class="col-sm-10">
+    <select class="form-control form-control-sm" id="productPlanCodes">
+        <option th:each="productPlan : ${productPlanListBefore}" th:value="${productPlan.getProductionPlanCode()}" th:text="${productPlan.getProductionPlanCode()}"></option>
+    </select>
+    </div>
+</div>
+<div class="row mb-5 text-center">
     <label class="col-sm-2 col-form-label col-form-label-sm" for="orderNumber">수주번호</label>
     <div class="col-sm-10">
         <input class="form-control form-control-sm" id="orderNumber" type="text" placeholder="수주번호를 입력해주세요"/>

@@ -35,7 +35,7 @@ public class OrderStateDto {
 
     public OrderStateDto(obtainorder_detail obtainorder_detail) {
         this.id = obtainorder_detail.getId();
-        this.orderNumber = obtainorder_detail.getOrderNumber().getOrder_Number();
+        this.orderNumber = obtainorder_detail.getOrderNumber().getOrderNumber();
         this.company_name = obtainorder_detail.getCompany_name();
         this.productName = obtainorder_detail.getProductName();
         this.order_Date = obtainorder_detail.getOrderDate();

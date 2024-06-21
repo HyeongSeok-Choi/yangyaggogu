@@ -58,7 +58,7 @@ public class ObtainOrderService {
         int count = getObtainOrderNumber(addOrderDtoList.get(0).getOrder_Date());
 
 
-        addOrderNumber.setOrder_Number(LocalDate.now().toString()+"-"+count);
+        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count);
 
         obtainOrderNumberRepository.save(addOrderNumber);
 
@@ -91,9 +91,9 @@ public class ObtainOrderService {
 
           obtainorder_number obtainorderNumber = findObtain.getOrderNumber();
 
-           System.out.println(obtainorderNumber.getOrder_Number());
+           System.out.println(obtainorderNumber.getOrderNumber());
 
-          String[] num  = obtainorderNumber.getOrder_Number().split("-");
+          String[] num  = obtainorderNumber.getOrderNumber().split("-");
 
            addNumber = Integer.parseInt(num[3]);
 
@@ -228,18 +228,18 @@ public class ObtainOrderService {
                         productPlan newJoinProducePlan = new productPlan();
 
                         if (comeProductName.equals("양배추즙")) {
-                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "CB" + "," + existedPlan.getProductionPlanCode());
+                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrderNumber() + "CB" + "," + existedPlan.getProductionPlanCode());
                         } else if (comeProductName.equals("흑마늘즙")) {
-                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "BG" + "," + existedPlan.getProductionPlanCode());
+                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrderNumber() + "BG" + "," + existedPlan.getProductionPlanCode());
                         }
 
                         obtainorder_number fakeOrderNum = new obtainorder_number();
-                        fakeOrderNum.setOrder_Number("복수 수주번호");
+                        fakeOrderNum.setOrderNumber("복수 수주번호");
 
                         obtainOrderNumberRepository.save(fakeOrderNum);
                         newJoinProducePlan.setOrderNumber(fakeOrderNum);
                         newJoinProducePlan.setMaterialsName(comeProductName);
-                        newJoinProducePlan.setState(productionPlan_state.ready);
+                        newJoinProducePlan.setState(productionPlan_state.beforeOrder);
                         newJoinProducePlan.setTarget_Output(capacity);
 
                         newJoinProducePlan.setPstartDate(StartDate);
@@ -261,18 +261,18 @@ public class ObtainOrderService {
 
                     if (capacity <= 160L) {
                         if (comeProductName.equals("매실젤리")) {
-                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "MS" + "," + existedPlan.getProductionPlanCode());
+                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrderNumber() + "MS" + "," + existedPlan.getProductionPlanCode());
                         } else if (comeProductName.equals("석류젤리")) {
-                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrder_Number() + "SS" + "," + existedPlan.getProductionPlanCode());
+                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrderNumber() + "SS" + "," + existedPlan.getProductionPlanCode());
                         }
 
                         obtainorder_number fakeOrderNum = new obtainorder_number();
-                        fakeOrderNum.setOrder_Number("복수 수주번호");
+                        fakeOrderNum.setOrderNumber("복수 수주번호");
 
                         obtainOrderNumberRepository.save(fakeOrderNum);
                         newJoinProducePlan.setOrderNumber(fakeOrderNum);
                         newJoinProducePlan.setMaterialsName(comeProductName);
-                        newJoinProducePlan.setState(productionPlan_state.ready);
+                        newJoinProducePlan.setState(productionPlan_state.beforeOrder);
                         newJoinProducePlan.setTarget_Output(capacity);
 
                         newJoinProducePlan.setPstartDate(StartDate);

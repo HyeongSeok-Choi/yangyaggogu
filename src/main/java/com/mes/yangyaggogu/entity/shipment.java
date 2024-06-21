@@ -20,7 +20,7 @@ public class shipment {
     private String shipment_Number;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_Number")
+    @JoinColumn(name = "orderNumber")
     private obtainorder_number order_Number;
 
     private String company_name;

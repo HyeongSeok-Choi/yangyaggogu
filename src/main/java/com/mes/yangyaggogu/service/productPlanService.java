@@ -30,6 +30,12 @@ public class productPlanService {
     }
 
 
+    //생산 시작적 계획 모두 출력
+    public List<productPlan> getProductPlansBeforeOrder() {
+
+        return P_planRepository.findAllByState(productionPlan_state.beforeOrder);
+    }
+
 
 
     //생산계획 50개의 더미 데이터 렛츠 기릿
@@ -47,7 +53,7 @@ public class productPlanService {
             productPlan.setPendDate(LocalDate.now().plusDays(i));
             productPlan.setTarget_Output(500L);
             obtainorder_number obtainorder_number = new obtainorder_number();
-            obtainorder_number.setOrder_Number("a-500"+i);
+            obtainorder_number.setOrderNumber("a-500"+i);
             o_planRepository.save(obtainorder_number);
 
 

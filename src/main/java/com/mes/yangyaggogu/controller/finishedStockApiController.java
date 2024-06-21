@@ -47,12 +47,24 @@ public class finishedStockApiController {
     }
 
     @PostMapping("finishedStock/update")
-    public ResponseEntity<?> updateFinishedStock(@RequestBody finishedstock finishedstock) {
+    public ResponseEntity<?> updateFinishedStock(@RequestBody FinishedStockDTO finishedstock) {
+
+        System.out.println(finishedstock.getState());
+        System.out.println(finishedstock.getAmount());
+        System.out.println(finishedstock.getExp());
+        System.out.println(finishedstock.getId());
+        System.out.println(finishedstock.getMaterials_Name());
+        System.out.println(finishedstock.getShipmentState());
+        System.out.println(finishedstock.getOrderNumber());
+
         Optional<finishedstock> optionalFinishedStock = finishedstockService.findById(finishedstock.getId());
         if (optionalFinishedStock.isPresent()) {
             finishedstock existingStock = optionalFinishedStock.get();
+            System.out.println("조기");
             existingStock.setState(finishedstock.getState());
+            System.out.println("요기");
             finishedstockService.save(existingStock);
+            System.out.println("거기");
             return ResponseEntity.ok(existingStock);
         } else {
             return ResponseEntity.notFound().build();

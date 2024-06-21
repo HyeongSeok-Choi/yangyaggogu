@@ -48,7 +48,7 @@ public class workOrderPlanDTO {
         this.Id = workOrderPlan.getId();
         this.processCode = workOrderPlan.getProcessCode();
         this.productPlanCode = workOrderPlan.getProductPlanCode().getProductionPlanCode();
-        this.obtainorder_number = workOrderPlan.getObtainorder_number().getOrder_Number();
+        this.obtainorder_number = workOrderPlan.getObtainorder_number().getOrderNumber();
         this.producer = workOrderPlan.getProducer();
         this.processName = workOrderPlan.getProcessName();
         this.P_startDate = workOrderPlan.getP_startDate();

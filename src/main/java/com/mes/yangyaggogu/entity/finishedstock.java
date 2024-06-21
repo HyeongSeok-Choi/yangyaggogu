@@ -22,8 +22,8 @@ public class finishedstock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_Number")
+    @ManyToOne
+    @JoinColumn(name = "orderNumber")
     private obtainorder_number orderNumber;
 
     private String materials_Name;

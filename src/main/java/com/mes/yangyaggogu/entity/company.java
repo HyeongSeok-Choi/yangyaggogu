@@ -28,4 +28,5 @@ public class company {
     private String trade_goods;
 
     private String company_manager;
+
 }
