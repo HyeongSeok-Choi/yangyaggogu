@@ -142,9 +142,9 @@ public class ObtainOrderService {
 
         for(productPlan productPlan : productPlanList){
 
-            if(productPlan.getMaterials_Name().equals("양배추즙")||productPlan.getMaterials_Name().equals("흑마늘즙")){
+            if(productPlan.getMaterialsName().equals("양배추즙")||productPlan.getMaterialsName().equals("흑마늘즙")){
                 countJuice = countJuice+1;
-            }else if(productPlan.getMaterials_Name().equals("석류젤리")||productPlan.getMaterials_Name().equals("매실젤리")){
+            }else if(productPlan.getMaterialsName().equals("석류젤리")||productPlan.getMaterialsName().equals("매실젤리")){
                 countJelly=countJelly+1;
             }
 
@@ -171,7 +171,7 @@ public class ObtainOrderService {
           for(productPlan productPlan : productPlanList) {
 
               //비교 하려는 제품이름이 같은지 파악
-              if (productPlan.getMaterials_Name().equals(comeProductName)) {
+              if (productPlan.getMaterialsName().equals(comeProductName)) {
 
                   //즙일 때
                   if (comeProductName.equals("양배추즙") || comeProductName.equals("흑마늘즙")) {
@@ -215,7 +215,7 @@ public class ObtainOrderService {
         List<productPlan> productPlanList = productPlanRepository.getEqualStartDatePlan(StartDate, comeProductName);
 
         for (productPlan productPlan : productPlanList) {
-            if (productPlan.getMaterials_Name().equals(comeProductName)) {
+            if (productPlan.getMaterialsName().equals(comeProductName)) {
 
                 if (comeProductName.equals("양배추즙") || comeProductName.equals("흑마늘즙")) {
 
@@ -237,8 +237,8 @@ public class ObtainOrderService {
                         fakeOrderNum.setOrder_Number("복수 수주번호");
 
                         obtainOrderNumberRepository.save(fakeOrderNum);
-                        newJoinProducePlan.setOrder_Number(fakeOrderNum);
-                        newJoinProducePlan.setMaterials_Name(comeProductName);
+                        newJoinProducePlan.setOrderNumber(fakeOrderNum);
+                        newJoinProducePlan.setMaterialsName(comeProductName);
                         newJoinProducePlan.setState(productionPlan_state.ready);
                         newJoinProducePlan.setTarget_Output(capacity);
 
@@ -270,8 +270,8 @@ public class ObtainOrderService {
                         fakeOrderNum.setOrder_Number("복수 수주번호");
 
                         obtainOrderNumberRepository.save(fakeOrderNum);
-                        newJoinProducePlan.setOrder_Number(fakeOrderNum);
-                        newJoinProducePlan.setMaterials_Name(comeProductName);
+                        newJoinProducePlan.setOrderNumber(fakeOrderNum);
+                        newJoinProducePlan.setMaterialsName(comeProductName);
                         newJoinProducePlan.setState(productionPlan_state.ready);
                         newJoinProducePlan.setTarget_Output(capacity);
 

@@ -17,4 +17,6 @@ public interface obtainorder_detailRepository extends JpaRepository<obtainorder_
 
     obtainorder_detail findTopByOrderByIdDesc();
 
+    obtainorder_detail findByProductNameAndOrderNumber(String productName, obtainorder_number orderNumber);
+
 }

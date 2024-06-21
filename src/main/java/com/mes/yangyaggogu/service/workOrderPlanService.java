@@ -106,18 +106,72 @@ public class workOrderPlanService {
         find_WorkPlan.setP_endDate(LocalDateTime.now());
 
         if(find_WorkPlan.getProcessName().equals("포장")){
-            LocalDateTime expDate = find_WorkPlan.getP_endDate().plusMonths(6);
 
-            finishedstock finished = finishedstock.builder()
-                    .orderNumber(find_WorkPlan.getObtainorder_number())
-                    .amount(find_WorkPlan.getNow_Output())
-                    .exp(expDate)
-                    .materials_Name(find_WorkPlan.getMaterials_Name())
-                    .state(finishedstock_state.in)
-                    .build();
+            String [] OrderNumbers = find_WorkPlan.getProductPlanCode().getProductionPlanCode().split(",");
 
-            finishedstockRepository.save(finished);
+            if(OrderNumbers.length > 1 ){
 
+                for(String orderNum :OrderNumbers){
+
+
+                    String ProductCode = orderNum.substring(orderNum.length() - 2);
+                    String ProductName="" ;
+
+                    switch (ProductCode){
+                        case "CB":
+                            ProductName="양배추즙";
+                            break;
+                        case "BG":
+                            ProductName="흑마늘즙";
+                            break;
+
+                        case "MS":
+                            ProductName="매실젤리";
+                            break;
+
+                        case "SS":
+                            ProductName="석류젤리";
+                            break;
+                        default:
+                            ProductName="알수없음";
+                            break;
+                    }
+
+
+                      String realOrderNum = orderNum.substring(0,orderNum.length() - 2);
+
+                      obtainorder_number obtainorderNumber= obtain_order_numberRepository.findById(realOrderNum).orElseThrow();
+
+                      obtainorder_detail finded_obtainorder_detail = obtain_order_DetailRepository.findByProductNameAndOrderNumber(ProductName,obtainorderNumber);
+
+                    LocalDateTime expDate = find_WorkPlan.getP_endDate().plusMonths(6);
+
+                    finishedstock finished = finishedstock.builder()
+                            .orderNumber(finded_obtainorder_detail.getOrderNumber())
+                            .amount(finded_obtainorder_detail.getOrder_Amount())
+                            .exp(expDate)
+                            .materials_Name(finded_obtainorder_detail.getProductName())
+                            .state(finishedstock_state.in)
+                            .build();
+
+                    finishedstockRepository.save(finished);
+
+                }
+
+            }else {
+
+                LocalDateTime expDate = find_WorkPlan.getP_endDate().plusMonths(6);
+
+                finishedstock finished = finishedstock.builder()
+                        .orderNumber(find_WorkPlan.getObtainorder_number())
+                        .amount(find_WorkPlan.getNow_Output())
+                        .exp(expDate)
+                        .materials_Name(find_WorkPlan.getMaterials_Name())
+                        .state(finishedstock_state.in)
+                        .build();
+
+                finishedstockRepository.save(finished);
+            }
 
 
         }
@@ -132,7 +186,7 @@ public class workOrderPlanService {
     public void MakeWorkOrderPlanDataJoined (productPlan productplan) {
 
 
-            if (productplan.getMaterials_Name().equals("양배추즙") || productplan.getMaterials_Name().equals("흑마늘즙")) {
+            if (productplan.getMaterialsName().equals("양배추즙") || productplan.getMaterialsName().equals("흑마늘즙")) {
 
                 //생산계획이 작성된다면 그에 따른 작업 지시들이 작성
                 Long calculatorOutput =  (1000 * productplan.getTarget_Output())/250;
@@ -142,8 +196,8 @@ public class workOrderPlanService {
                 workOrderPlanBefore.setProductPlanCode(productplan);
                 workOrderPlanBefore.setProcessName("전처리");
                 workOrderPlanBefore.setState(workOrderPlan_state.ready);
-                workOrderPlanBefore.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanBefore.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanBefore.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanBefore.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanBefore.setProcessCode("A1");
                 workOrderPlanBefore.setTarget_Output(calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanBefore);
@@ -153,8 +207,8 @@ public class workOrderPlanService {
                 workOrderPlanCount.setProductPlanCode(productplan);
                 workOrderPlanCount.setProcessName("칭량");
                 workOrderPlanCount.setState(workOrderPlan_state.ready);
-                workOrderPlanCount.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanCount.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanCount.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanCount.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanCount.setProcessCode("A2");
                 workOrderPlanCount.setTarget_Output((long) (calculatorOutput * 0.75));
                 workOrderPlanRepository.save(workOrderPlanCount);
@@ -164,8 +218,8 @@ public class workOrderPlanService {
                 workOrderPlanJuice.setProductPlanCode(productplan);
                 workOrderPlanJuice.setProcessName("착즙");
                 workOrderPlanJuice.setState(workOrderPlan_state.ready);
-                workOrderPlanJuice.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanJuice.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanJuice.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanJuice.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanJuice.setProcessCode("A3");
                 workOrderPlanJuice.setTarget_Output((long) (calculatorOutput * 0.75));
                 workOrderPlanRepository.save(workOrderPlanJuice);
@@ -175,8 +229,8 @@ public class workOrderPlanService {
                 workOrderPlanPercolation.setProductPlanCode(productplan);
                 workOrderPlanPercolation.setProcessName("여과");
                 workOrderPlanPercolation.setState(workOrderPlan_state.ready);
-                workOrderPlanPercolation.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanPercolation.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanPercolation.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanPercolation.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanPercolation.setProcessCode("A4");
                 workOrderPlanPercolation.setTarget_Output((long) ((long) (calculatorOutput * 0.75) * 0.2));
                 workOrderPlanRepository.save(workOrderPlanPercolation);
@@ -186,8 +240,8 @@ public class workOrderPlanService {
                 workOrderPlanSterilization.setProductPlanCode(productplan);
                 workOrderPlanSterilization.setProcessName("살균");
                 workOrderPlanSterilization.setState(workOrderPlan_state.ready);
-                workOrderPlanSterilization.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanSterilization.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanSterilization.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanSterilization.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanSterilization.setProcessCode("A5");
                 workOrderPlanSterilization.setTarget_Output((long) ((long) (calculatorOutput * 0.75) * 0.2) / 2);
                 workOrderPlanRepository.save(workOrderPlanSterilization);
@@ -197,8 +251,8 @@ public class workOrderPlanService {
                 workOrderPlanFilling.setProductPlanCode(productplan);
                 workOrderPlanFilling.setProcessName("충진");
                 workOrderPlanFilling.setState(workOrderPlan_state.ready);
-                workOrderPlanFilling.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanFilling.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanFilling.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanFilling.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanFilling.setProcessCode("A6");
                 workOrderPlanFilling.setTarget_Output((long) ((long) (calculatorOutput * 0.75) * 0.2) / 2);
                 workOrderPlanRepository.save(workOrderPlanFilling);
@@ -208,8 +262,8 @@ public class workOrderPlanService {
                 workOrderPlanInspection.setProductPlanCode(productplan);
                 workOrderPlanInspection.setProcessName("검사");
                 workOrderPlanInspection.setState(workOrderPlan_state.ready);
-                workOrderPlanInspection.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanInspection.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanInspection.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanInspection.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanInspection.setProcessCode("A7");
                 workOrderPlanInspection.setTarget_Output((long) ((long) (calculatorOutput * 0.75) * 0.2) / 2);
                 workOrderPlanRepository.save(workOrderPlanInspection);
@@ -219,13 +273,13 @@ public class workOrderPlanService {
                 workOrderPlanPakaging.setProductPlanCode(productplan);
                 workOrderPlanPakaging.setProcessName("포장");
                 workOrderPlanPakaging.setState(workOrderPlan_state.ready);
-                workOrderPlanPakaging.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanPakaging.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanPakaging.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanPakaging.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanPakaging.setProcessCode("A8");
                 workOrderPlanPakaging.setTarget_Output((long) ((long) (calculatorOutput * 0.75) * 0.2) / 2);
                 workOrderPlanRepository.save(workOrderPlanPakaging);
 
-            }else if(productplan.getMaterials_Name().equals("매실젤리") || productplan.getMaterials_Name().equals("석류젤리")){
+            }else if(productplan.getMaterialsName().equals("매실젤리") || productplan.getMaterialsName().equals("석류젤리")){
 
 
                 double calculatorOutput =  (0.375 * productplan.getTarget_Output());
@@ -235,8 +289,8 @@ public class workOrderPlanService {
                 workOrderPlanCount.setProductPlanCode(productplan);
                 workOrderPlanCount.setProcessName("칭량");
                 workOrderPlanCount.setState(workOrderPlan_state.ready);
-                workOrderPlanCount.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanCount.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanCount.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanCount.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanCount.setProcessCode("B1");
                 workOrderPlanCount.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanCount);
@@ -246,8 +300,8 @@ public class workOrderPlanService {
                 workOrderPlanJuice.setProductPlanCode(productplan);
                 workOrderPlanJuice.setProcessName("혼합");
                 workOrderPlanJuice.setState(workOrderPlan_state.ready);
-                workOrderPlanJuice.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanJuice.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanJuice.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanJuice.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanJuice.setProcessCode("B2");
                 workOrderPlanJuice.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanJuice);
@@ -257,8 +311,8 @@ public class workOrderPlanService {
                 workOrderPlanPercolation.setProductPlanCode(productplan);
                 workOrderPlanPercolation.setProcessName("살균");
                 workOrderPlanPercolation.setState(workOrderPlan_state.ready);
-                workOrderPlanPercolation.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanPercolation.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanPercolation.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanPercolation.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanPercolation.setProcessCode("B3");
                 workOrderPlanPercolation.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanPercolation);
@@ -268,8 +322,8 @@ public class workOrderPlanService {
                 workOrderPlanSterilization.setProductPlanCode(productplan);
                 workOrderPlanSterilization.setProcessName("충진");
                 workOrderPlanSterilization.setState(workOrderPlan_state.ready);
-                workOrderPlanSterilization.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanSterilization.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanSterilization.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanSterilization.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanSterilization.setProcessCode("B4");
                 workOrderPlanSterilization.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanSterilization);
@@ -279,8 +333,8 @@ public class workOrderPlanService {
                 workOrderPlanFilling.setProductPlanCode(productplan);
                 workOrderPlanFilling.setProcessName("냉각");
                 workOrderPlanFilling.setState(workOrderPlan_state.ready);
-                workOrderPlanFilling.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanFilling.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanFilling.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanFilling.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanFilling.setProcessCode("B5");
                 workOrderPlanFilling.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanFilling);
@@ -290,8 +344,8 @@ public class workOrderPlanService {
                 workOrderPlanInspection.setProductPlanCode(productplan);
                 workOrderPlanInspection.setProcessName("검사");
                 workOrderPlanInspection.setState(workOrderPlan_state.ready);
-                workOrderPlanInspection.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanInspection.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanInspection.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanInspection.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanInspection.setProcessCode("B6");
                 workOrderPlanInspection.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanInspection);
@@ -301,8 +355,8 @@ public class workOrderPlanService {
                 workOrderPlanPakaging.setProductPlanCode(productplan);
                 workOrderPlanPakaging.setProcessName("포장");
                 workOrderPlanPakaging.setState(workOrderPlan_state.ready);
-                workOrderPlanPakaging.setObtainorder_number(productplan.getOrder_Number());
-                workOrderPlanPakaging.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanPakaging.setObtainorder_number(productplan.getOrderNumber());
+                workOrderPlanPakaging.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanPakaging.setProcessCode("B7");
                 workOrderPlanPakaging.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanPakaging);
@@ -321,15 +375,15 @@ public class workOrderPlanService {
 
             //수주정보를 기반으로 한 생산계획 작성
             productPlan productplan = new productPlan();
-            productplan.setMaterials_Name(obtainorder_detail.getProductName());
-            productplan.setOrder_Number(obtainorder_detail.getOrderNumber());
-            if (productplan.getMaterials_Name().equals("양배추즙")) {
+            productplan.setMaterialsName(obtainorder_detail.getProductName());
+            productplan.setOrderNumber(obtainorder_detail.getOrderNumber());
+            if (productplan.getMaterialsName().equals("양배추즙")) {
                 productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrder_Number() + "CB");
-            } else if (productplan.getMaterials_Name().equals("흑마늘즙")) {
+            } else if (productplan.getMaterialsName().equals("흑마늘즙")) {
                 productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrder_Number() + "BG");
-            } else if (productplan.getMaterials_Name().equals("매실젤리")) {
+            } else if (productplan.getMaterialsName().equals("매실젤리")) {
                 productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrder_Number() + "MS");
-            } else if (productplan.getMaterials_Name().equals("석류젤리")) {
+            } else if (productplan.getMaterialsName().equals("석류젤리")) {
                 productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrder_Number() + "SS");
             }
             productplan.setState(productionPlan_state.ready);
@@ -341,7 +395,7 @@ public class workOrderPlanService {
 
             //----------------------------------------------------------
 
-            if (productplan.getMaterials_Name().equals("양배추즙") || productplan.getMaterials_Name().equals("흑마늘즙")) {
+            if (productplan.getMaterialsName().equals("양배추즙") || productplan.getMaterialsName().equals("흑마늘즙")) {
 
                 //생산계획이 작성된다면 그에 따른 작업 지시들이 작성
                 Long calculatorOutput =  (1000 * productplan.getTarget_Output())/250;
@@ -352,7 +406,7 @@ public class workOrderPlanService {
                 workOrderPlanBefore.setProcessName("전처리");
                 workOrderPlanBefore.setState(workOrderPlan_state.ready);
                 workOrderPlanBefore.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanBefore.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanBefore.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanBefore.setProcessCode("A1");
                 workOrderPlanBefore.setTarget_Output(calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanBefore);
@@ -363,7 +417,7 @@ public class workOrderPlanService {
                 workOrderPlanCount.setProcessName("칭량");
                 workOrderPlanCount.setState(workOrderPlan_state.ready);
                 workOrderPlanCount.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanCount.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanCount.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanCount.setProcessCode("A2");
                 workOrderPlanCount.setTarget_Output((long) (calculatorOutput * 0.75));
                 workOrderPlanRepository.save(workOrderPlanCount);
@@ -374,7 +428,7 @@ public class workOrderPlanService {
                 workOrderPlanJuice.setProcessName("착즙");
                 workOrderPlanJuice.setState(workOrderPlan_state.ready);
                 workOrderPlanJuice.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanJuice.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanJuice.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanJuice.setProcessCode("A3");
                 workOrderPlanJuice.setTarget_Output((long) (calculatorOutput * 0.75));
                 workOrderPlanRepository.save(workOrderPlanJuice);
@@ -385,7 +439,7 @@ public class workOrderPlanService {
                 workOrderPlanPercolation.setProcessName("여과");
                 workOrderPlanPercolation.setState(workOrderPlan_state.ready);
                 workOrderPlanPercolation.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanPercolation.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanPercolation.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanPercolation.setProcessCode("A4");
                 workOrderPlanPercolation.setTarget_Output((long) ((long) (calculatorOutput * 0.75) * 0.2));
                 workOrderPlanRepository.save(workOrderPlanPercolation);
@@ -396,7 +450,7 @@ public class workOrderPlanService {
                 workOrderPlanSterilization.setProcessName("살균");
                 workOrderPlanSterilization.setState(workOrderPlan_state.ready);
                 workOrderPlanSterilization.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanSterilization.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanSterilization.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanSterilization.setProcessCode("A5");
                 workOrderPlanSterilization.setTarget_Output((long) ((long) (calculatorOutput * 0.75) * 0.2) / 2);
                 workOrderPlanRepository.save(workOrderPlanSterilization);
@@ -407,7 +461,7 @@ public class workOrderPlanService {
                 workOrderPlanFilling.setProcessName("충진");
                 workOrderPlanFilling.setState(workOrderPlan_state.ready);
                 workOrderPlanFilling.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanFilling.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanFilling.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanFilling.setProcessCode("A6");
                 workOrderPlanFilling.setTarget_Output((long) ((long) (calculatorOutput * 0.75) * 0.2) / 2);
                 workOrderPlanRepository.save(workOrderPlanFilling);
@@ -418,7 +472,7 @@ public class workOrderPlanService {
                 workOrderPlanInspection.setProcessName("검사");
                 workOrderPlanInspection.setState(workOrderPlan_state.ready);
                 workOrderPlanInspection.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanInspection.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanInspection.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanInspection.setProcessCode("A7");
                 workOrderPlanInspection.setTarget_Output((long) ((long) (calculatorOutput * 0.75) * 0.2) / 2);
                 workOrderPlanRepository.save(workOrderPlanInspection);
@@ -429,12 +483,12 @@ public class workOrderPlanService {
                 workOrderPlanPakaging.setProcessName("포장");
                 workOrderPlanPakaging.setState(workOrderPlan_state.ready);
                 workOrderPlanPakaging.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanPakaging.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanPakaging.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanPakaging.setProcessCode("A8");
                 workOrderPlanPakaging.setTarget_Output((long) ((long) (calculatorOutput * 0.75) * 0.2) / 2);
                 workOrderPlanRepository.save(workOrderPlanPakaging);
 
-            }else if(productplan.getMaterials_Name().equals("매실젤리") || productplan.getMaterials_Name().equals("석류젤리")){
+            }else if(productplan.getMaterialsName().equals("매실젤리") || productplan.getMaterialsName().equals("석류젤리")){
 
 
                 double calculatorOutput =  (0.375 * productplan.getTarget_Output());
@@ -445,7 +499,7 @@ public class workOrderPlanService {
                 workOrderPlanCount.setProcessName("칭량");
                 workOrderPlanCount.setState(workOrderPlan_state.ready);
                 workOrderPlanCount.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanCount.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanCount.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanCount.setProcessCode("B1");
                 workOrderPlanCount.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanCount);
@@ -456,7 +510,7 @@ public class workOrderPlanService {
                 workOrderPlanJuice.setProcessName("혼합");
                 workOrderPlanJuice.setState(workOrderPlan_state.ready);
                 workOrderPlanJuice.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanJuice.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanJuice.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanJuice.setProcessCode("B2");
                 workOrderPlanJuice.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanJuice);
@@ -467,7 +521,7 @@ public class workOrderPlanService {
                 workOrderPlanPercolation.setProcessName("살균");
                 workOrderPlanPercolation.setState(workOrderPlan_state.ready);
                 workOrderPlanPercolation.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanPercolation.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanPercolation.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanPercolation.setProcessCode("B3");
                 workOrderPlanPercolation.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanPercolation);
@@ -478,7 +532,7 @@ public class workOrderPlanService {
                 workOrderPlanSterilization.setProcessName("충진");
                 workOrderPlanSterilization.setState(workOrderPlan_state.ready);
                 workOrderPlanSterilization.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanSterilization.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanSterilization.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanSterilization.setProcessCode("B4");
                 workOrderPlanSterilization.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanSterilization);
@@ -489,7 +543,7 @@ public class workOrderPlanService {
                 workOrderPlanFilling.setProcessName("냉각");
                 workOrderPlanFilling.setState(workOrderPlan_state.ready);
                 workOrderPlanFilling.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanFilling.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanFilling.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanFilling.setProcessCode("B5");
                 workOrderPlanFilling.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanFilling);
@@ -500,7 +554,7 @@ public class workOrderPlanService {
                 workOrderPlanInspection.setProcessName("검사");
                 workOrderPlanInspection.setState(workOrderPlan_state.ready);
                 workOrderPlanInspection.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanInspection.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanInspection.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanInspection.setProcessCode("B6");
                 workOrderPlanInspection.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanInspection);
@@ -511,7 +565,7 @@ public class workOrderPlanService {
                 workOrderPlanPakaging.setProcessName("포장");
                 workOrderPlanPakaging.setState(workOrderPlan_state.ready);
                 workOrderPlanPakaging.setObtainorder_number(obtainorder_detail.getOrderNumber());
-                workOrderPlanPakaging.setMaterials_Name(productplan.getMaterials_Name());
+                workOrderPlanPakaging.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanPakaging.setProcessCode("B7");
                 workOrderPlanPakaging.setTarget_Output((long) calculatorOutput);
                 workOrderPlanRepository.save(workOrderPlanPakaging);

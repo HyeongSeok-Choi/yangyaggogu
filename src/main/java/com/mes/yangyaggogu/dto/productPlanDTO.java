@@ -34,8 +34,8 @@ public class productPlanDTO {
     public productPlanDTO(productPlan productPlan){
 
         this.productionPlanCode = productPlan.getProductionPlanCode();
-        this.materials_Name = productPlan.getMaterials_Name();
-        this.order_Number = productPlan.getOrder_Number().getOrder_Number();
+        this.materials_Name = productPlan.getMaterialsName();
+        this.order_Number = productPlan.getOrderNumber().getOrder_Number();
         this.P_startDate = productPlan.getPstartDate();
         this.P_endDate = productPlan.getPendDate();
         this.target_Output = productPlan.getTarget_Output();

@@ -44,9 +44,9 @@ public class DataLoader implements CommandLineRunner {
 
         productPlan plan = new productPlan();
         plan.setProductionPlanCode("PLAN123");
-        plan.setOrder_Number(order);
+        plan.setOrderNumber(order);
         plan.setPstartDate(LocalDate.now());
-        plan.setMaterials_Name("흑마늘즙");
+        plan.setMaterialsName("흑마늘즙");
         plan.setPendDate(LocalDate.now());
         productPlanRepository.save(plan);
 

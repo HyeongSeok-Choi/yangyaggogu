@@ -123,7 +123,7 @@
     <script th:inline="javascript">
 
         let id = "";
-
+        var openPopup ;
         //수주 등록 버튼 클릭
         let orderRegistrationBtn = document.getElementById('orderRegistrationBtn');
         orderRegistrationBtn.onclick = function (){
@@ -308,6 +308,7 @@
                     console.log(confirm);
                     alert("수주가 확정 되었습니다.")
                     table.ajax.reload();
+                    openPopup.location.reload();
 
                 });
 
@@ -344,7 +345,7 @@
 
             let popOption = `width=${popupWidth}px, height=${popupHeight}px, top=${top}px, left=${left}px`;
             let openUrl = "/popup.calendar";
-            window.open(openUrl, 'popup_calendar', popOption);
+            openPopup=  window.open(openUrl, 'popup_calendar', popOption);
         }
 
         //거래처 이름 불러오기
