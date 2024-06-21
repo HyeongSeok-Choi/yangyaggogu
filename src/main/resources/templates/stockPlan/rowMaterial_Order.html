@@ -2,12 +2,30 @@
 <html lang='en' xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layouts/layout1}">
+<head>
+    <title>원자재 발주 등록</title>
+    <th:block layout:fragment="css">
+        <style>
+            .container1{
+                max-width: 90%;
+                margin: auto;
+            }
+            .table-hover th, .table-hover td{
+                text-align: center;
+                vertical-align: middle;
+                width: 5%;
+            }
+        </style>
+    </th:block>
+</head>
 <body>
 <th:block layout:fragment="content">
     <div class="container1">
+        <h3><strong>원자재 발주 등록</strong></h3>
+        <br>
         <button type="button" class="btn btn-primary" id="rowStockOrder_input" value="발주 등록">
             발주 등록</button>
-        <table id="Table" class="table table-striped table-bordered table-hover" th:width="900px" style="text-align: center">
+        <table id="Table" class="table table-striped table-bordered table-hover" style="text-align: center">
             <thead>
             <tr>
                 <th> </th>

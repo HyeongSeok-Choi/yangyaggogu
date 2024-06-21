@@ -3,23 +3,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layouts/layout1}">
 <head>
-    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <!-- css files for DataTables -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/autofill/2.7.0/js/autoFill.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/autofill/2.7.0/js/dataTables.autoFill.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
-    <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>
-
     <!-- 납품일 캘린더 사용 -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -40,16 +23,24 @@
         }
         .order-add-table {
             width: 100%;
-            table-layout: fixed;
+            text-align: center;
         }
         .order-add-table th, .order-add-table td {
             padding: 5px;
             text-align: center;
             vertical-align: middle;
+            width: 5%;
         }
         .order-add-table input {
-            width: 70%;
+            width: 50%;
             box-sizing: border-box;
+        }
+        .table-bordered{
+            text-align: center;
+        }
+        .container1{
+            max-width: 90%;
+            margin: auto;
         }
     </style>
     </th:block>
@@ -58,10 +49,10 @@
 <th:block layout:fragment="content">
 
     <div class="container1" style="margin: 40px">
-        <h1>수주 등록</h1>
+        <h3><strong>수주 등록</strong></h3>
         <div class="button-container">
             <button class="btn btn-primary" onclick="addNewOrder()">추가</button>
-            <button class="btn btn-outline-info" id="add-btn" >저장</button>
+            <button class="btn btn-info" id="add-btn" >저장</button>
         </div>
         <!-- 수주 등록하는 부분 -->
         <table id="orderAdd" class="table table-striped table-bordered order-add-table">
@@ -118,7 +109,7 @@
             </tbody>
         </table>
         <div class="button-container">
-            <button class="btn btn-outline-warning" onclick="deleteSelectedRows()">삭제</button>
+            <button class="btn btn-danger" onclick="deleteSelectedRows()">삭제</button>
         </div>
     </div>
 
@@ -161,7 +152,7 @@
                 return;
             }
 
-            // 첫 번째 주문 추가 후 거래처 선택 비활성화
+            // 첫 번째 주문 추가 후 한개 거래처로 유지
             if (isFirstOrder){
                 originalCustomerOptions = $('#customerSelect').html();
                 $('#customerSelect').empty();
