@@ -31,7 +31,7 @@ public class FinishedStockDTO {
 
     public FinishedStockDTO(finishedstock finishedstock) {
         this.id = finishedstock.getId();
-        this.orderNumber = finishedstock.getOrderNumber().getOrder_Number();
+        this.orderNumber = finishedstock.getOrderNumber().getOrderNumber();
         this.materials_Name = finishedstock.getMaterials_Name();
         this.amount = finishedstock.getAmount();
         this.exp = finishedstock.getExp();

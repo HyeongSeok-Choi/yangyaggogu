@@ -77,7 +77,7 @@ public class finishedStockApiController {
     private FinishedStockDTO convertToDTO(finishedstock stock) {
         FinishedStockDTO dto = new FinishedStockDTO();
         dto.setId(stock.getId());
-        dto.setOrderNumber(stock.getOrderNumber().getOrder_Number());
+        dto.setOrderNumber(stock.getOrderNumber().getOrderNumber());
         dto.setMaterials_Name(stock.getMaterials_Name());
         dto.setAmount(stock.getAmount());
         dto.setExp(stock.getExp());
