@@ -27,7 +27,7 @@ public class workOrderPlan {
     private productPlan productPlanCode;
 
     @ManyToOne
-    @JoinColumn(name = "order_Number")
+    @JoinColumn(name = "orderNumber")
     private obtainorder_number obtainorder_number;
 
     private String producer;

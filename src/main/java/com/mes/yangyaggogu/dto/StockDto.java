@@ -29,7 +29,7 @@ public class StockDto {
     public StockDto(ingredientStock ingredientStock){
 
         this.id = ingredientStock.getId();
-        this.orderNumber = ingredientStock.getOrder_Number().getOrder_Number();
+        this.orderNumber = ingredientStock.getOrder_Number().getOrderNumber();
         this.ingredientCode = ingredientStock.getIngredient_Code();
         this.materialsName = ingredientStock.getMaterials_Name();
         this.ingredientAmount = ingredientStock.getIngredient_Amount();

@@ -22,7 +22,7 @@ public class obtainorder_detail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "order_Number")
+    @JoinColumn(name = "orderNumber")
     @ManyToOne(fetch = FetchType.LAZY)
     private obtainorder_number orderNumber;
 

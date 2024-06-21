@@ -31,7 +31,7 @@ public class workOrderPlanService {
     public void saveWorkOrderPlan(workOrderPlan workOrder) {
         workOrderPlanRepository.save(workOrder);
         if ("포장".equals(workOrder.getProcessName()) && workOrderPlan_state.completed.equals(workOrder.getState())) {
-            LocalDateTime expDate = LocalDateTime.from(workOrder.getP_endDate().plusMonths(6));
+            LocalDate expDate = LocalDate.from(workOrder.getP_endDate().plusMonths(6));
             finishedstock finished = finishedstock.builder()
                     .orderNumber(workOrder.getObtainorder_number())
                     .amount(workOrder.getTarget_Output())
@@ -144,7 +144,7 @@ public class workOrderPlanService {
 
                       obtainorder_detail finded_obtainorder_detail = obtain_order_DetailRepository.findByProductNameAndOrderNumber(ProductName,obtainorderNumber);
 
-                    LocalDateTime expDate = find_WorkPlan.getP_endDate().plusMonths(6);
+                    LocalDate expDate = LocalDate.from(find_WorkPlan.getP_endDate().plusMonths(6));
 
                     finishedstock finished = finishedstock.builder()
                             .orderNumber(finded_obtainorder_detail.getOrderNumber())
@@ -160,7 +160,7 @@ public class workOrderPlanService {
 
             }else {
 
-                LocalDateTime expDate = find_WorkPlan.getP_endDate().plusMonths(6);
+                LocalDate expDate = LocalDate.from(find_WorkPlan.getP_endDate().plusMonths(6));
 
                 finishedstock finished = finishedstock.builder()
                         .orderNumber(find_WorkPlan.getObtainorder_number())
@@ -378,13 +378,13 @@ public class workOrderPlanService {
             productplan.setMaterialsName(obtainorder_detail.getProductName());
             productplan.setOrderNumber(obtainorder_detail.getOrderNumber());
             if (productplan.getMaterialsName().equals("양배추즙")) {
-                productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrder_Number() + "CB");
+                productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrderNumber() + "CB");
             } else if (productplan.getMaterialsName().equals("흑마늘즙")) {
-                productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrder_Number() + "BG");
+                productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrderNumber() + "BG");
             } else if (productplan.getMaterialsName().equals("매실젤리")) {
-                productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrder_Number() + "MS");
+                productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrderNumber() + "MS");
             } else if (productplan.getMaterialsName().equals("석류젤리")) {
-                productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrder_Number() + "SS");
+                productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrderNumber() + "SS");
             }
             productplan.setState(productionPlan_state.ready);
             productplan.setPstartDate(obtainorder_detail.getDelivery_Date().minusDays(3));

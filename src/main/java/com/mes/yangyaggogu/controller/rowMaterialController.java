@@ -3,7 +3,9 @@ package com.mes.yangyaggogu.controller;
 import com.mes.yangyaggogu.dto.StockDto;
 import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.entity.ingredientStock;
+import com.mes.yangyaggogu.entity.productPlan;
 import com.mes.yangyaggogu.entity.searchForm;
+import com.mes.yangyaggogu.service.productPlanService;
 import com.mes.yangyaggogu.service.rowStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,8 @@ import java.util.List;
 public class rowMaterialController {
 
     private final rowStockService rowStockService;
+    private final productPlanService productPlanservice;
+
     @GetMapping(value = "/rowMaterial")
     public String rowMaterial(Model model, searchDto searchDto){
 
@@ -42,9 +46,13 @@ public class rowMaterialController {
     }
 
     @GetMapping(value = "/rowStockOrderRegister")
-    public String orderRegister() throws Exception{
+    public String orderRegister(Model model) throws Exception{
 
-        System.out.println("성공?..........");
+
+       List<productPlan> productPlanList = productPlanservice.getProductPlansBeforeOrder();
+
+       model.addAttribute("productPlanListBefore", productPlanList);
+
 
         return "/stockPlan/rowStockOrderRegister";
     }

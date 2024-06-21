@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mes.yangyaggogu.constant.productionPlan_state;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class productPlan {
@@ -20,8 +22,8 @@ public class productPlan {
 
     private String materialsName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_Number")
+    @ManyToOne
+    @JoinColumn(name = "orderNumber")
     private obtainorder_number orderNumber;
 
     private LocalDate pstartDate;
@@ -36,13 +38,11 @@ public class productPlan {
     private productionPlan_state state;
 
 
-    @OneToMany(mappedBy = "productPlanCode",  cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "productPlanCode",fetch = FetchType.LAZY,  cascade = CascadeType.REMOVE)
     private List<workOrderPlan> workOrderPlanList;
 
-    @OneToMany(mappedBy = "productionPlanCode",  cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "productionPlanCode",fetch = FetchType.LAZY,  cascade = CascadeType.REMOVE)
     private List<workPerform> workPerformList;
-
-
 
 
 }

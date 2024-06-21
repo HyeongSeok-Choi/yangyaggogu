@@ -200,6 +200,10 @@
 
             if (confirm("체크하신 항목을 출고하시겠습니까?")) {
                 selectedRows.each(function (data) {
+
+                    console.log(data.state);
+                    console.log(data.id);
+                    console.log(data.orderNumber);
                     data.state = 'out';
                     // 여기서 서버로 업데이트 요청을 보낼 수 있습니다.
                     $.ajax({

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +47,7 @@ public class rowStockService {
     public ingredientStock orderStock(StockDto stockDto){
         ingredientStock ingredientStock = new ingredientStock();
         obtainorder_number obtainorder_number = new obtainorder_number();
-        obtainorder_number.setOrder_Number(stockDto.getOrderNumber());
+        obtainorder_number.setOrderNumber(stockDto.getOrderNumber());
         obtainorderNumberRepository.save(obtainorder_number);
 
         ingredientStock.setOrder_Number(obtainorder_number);
@@ -63,10 +64,13 @@ public class rowStockService {
     }
 
 
-    public List<ingredientStock> searchLists(searchDto searchDto){
+    public List<StockDto> searchLists(searchDto searchDto){
 
 
-        List<ingredientStock> searchLists= ingredientStockRepository.getRowStockPage(searchDto.getStart(),searchDto.getEnd(),searchDto.getKeyword());
+        List<StockDto> searchLists= ingredientStockRepository.getRowStockPage(searchDto.getStart(),searchDto.getEnd(),searchDto.getKeyword())
+                .stream()
+                .map(a -> new StockDto(a))
+                .collect(Collectors.toList());
 
 
         return searchLists;

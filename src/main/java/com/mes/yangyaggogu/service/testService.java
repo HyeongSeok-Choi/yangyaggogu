@@ -142,7 +142,7 @@ public class testService {
         //수주번호의 생성 -> 가상으로 만들어 봅세다.
         obtainorder_number obtainorderNumber = new obtainorder_number();
         //2024-06-15에 첫번째 수주번호가 생성 후 저장
-        obtainorderNumber.setOrder_Number("20240615-001");
+        obtainorderNumber.setOrderNumber("20240615-001");
         obtain_order_numberRepository.save(obtainorderNumber);
 
         //----------------------------------------------------------

@@ -102,7 +102,7 @@ public class rowMaterialApiController {
         System.out.println(search.getStart());
         System.out.println(search.getKeyword());
 
-        List<ingredientStock> searchLists =rowStockService.searchLists(search);
+        List<StockDto> searchLists =rowStockService.searchLists(search);
 
 //        HashMap<String, Object> SearchRowStock = new HashMap<>();
 //        SearchRowStock.put("data",searchLists);

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,7 +22,7 @@ public class FinishedStockDTO {
 
     private Long amount;
 
-    private LocalDateTime exp;
+    private LocalDate exp;
 
     private finishedstock_state state;
 
@@ -29,7 +30,7 @@ public class FinishedStockDTO {
 
     public FinishedStockDTO(finishedstock finishedstock) {
         this.id = finishedstock.getId();
-        this.orderNumber = finishedstock.getOrderNumber().getOrder_Number();
+        this.orderNumber = finishedstock.getOrderNumber().getOrderNumber();
         this.materials_Name = finishedstock.getMaterials_Name();
         this.amount = finishedstock.getAmount();
         this.exp = finishedstock.getExp();

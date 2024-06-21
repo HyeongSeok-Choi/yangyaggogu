@@ -29,7 +29,7 @@ public class shipmentDTO {
     public shipmentDTO(shipment shipment) {
         this.shipment_Number = shipment.getShipment_Number();
 
-        this.order_Number = shipment.getOrder_Number().getOrder_Number();
+        this.order_Number = shipment.getOrder_Number().getOrderNumber();
         this.company_name = shipment.getCompany_name();
         this.company_Address = shipment.getCompany_Address();
         this.shipment_Amount = shipment.getShipment_Amount();
