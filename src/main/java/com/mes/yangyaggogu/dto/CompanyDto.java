@@ -1,5 +1,6 @@
 package com.mes.yangyaggogu.dto;
 
+import com.mes.yangyaggogu.constant.company_state;
 import com.mes.yangyaggogu.entity.company;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +22,8 @@ public class CompanyDto {
 
     private String company_manager;
 
+    private company_state state;
+
     public CompanyDto(company company) {
         this.company_code = company.getCompany_code();
         this.company_name = company.getCompany_name();
@@ -28,5 +31,6 @@ public class CompanyDto {
         this.company_tel_number = company.getCompany_tel_number();
         this.trade_goods = company.getTrade_goods();
         this.company_manager = company.getCompany_manager();
+        this.state = company.getState();
     }
 }

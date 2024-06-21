@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.entity;
 
 
+import com.mes.yangyaggogu.constant.company_state;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,5 +29,8 @@ public class company {
     private String trade_goods;
 
     private String company_manager;
+
+    @Enumerated(EnumType.STRING)
+    private company_state state;
 
 }
