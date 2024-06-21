@@ -1,7 +1,6 @@
 package com.mes.yangyaggogu.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,8 @@ import lombok.NoArgsConstructor;
 public class carrier {
 
     @Id
-    private String carrier_Code;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long carrier_Code;
 
     private String carrier_Name;
 
@@ -24,5 +24,9 @@ public class carrier {
     private Long carrier_Price;
 
     private String carrier_manager;
+
+    @ManyToOne
+    @JoinColumn(name = "shipment_Number")
+    private shipment shipment;
 
 }

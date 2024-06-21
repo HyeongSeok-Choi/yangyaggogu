@@ -22,7 +22,7 @@ public class workOrderPlan {
 
     private String processCode;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productionPlanCode")
     private productPlan productPlanCode;
 

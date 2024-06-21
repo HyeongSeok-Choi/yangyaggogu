@@ -16,11 +16,11 @@
             <input class="search-input" type="text" id="ingredientName" th:field="*{keyword}" placeholder="재고명을 입력하세요">
             </label>
             <label>
-                <input class="search-box-icon" type="button" id="search_btn" onclick="getSearchList()" value="조회" style="width: 45px; height: 30px"></label>
+                <input class="btn btn-dark" type="button" onclick="getSearchList()" value="조회"></label>
         </form>
-        <button type="button" class="btn btn-primary" id="rowStock_input" value="입고 등록">
+        <button type="button" class="btn btn-primary" id="rowStock_input" onclick="updateRowStockState('in')" value="입고 등록">
         입고 등록</button>
-        <button type="button" class="btn btn-danger" id="rowStock_output" value="출고">
+        <button type="button" class="btn btn-danger" id="rowStock_output" onclick="updateRowStockState('out')" value="출고">
         출고</button>
 <table id="Table" class="table table-striped table-bordered table-hover" th:width="900px" style="text-align: center">
     <thead>
@@ -33,11 +33,9 @@
         <th>자재명</th>
         <th>재고량</th>
         <th>입고일자</th>
+        <th>상태</th>
     </tr>
     </thead>
-    <tbody id="#boardtable">
-
-    </tbody>
 </table>
         <script th:inline="javascript">
             var table = null;
@@ -91,7 +89,7 @@
                         }
                     },
                     ajax: {
-                        url: 'http://localhost:8080/api/getRowStockList',
+                        url: '/api/getRowStockList',
                         type: 'GET',
                         dataFilter: function(res) {
                             var json = $.parseJSON(res);
@@ -109,22 +107,69 @@
                     columns: [
                         {title: ""},
                         {data: 'id'},
-                        {data: 'order_Number.order_Number'},
-                        {data: 'ingredient_Code'},
-                        {data: 'company_name'},
-                        {data: 'materials_Name'},
-                        {data: 'ingredient_Amount'},
-                        {data: 'in_date'},
+                        {data: 'orderNumber'},
+                        {data: 'ingredientCode'},
+                        {data: 'companyName'},
+                        {data: 'materialsName'},
+                        {data: 'ingredientAmount'},
+                        {data: 'inDate'},
+                        {data: 'state'},
                     ]
-                })
+                });
+
             });
 
-            $('#rowStock_input').on("click", function(e){
-                let popURL = "/rowStockRegister";
-                let popOption = "width=650px, height=550px, top=300px, left=300px, scrollbars=yes";
+            function getSelectedRow(){
+                return table.rows({
+                    selected: true
+                }).data();
+            }
 
-                window.open(popURL, "입고 등록", popOption);
-            })
+            function updateRowStockState(state){
+                const selectedRows = getSelectedRow();
+                if(selectedRows.length === 0){
+                    alert("선택된 행이 없습니다.");
+                }
+
+                // var id = selectedRows.map(row => row.id);
+                const id = selectedRows[0].id;
+                const currentState = selectedRows[0].state;
+
+                if(state==='in' && currentState ==='in'){
+                    alert("이미 입고된 상태입니다");
+                    return;
+                }else if(state==='out' && currentState ==='out'){
+                    alert("이미 출고된 상태입니다");
+                    return;
+                }
+                fetch('/api/updateRowStockState', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id:id,
+                        state:state,
+                    })
+                })
+                    .then(response => response.json())
+                    .then(result=>{
+
+                        console.log(result);
+                        alert(`원자재가 ${state === 'in' ? "입고 " : "출고 "}되었습니다.`);
+                        // const rowIndex = table.rows((idx, data, node) => data.id === id).indexes()[0];
+                        // const rowData = table.row(rowIndex).data();
+                        // rowData.state = state;
+                        // table.row(rowIndex).data(rowData).draw(false);
+                        table.ajax.reload();
+                    })
+                    .catch(error=>{
+                        console.error("Error updating row stock state" , error);
+                        alert("상태 업데이트 중 오류가 발생했습니다.");
+                    });
+            }
+
 
             function getSearchList(){
 
@@ -143,12 +188,9 @@
                     .then(response => response.json())
                     .then(searchList => {
                         console.log(searchList);
-
                         table.clear();
                         table.rows.add(searchList);
                         table.draw();
-
-
                     })
 
             }

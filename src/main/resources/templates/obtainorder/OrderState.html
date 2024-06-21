@@ -124,7 +124,7 @@
     <script th:inline="javascript">
 
         let id = "";
-
+        var openPopup ;
         //수주 등록 버튼 클릭
         let orderRegistrationBtn = document.getElementById('orderRegistrationBtn');
         orderRegistrationBtn.onclick = function (){
@@ -172,7 +172,7 @@
                     }
                 ],
                 ajax: {
-                    url: 'http://localhost:8080/api/getObtainOrderList',
+                    url: '/api/getObtainOrderList',
                     type: 'GET',
                     dataFilter: function(res) {
                         var json = $.parseJSON(res);
@@ -195,7 +195,7 @@
                         data: 'id'},
                     {
                         title:"수주번호",
-                        data: 'orderNumber.order_Number',
+                        data: 'orderNumber',
                         render: function(data, type, row) {
                             return '<a href="#" class="order-number" data-id="' + row.id + '">' + data + '</a>'}
                     },
@@ -207,7 +207,7 @@
                         data: 'productName'},
                     {
                         title:"수주일자",
-                        data: 'orderDate'},
+                        data: 'order_Date'},
                     {
                         title:"수주수량",
                         data: 'order_Amount',
@@ -275,7 +275,22 @@
 
         $('#confirmOrderBtn').on('click', function (e){
 
+            //일단 다중 셀렉트시 이미 확정된 건일 경우 알림창 뜨게 설정해놓음
+            table.rows({selected: true}).data(id);
+
+            var SelectedCount = table.rows({selected: true}).data().length;
+            for (let i = 0; i < SelectedCount ; i++) {
+
+                if(table.rows({selected: true}).data(id)[i]["state"] ==="confirmed"){
+                    alert("수주 확정된 건입니다.");
+                    return false;
+                }
+            }
+
+
            var targetIds= getSelectedRows();
+
+           console.log(targetIds);
 
             fetch(`/api/changeObtainState`, {
                 headers: {
@@ -287,9 +302,14 @@
             })
                 .then((response) => response.json())
                 .then(confirm => {
+                    if(confirm === false){
+                        alert("생산가능한 일정이 아닙니다.");
+                        return false;
+                    }
                     console.log(confirm);
                     alert("수주가 확정 되었습니다.")
                     table.ajax.reload();
+                    openPopup.location.reload();
 
                 });
 
@@ -326,7 +346,7 @@
 
             let popOption = `width=${popupWidth}px, height=${popupHeight}px, top=${top}px, left=${left}px`;
             let openUrl = "/popup.calendar";
-            window.open(openUrl, 'popup_calendar', popOption);
+            openPopup=  window.open(openUrl, 'popup_calendar', popOption);
         }
 
         //거래처 이름 불러오기

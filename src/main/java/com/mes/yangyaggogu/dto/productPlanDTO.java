@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -20,9 +21,9 @@ public class productPlanDTO {
 
     private String order_Number;
 
-    private LocalDateTime P_startDate;
+    private LocalDate P_startDate;
 
-    private LocalDateTime P_endDate;
+    private LocalDate P_endDate;
 
     private Long target_Output;
 
@@ -33,10 +34,10 @@ public class productPlanDTO {
     public productPlanDTO(productPlan productPlan){
 
         this.productionPlanCode = productPlan.getProductionPlanCode();
-        this.materials_Name = productPlan.getMaterials_Name();
-        this.order_Number = productPlan.getOrder_Number().getOrder_Number();
-        this.P_startDate = productPlan.getP_startDate();
-        this.P_endDate = productPlan.getP_endDate();
+        this.materials_Name = productPlan.getMaterialsName();
+        this.order_Number = productPlan.getOrderNumber().getOrder_Number();
+        this.P_startDate = productPlan.getPstartDate();
+        this.P_endDate = productPlan.getPendDate();
         this.target_Output = productPlan.getTarget_Output();
         this.now_Output = productPlan.getNow_Output();
         this.state = productPlan.getState();

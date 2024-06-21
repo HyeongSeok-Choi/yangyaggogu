@@ -33,12 +33,25 @@ public class rowMaterialController {
     }
 
 
-    @GetMapping(value = "/rowStockRegister")
-    public String register() throws Exception{
+    @GetMapping(value = "/rowMaterialOrder")
+    public String rowOrder(){
+
+        rowStockService.getRowStockList();
+
+        return "/stockPlan/rowMaterial_Order";
+    }
+
+    @GetMapping(value = "/rowStockOrderRegister")
+    public String orderRegister() throws Exception{
 
         System.out.println("성공?..........");
 
-        return "/stockPlan/rowStackRegister";
+        return "/stockPlan/rowStockOrderRegister";
+    }
+
+    @GetMapping(value = "/BomList")
+    public String bomList(){
+        return "/stockPlan/bomList_Table";
     }
 
 }

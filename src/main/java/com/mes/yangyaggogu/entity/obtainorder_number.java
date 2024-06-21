@@ -1,15 +1,16 @@
 package com.mes.yangyaggogu.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.mes.yangyaggogu.constant.obtainorder_state;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,5 +20,8 @@ public class obtainorder_number {
 
     @Id
     private String order_Number;
+
+    @OneToMany(mappedBy = "orderNumber",  cascade = CascadeType.REMOVE)
+    private List<productPlan> productPlanList;
 
 }

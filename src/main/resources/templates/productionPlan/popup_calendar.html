@@ -10,24 +10,7 @@
       var calendarEl = document.getElementById('calendar');
       var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
-        events:[{
-          title: 'title',
-          start: '2024-06-03',
-          end: '2024-06-05',
-        },{
-          title: 'title',
-          start: '2024-06-08',
-          end: '2024-06-11',
-        },{
-          title: 'title',
-          start: '2024-06-14',
-          end: '2024-06-20',
-        },{
-          title: 'title',
-          start: '2024-06-21',
-          end: '2024-06-25',
-        }
-        ],
+        events:'/api/getProductionPlanListCalendar',
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',

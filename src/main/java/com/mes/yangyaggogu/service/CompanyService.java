@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.service;
 
 
+import com.mes.yangyaggogu.entity.carrier;
 import com.mes.yangyaggogu.entity.company;
 
 import com.mes.yangyaggogu.entity.shipment;
@@ -25,8 +26,6 @@ public class CompanyService {
     private final Map<String, Integer> sequenceMap = new HashMap<>();
 
     public void registCompany(company company) {
-
-
         companyRepository.save(company);
     }
 

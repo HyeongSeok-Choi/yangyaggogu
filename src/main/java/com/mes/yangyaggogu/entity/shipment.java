@@ -19,7 +19,7 @@ public class shipment {
     @Id
     private String shipment_Number;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_Number")
     private obtainorder_number order_Number;
 
