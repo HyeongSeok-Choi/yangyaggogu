@@ -37,7 +37,6 @@ public class obtainorderController {
     @GetMapping("/order_Detail/{id}")
     public String popup_order_detail(Model model,@PathVariable Long id) {
         OrderDtlDto orderDtlDto =obtainOrderService.getOrderDetailById(id);
-
         model.addAttribute("orderDtlDto", orderDtlDto);
 
         return "obtainorder/OrderDetail";
