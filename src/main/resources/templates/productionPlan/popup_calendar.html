@@ -3,6 +3,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
   <meta charset="UTF-8">
+  <th:block layout:fragment="css">
+    <style>
+      body, html{
+        background-color: #f5f5f5;
+      }
+    </style>
+  </th:block>
   <title>생산계획</title>
   <script src="/js/fullcalendar.js"></script>
   <script>

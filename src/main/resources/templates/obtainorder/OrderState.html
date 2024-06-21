@@ -31,7 +31,7 @@
             }
             .container1{
                 max-width: 90%;
-                margin: auto;
+                /*margin: auto;*/
             }
         </style>
     </th:block>
@@ -230,8 +230,8 @@
             const row = table.row($(this).closest('tr')).data();
             const state = row.state;
 
-            let popupWidth = 700;
-            let popupHeight = 700;
+            let popupWidth = 760;
+            let popupHeight = 550;
             let screenWidth = window.screen.width;
             let screenHeight = window.screen.height;
             let left = (screenWidth - popupWidth) / 2;
@@ -322,7 +322,7 @@
         popupBtn.onclick = function () {
             // 팝업창의 크기 설정
             let popupWidth = 1000;
-            let popupHeight = 1000;
+            let popupHeight = 850;
 
             // 화면의 너비와 높이 가져오기
             let screenWidth = window.screen.width;
