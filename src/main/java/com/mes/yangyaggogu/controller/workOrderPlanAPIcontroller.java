@@ -2,15 +2,22 @@ package com.mes.yangyaggogu.controller;
 
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mes.yangyaggogu.dto.productPlanDTO;
+import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.dto.workOrderPlanDTO;
 import com.mes.yangyaggogu.entity.workOrderPlan;
 import com.mes.yangyaggogu.service.productPlanService;
 import com.mes.yangyaggogu.service.workOrderPlanService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,8 +52,13 @@ public class workOrderPlanAPIcontroller {
     @PostMapping(value = "/Start_workOrder/{id}")
     public ResponseEntity<?> Start_workOrder(@PathVariable Long id ,@RequestParam(name = "producer") String producer){
 
-        boolean workOrNWork =workOrderPlanService.start_Work(id,producer);
-        return ResponseEntity.ok().body(workOrNWork);
+        String workOrNWork =workOrderPlanService.start_Work(id,producer);
+
+        searchDto searchDto = new searchDto();
+        searchDto.setKeyword(workOrNWork);
+
+
+        return ResponseEntity.ok().body(searchDto);
     }
 
     //작업 종료

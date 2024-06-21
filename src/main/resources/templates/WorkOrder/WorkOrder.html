@@ -338,19 +338,14 @@
 
             fetch(`/api/Start_workOrder/${SelectedRow}?producer=`+SelectedProducer, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    "Content-Type": "application/json",
                 },
                 method: 'POST',
             })
                 .then(response => response.json())
-                .then(start => {
-                    if(start){
-                        alert("작업이 시작됩니다.");
+                .then(data => {
+                        alert(data.keyword);
                         table.ajax.reload(null,false);
-                    }else{
-                        alert("선행 공정의 작업이 완료되어야 합니다.")
-                    }
                 })
             modal.style.display = 'none';
         });

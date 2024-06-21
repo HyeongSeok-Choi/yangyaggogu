@@ -1,9 +1,6 @@
 package com.mes.yangyaggogu.service;
 
-import com.mes.yangyaggogu.constant.finishedstock_state;
-import com.mes.yangyaggogu.constant.obtainorder_state;
-import com.mes.yangyaggogu.constant.productionPlan_state;
-import com.mes.yangyaggogu.constant.workOrderPlan_state;
+import com.mes.yangyaggogu.constant.*;
 import com.mes.yangyaggogu.entity.*;
 import com.mes.yangyaggogu.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +19,7 @@ public class workOrderPlanService {
     private final workOrderPlanRepository workOrderPlanRepository;
     private final productPlanRepository productPlanRepository;
     private final com.mes.yangyaggogu.repository.finishedstockRepository finishedstockRepository;
+    private final ingredientStockRepository ingredientStockRepository;
 
     public List<workOrderPlan> getAll() {
         return workOrderPlanRepository.findAll();
@@ -47,7 +45,7 @@ public class workOrderPlanService {
 
 
     //작업 시작
-    public boolean start_Work(Long id,String producer){
+    public String start_Work(Long id,String producer){
         
        workOrderPlan find_WorkPlan= workOrderPlanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such data"));
 
@@ -81,28 +79,49 @@ public class workOrderPlanService {
                 find_WorkPlan.setP_startDate(LocalDateTime.now());
 
                 workOrderPlanRepository.save(find_WorkPlan);
-                return true;
+                return "작업이 시작됩니다.";
 
 
             }else if(find_WorkPlan2.getState() != workOrderPlan_state.completed){
-                return false;
+                return "선행 공정의 작업이 필요합니다.";
             }
-        }else if(answer==1){
-            find_WorkPlan.setProducer(producer);
-            find_WorkPlan.setState(workOrderPlan_state.proceeding);
-            find_WorkPlan.setP_startDate(LocalDateTime.now());
 
-            workOrderPlanRepository.save(find_WorkPlan);
+            //첫 공정
+        }else if(answer==1){
+
+            //첫 공정 시 생산계획 번호와 같은 원자재 조회
+
+            ingredientStock findIngredientStock = ingredientStockRepository.findByProductionPlanCode(find_WorkPlan.getProductPlanCode());
+
+            //해당되는 원자재 재고가 검색되지 않았다는 것은 아직 발주되지 않았다는 뜻
+            if(findIngredientStock == null){
+                return "원자재가 입고되지 않았습니다.";
+            }
+
+
+            //해당되는 원자재 재고가 출고되어야만 공정이 시작할 수 있음
+            if(findIngredientStock.getState() != rowStock_state.out){
+
+                return "원자재가 출고되지 않았습니다.";
+            }else{
+                //첫 공정이면서 원자재 입 출고가 다 이루어 졌다면 작업을 시작
+
+                find_WorkPlan.setProducer(producer);
+                find_WorkPlan.setState(workOrderPlan_state.proceeding);
+                find_WorkPlan.setP_startDate(LocalDateTime.now());
+                workOrderPlanRepository.save(find_WorkPlan);
+
+                return "작업이 시작됩니다.";
+            }
 
         }
-        return true;
+        return "오류발생";
     }
 
     //작업 종료
     public workOrderPlan stop_Work(Long id){
 
         workOrderPlan find_WorkPlan= workOrderPlanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such data"));
-
 
         find_WorkPlan.setState(workOrderPlan_state.completed);
         find_WorkPlan.setP_endDate(LocalDateTime.now());
