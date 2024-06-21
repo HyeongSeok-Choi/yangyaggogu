@@ -1,0 +1,73 @@
+<div>
+    <canvas id="myChart"></canvas>
+    <meta charset="UTF-8">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('myChart');
+
+    const data = {
+        labels: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'],
+        datasets: [
+            {
+                label: '양배추즙',
+                data: [100, 150, 200, 100, 0, 50],
+                borderWidth: 1
+            },
+            {
+                label: '흑마늘즙',
+                data: [100, 100, 100, 100, 100, 100],
+                borderWidth: 1
+            },
+            {
+                label: '석류 젤리스틱',
+                data: [50, 50, 50, 50, 20, 30],
+                borderWidth: 1
+            },
+            {
+                label: '매실 젤리스틱',
+                data: [150, 50, 50, 50, 0, 0],
+                borderWidth: 1
+            }
+        ]
+    };
+
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true
+                }
+            }
+        }
+    });
+
+    const cabbageJuiceData = data.datasets[0].data;
+    const cabbageJuiceSum = cabbageJuiceData.reduce((acc, value) => acc + value, 0);
+    const cabbageJuiceAvg = cabbageJuiceSum/cabbageJuiceData.length;
+    console.log('양배추즙의 월평균 생산량: = ' + cabbageJuiceAvg);
+
+    const drakGarlicJuiceData = data.datasets[1].data;
+    const drakGarlicJuiceSum = drakGarlicJuiceData.reduce((acc, value) => acc + value, 0);
+    const drakGarlicJuiceAvg = drakGarlicJuiceSum/drakGarlicJuiceData.length;
+    console.log('흑마늘즙의 월평균 생산량: = ' + drakGarlicJuiceAvg);
+
+    const jelly1Data = data.datasets[2].data;
+    const jelly1Sum = jelly1Data.reduce((acc, value) => acc + value, 0);
+    const jelly1Avg = jelly1Sum/jelly1Data.length;
+    console.log('석류젤리스틱의 월평균 생산량: = ' + jelly1Avg);
+
+
+    const jelly2Data = data.datasets[3].data;
+    const jelly2Sum = jelly2Data.reduce((acc, value) => acc + value, 0);
+    const jelly2Avg = jelly2Sum/jelly2Data.length;
+    console.log('매실젤리스틱의 월평균 생산량: = ' + jelly2Avg);
+</script>
+

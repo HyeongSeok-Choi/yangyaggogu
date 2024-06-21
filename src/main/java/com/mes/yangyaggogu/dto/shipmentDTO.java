@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,7 +23,7 @@ public class shipmentDTO {
     private Long shipment_Amount;
     private String productionName;
     private LocalDateTime shippingDate;
-    private LocalDateTime deliveryDate;
+    private LocalDate deliveryDate;
     private LocalDateTime createdAt;
     private shipment_state state;
 

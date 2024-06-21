@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -39,70 +40,55 @@ public class shipmentApiController {
     @PostMapping("shipment/register")
     public ResponseEntity<?> registerShipment(@RequestBody List<Long> ids) {
         List<finishedstock> updatedStocks = new ArrayList<>();
-        for (Long id : ids) { //list 돌면서 검사
+        List<shipment> shipments = new ArrayList<>(); // 출하 객체 리스트 생성
+
+        for (Long id : ids) { // 리스트 돌면서 검사
 
             System.out.println(id);
             Optional<finishedstock> optionalFinishedStock = finishedstockService.findById(id);
 
             if (optionalFinishedStock.isPresent()) {
 
-                finishedstock existingStock = optionalFinishedStock.get(); //존재하면 객체를 가져옴
+                finishedstock existingStock = optionalFinishedStock.get(); // 존재하면 객체를 가져옴
                 existingStock.setShipmentState("출하 완료");
                 finishedstockService.save(existingStock);
-                updatedStocks.add(existingStock);  //업데이트 된 객체를 리스트에 추가
+                updatedStocks.add(existingStock); // 업데이트 된 객체를 리스트에 추가
 
                 System.out.println(existingStock.getAmount());
                 System.out.println(existingStock.getShipmentState());
                 System.out.println(existingStock.getOrderNumber());
 
-                shipment shipment = new shipment();
-                System.out.println("요기");
                 obtainorder_number orderNumber = existingStock.getOrderNumber();
-                System.out.println(orderNumber);
-                System.out.println("자기");
-                System.out.println(orderNumber + "!!!!!!!!");
                 List<obtainorder_detail> odList = obtainOrderService.findByOrderNumber(orderNumber);
 
-                shipment.setShipment_Number(shipmentService.generateShipmentNumber());
-
-                if (odList != null && !odList.isEmpty()) {
-                    // 각 거래처별로 적절한 데이터를 처리
-                    Map<String, obtainorder_detail> companyDetailsMap = new HashMap<>();
-                    for (obtainorder_detail od : odList) {
-                        companyDetailsMap.put(od.getCompany_name(), od);
-                    }
-
-
-                    // 여기서는 예를 들어 첫 번째 거래처 데이터를 선택합니다.
-                    obtainorder_detail od = companyDetailsMap.values().iterator().next();
+                for (obtainorder_detail od : odList) { // 각 납품일에 대해 반복
+                    shipment shipment = new shipment();
+                    shipment.setShipment_Number(shipmentService.generateShipmentNumber());
 
                     shipment.setCompany_name(od.getCompany_name());
-                    shipment.setCompany_Address("");
-                } else {
-                    shipment.setCompany_name(null);
-                    shipment.setCompany_Address("");
+                    shipment.setCompany_Address(""); //
+
+                    shipment.setOrder_Number(orderNumber);
+                    shipment.setShipment_Amount(existingStock.getAmount());
+                    shipment.setProductionName(existingStock.getMaterials_Name());
+                    shipment.setShippingDate(LocalDateTime.now());
+                    shipment.setDeliveryDate(od.getDelivery_Date()); //변경됨
+                    shipment.setCreatedAt(null);
+                    shipment.setState(shipment_state.ready);
+                    shipmentService.save(shipment);
+
+                    shipments.add(shipment); // 각 출하 객체를 리스트에 추가
                 }
-
-                shipment.setOrder_Number(orderNumber);
-                shipment.setShipment_Amount(existingStock.getAmount());
-                shipment.setProductionName(existingStock.getMaterials_Name());
-                shipment.setShippingDate(LocalDateTime.now());
-                //출하일
-                shipment.setDeliveryDate(LocalDateTime.now());
-                //납품일은 나중에 수주상태 테이블에서 받아오기
-                shipment.setCreatedAt(null);
-                shipment.setState(shipment_state.ready);
-                shipmentService.save(shipment);
-
             }
         }
 
         if (updatedStocks.isEmpty()) {
-            return ResponseEntity.notFound().build(); //업데이트 된 객체가 없으면 404 반환
+            return ResponseEntity.notFound().build(); // 업데이트 된 객체가 없으면 404 반환
         } else {
-            return ResponseEntity.ok(updatedStocks);  // 업데이트 된 객체 리스트 반환
+            return ResponseEntity.ok(updatedStocks); // 업데이트 된 객체 리스트 반환
         }
     }
+
 
 
 //    private shipmentDTO convertToDTO(shipment shipment) {

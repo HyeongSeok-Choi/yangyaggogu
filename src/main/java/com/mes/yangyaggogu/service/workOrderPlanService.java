@@ -168,6 +168,7 @@ public class workOrderPlanService {
                 finishedstock finished = finishedstock.builder()
                         .orderNumber(find_WorkPlan.getObtainorder_number())
                         .amount(find_WorkPlan.getNow_Output())
+                        //지금 생산량 받아오는중 . 나중에 수정필요할수도 있음
                         .exp(expDate)
                         .materials_Name(find_WorkPlan.getMaterials_Name())
                         .state(finishedstock_state.in)
