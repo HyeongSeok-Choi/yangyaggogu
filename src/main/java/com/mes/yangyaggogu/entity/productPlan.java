@@ -1,7 +1,7 @@
 package com.mes.yangyaggogu.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mes.yangyaggogu.constant.productionPlan_state;
 import jakarta.persistence.*;
 import lombok.*;

@@ -31,7 +31,7 @@ public class workOrderPlanService {
     public void saveWorkOrderPlan(workOrderPlan workOrder) {
         workOrderPlanRepository.save(workOrder);
         if ("포장".equals(workOrder.getProcessName()) && workOrderPlan_state.completed.equals(workOrder.getState())) {
-            LocalDateTime expDate = LocalDateTime.from(workOrder.getP_endDate().plusMonths(6));
+            LocalDate expDate = LocalDate.from(workOrder.getP_endDate().plusMonths(6));
             finishedstock finished = finishedstock.builder()
                     .orderNumber(workOrder.getObtainorder_number())
                     .amount(workOrder.getTarget_Output())
@@ -144,7 +144,7 @@ public class workOrderPlanService {
 
                       obtainorder_detail finded_obtainorder_detail = obtain_order_DetailRepository.findByProductNameAndOrderNumber(ProductName,obtainorderNumber);
 
-                    LocalDateTime expDate = find_WorkPlan.getP_endDate().plusMonths(6);
+                    LocalDate expDate = LocalDate.from(find_WorkPlan.getP_endDate().plusMonths(6));
 
                     finishedstock finished = finishedstock.builder()
                             .orderNumber(finded_obtainorder_detail.getOrderNumber())
@@ -160,7 +160,7 @@ public class workOrderPlanService {
 
             }else {
 
-                LocalDateTime expDate = find_WorkPlan.getP_endDate().plusMonths(6);
+                LocalDate expDate = LocalDate.from(find_WorkPlan.getP_endDate().plusMonths(6));
 
                 finishedstock finished = finishedstock.builder()
                         .orderNumber(find_WorkPlan.getObtainorder_number())
