@@ -2,7 +2,6 @@ package com.mes.yangyaggogu.controller;
 
 
 import com.mes.yangyaggogu.dto.CompanyDto;
-import com.mes.yangyaggogu.dto.FinishedStockDTO;
 import com.mes.yangyaggogu.entity.company;
 import com.mes.yangyaggogu.entity.shipment;
 import com.mes.yangyaggogu.service.CompanyService;
@@ -10,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,6 +49,18 @@ public class CompanyApiController {
         return companyService.getAllCompanyNames();
     }
 
+    //거래처 등록
+    @PostMapping("/company/register")
+    public ResponseEntity<company> registerCompany(@RequestBody CompanyDto companyDto) {
 
+        System.out.println(companyDto.getCompany_address());
+        System.out.println(companyDto.getCompany_manager());
+        System.out.println(companyDto.getCompany_tel_number());
+        System.out.println(companyDto.getTrade_goods());
+
+        company savedCompany = companyService.registCompany(companyDto.toEntity());
+
+        return ResponseEntity.ok(savedCompany);
+    }
 
 }

@@ -33,4 +33,17 @@ public class CompanyDto {
         this.company_manager = company.getCompany_manager();
         this.state = company.getState();
     }
+
+    public company toEntity() {
+
+        company company = new company();
+        company.setCompany_code(company_code);
+        company.setCompany_name(company_name);
+        company.setCompany_address(company_address);
+        company.setCompany_tel_number(company_tel_number);
+        company.setTrade_goods(trade_goods);
+        company.setCompany_manager(company_manager);
+        company.setState(state);
+        return company;
+    }
 }

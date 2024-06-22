@@ -25,8 +25,8 @@ public class CompanyService {
 
     private final Map<String, Integer> sequenceMap = new HashMap<>();
 
-    public void registCompany(company company) {
-        companyRepository.save(company);
+    public company registCompany(company company) {
+       return companyRepository.save(company);
     }
 
     public List<company> showCompanies() {

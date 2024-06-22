@@ -71,7 +71,13 @@
     </div>
 <script>
     function registerCompany() {
-        fetch("/company/register",{
+        console.log(document.getElementById("state").value);
+        console.log(document.getElementById("company_name").value);
+        console.log(document.getElementById("company_tel_number").value);
+        console.log(document.getElementById("company_manager").value);
+        console.log(document.getElementById("company_address").value);
+        console.log(document.getElementById("trade_goods").value);
+        fetch("/api/company/register",{
             method: "POST",
             headers:{
                 "Content-Type" : "application/json",
@@ -87,10 +93,17 @@
         })
 
             .then((response) => response.json())
-            .then((result)=> console.log(result))
-            .catch((error)=>console.error("Error: ", error));
-        // window.opener.location.reload();
-        // window.close();
+            .then(result=>{
+                if(result.state ==="customer") {
+                    alert("고객사 등록이 완료되었습니다.")
+                }else{
+                    alert("거래처 등록이 완료되었습니다.")
+                }
+                 window.opener.location.reload();
+                 window.close();
+            })
+            .catch((error)=>console.error("오류: 등록에 실패했습니다."));
+
     }
 </script>
 </body>

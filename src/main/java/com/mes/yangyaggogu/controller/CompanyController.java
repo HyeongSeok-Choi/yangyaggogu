@@ -32,16 +32,16 @@ public class CompanyController {
 //    public company_state[] companyState() {
 //        return company_state.values();
 //    }
-    @PostMapping("/company/register")
-    public String registerCompany(@ModelAttribute company company,
-                                  RedirectAttributes redirectAttributes,CompanyDto companyDto) {
-
-            company.setState(companyDto.getState());
-            companyService.registCompany(company);
-            redirectAttributes.addFlashAttribute("message", "거래처가 성공적으로 등록되었습니다.");
-
-        return "redirect:/company/list";
-    }
+//    @PostMapping("/company/register")
+//    public String registerCompany(@ModelAttribute company company,
+//                                  RedirectAttributes redirectAttributes,CompanyDto companyDto) {
+//
+//            company.setState(companyDto.getState());
+//            companyService.registCompany(company);
+//            redirectAttributes.addFlashAttribute("message", "거래처가 성공적으로 등록되었습니다.");
+//
+//        return "redirect:/company/list";
+//    }
 
 
     @GetMapping("/company/list")
