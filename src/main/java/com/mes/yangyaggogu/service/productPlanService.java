@@ -50,37 +50,37 @@ public class productPlanService {
         return P_planRepository.save(productPlan);
     }
 
-
-
-    //생산계획 50개의 더미 데이터 렛츠 기릿
-    public void addProductPlan() {
-
-        for (int i = 0; i < 50; i++) {
-
-            productPlan productPlan = new productPlan();
-
-
-            productPlan.setProductionPlanCode("p-100"+i);
-            productPlan.setState(productionPlan_state.ready);
-            productPlan.setPstartDate(LocalDate.now());
-            productPlan.setMaterialsName("양배추즙");
-            productPlan.setPendDate(LocalDate.now().plusDays(i));
-            productPlan.setTarget_Output(500L);
-            obtainorder_number obtainorder_number = new obtainorder_number();
-            obtainorder_number.setOrderNumber("a-500"+i);
-            o_planRepository.save(obtainorder_number);
-
-
-            productPlan.setOrderNumber(obtainorder_number);
-
-            P_planRepository.save(productPlan);
-
-        }
-
-
-
-
-
-    }
+//    public boolean calculatorCapacity(obtainorder_detail findObtain) {
+//
+//        //제품명
+//        String productName = findObtain.getProductName();
+//
+//        //제품명이 양배추즙 또는 흑마늘즙일때
+//        if(productName.equals("양배추즙")||productName.equals("흑마늘즙")){
+//
+//
+//            //캡파가 250box (1000kg)를 넘는다면 두라인으로 잡아야함
+//            if(findObtain.getOrder_Amount() > 250){
+//
+//
+//            }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//        }else {
+//
+//
+//        }
+//
+//
+//    }
 
 }

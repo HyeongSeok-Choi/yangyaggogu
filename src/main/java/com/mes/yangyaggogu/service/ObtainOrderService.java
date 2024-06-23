@@ -52,26 +52,230 @@ public class ObtainOrderService {
     public boolean saveList(List<AddOrderDto> addOrderDtoList){
 
 
-        //수주 번호의 생성
-        obtainorder_number addOrderNumber = new obtainorder_number();
-
+        //인덱스가 계산되고 적절한 번호 출력
         int count = getObtainOrderNumber(addOrderDtoList.get(0).getOrder_Date());
 
-
-        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count);
-
-        obtainOrderNumberRepository.save(addOrderNumber);
-
-
-        //수주 디테일 저장
+        //같이 저장되니까 같은 수주번호를 가진 채 수주 디테일 저장
         for (AddOrderDto addOrderDto : addOrderDtoList) {
 
-            obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+            if(addOrderDto.getProductName().equals("양배추즙")||addOrderDto.getProductName().equals("흑마늘즙")){
 
-            obtainorder_detail.setOrderNumber(addOrderNumber);
-            obtainorder_detail.setState(obtainorder_state.ready);
+                Long Amount = addOrderDto.getOrder_Amount();
 
-            obtainorderDetailRepository.save(obtainorder_detail);
+                if(Amount <= 250){
+                    obtainorder_number addOrderNumber = new obtainorder_number();
+                    addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName());
+                    obtainOrderNumberRepository.save(addOrderNumber);
+
+                    obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+
+                    obtainorder_detail.setOrderNumber(addOrderNumber);
+                    obtainorder_detail.setState(obtainorder_state.ready);
+
+                    obtainorderDetailRepository.save(obtainorder_detail);
+
+                } else if (Amount > 250 && Amount <= 500) {
+                    for (int i = 1; i < 3; i++) {
+                        obtainorder_number addOrderNumber = new obtainorder_number();
+                        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName()+i);
+                        obtainOrderNumberRepository.save(addOrderNumber);
+
+                        obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+
+                        obtainorder_detail.setOrderNumber(addOrderNumber);
+                        obtainorder_detail.setState(obtainorder_state.ready);
+                        if(i >1){
+                            obtainorder_detail.setOrder_Amount(Amount%250);
+                        }else{
+                            obtainorder_detail.setOrder_Amount(250L);
+                        }
+
+                        obtainorderDetailRepository.save(obtainorder_detail);
+
+                    }
+
+                } else if (Amount >500 && Amount <=750) {
+                    for (int i = 1; i < 4; i++) {
+                        obtainorder_number addOrderNumber = new obtainorder_number();
+                        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName()+i);
+                        obtainOrderNumberRepository.save(addOrderNumber);
+
+                        obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+
+                        obtainorder_detail.setOrderNumber(addOrderNumber);
+                        obtainorder_detail.setState(obtainorder_state.ready);
+
+                        if(i >2){
+                            obtainorder_detail.setOrder_Amount(Amount%500);
+                        }else{
+                            obtainorder_detail.setOrder_Amount(250L);
+                        }
+                        obtainorderDetailRepository.save(obtainorder_detail);
+                    }
+
+                } else if (Amount >750 && Amount <=1000) {
+                    for (int i = 1; i < 5; i++) {
+                        obtainorder_number addOrderNumber = new obtainorder_number();
+                        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName()+i);
+                        obtainOrderNumberRepository.save(addOrderNumber);
+
+                        obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+                        obtainorder_detail.setOrderNumber(addOrderNumber);
+                        obtainorder_detail.setState(obtainorder_state.ready);
+
+                        if(i >3){
+                            obtainorder_detail.setOrder_Amount(Amount%750);
+                        }else{
+                            obtainorder_detail.setOrder_Amount(250L);
+                        }
+                        obtainorderDetailRepository.save(obtainorder_detail);
+
+                    }
+
+                }
+                
+            }else{
+                //젤리
+                Long Amount = addOrderDto.getOrder_Amount();
+
+                if(Amount <= 160){
+                    obtainorder_number addOrderNumber = new obtainorder_number();
+                    addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName());
+                    obtainOrderNumberRepository.save(addOrderNumber);
+
+                    obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+
+                    obtainorder_detail.setOrderNumber(addOrderNumber);
+                    obtainorder_detail.setState(obtainorder_state.ready);
+
+                    obtainorderDetailRepository.save(obtainorder_detail);
+
+                } else if (Amount > 160 && Amount <= 320) {
+                    for (int i = 1; i < 3; i++) {
+                        obtainorder_number addOrderNumber = new obtainorder_number();
+                        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName()+i);
+                        obtainOrderNumberRepository.save(addOrderNumber);
+
+                        obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+
+                        obtainorder_detail.setOrderNumber(addOrderNumber);
+                        obtainorder_detail.setState(obtainorder_state.ready);
+                        if(i >1){
+                            obtainorder_detail.setOrder_Amount(Amount%160);
+                        }else{
+                            obtainorder_detail.setOrder_Amount(160L);
+                        }
+
+                        obtainorderDetailRepository.save(obtainorder_detail);
+
+                    }
+
+                } else if (Amount >320 && Amount <=480) {
+                    for (int i = 1; i < 4; i++) {
+                        obtainorder_number addOrderNumber = new obtainorder_number();
+                        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName()+i);
+                        obtainOrderNumberRepository.save(addOrderNumber);
+
+                        obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+
+                        obtainorder_detail.setOrderNumber(addOrderNumber);
+                        obtainorder_detail.setState(obtainorder_state.ready);
+
+                        if(i >2){
+                            obtainorder_detail.setOrder_Amount(Amount%320);
+                        }else{
+                            obtainorder_detail.setOrder_Amount(160L);
+                        }
+                        obtainorderDetailRepository.save(obtainorder_detail);
+                    }
+
+                } else if (Amount >480 && Amount <=640) {
+                    for (int i = 1; i < 5; i++) {
+                        obtainorder_number addOrderNumber = new obtainorder_number();
+                        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName()+i);
+                        obtainOrderNumberRepository.save(addOrderNumber);
+
+                        obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+                        obtainorder_detail.setOrderNumber(addOrderNumber);
+                        obtainorder_detail.setState(obtainorder_state.ready);
+
+                        if(i >3){
+                            obtainorder_detail.setOrder_Amount(Amount%480);
+                        }else{
+                            obtainorder_detail.setOrder_Amount(160L);
+                        }
+                        obtainorderDetailRepository.save(obtainorder_detail);
+
+                    }
+
+                }else if (Amount >640 && Amount <=800) {
+                    for (int i = 1; i < 6; i++) {
+                        obtainorder_number addOrderNumber = new obtainorder_number();
+                        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName()+i);
+                        obtainOrderNumberRepository.save(addOrderNumber);
+
+                        obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+                        obtainorder_detail.setOrderNumber(addOrderNumber);
+                        obtainorder_detail.setState(obtainorder_state.ready);
+
+                        if(i >4){
+                            obtainorder_detail.setOrder_Amount(Amount%640);
+                        }else{
+                            obtainorder_detail.setOrder_Amount(160L);
+                        }
+                        obtainorderDetailRepository.save(obtainorder_detail);
+
+                    }
+
+                }else if (Amount >800 && Amount <=960) {
+                    for (int i = 1; i < 7; i++) {
+                        obtainorder_number addOrderNumber = new obtainorder_number();
+                        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName()+i);
+                        obtainOrderNumberRepository.save(addOrderNumber);
+
+                        obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+                        obtainorder_detail.setOrderNumber(addOrderNumber);
+                        obtainorder_detail.setState(obtainorder_state.ready);
+
+                        if(i >5){
+                            obtainorder_detail.setOrder_Amount(Amount%800);
+                        }else{
+                            obtainorder_detail.setOrder_Amount(160L);
+                        }
+                        obtainorderDetailRepository.save(obtainorder_detail);
+
+                    }
+
+                }else if (Amount >960 && Amount <=1000) {
+                    for (int i = 1; i < 8; i++) {
+                        obtainorder_number addOrderNumber = new obtainorder_number();
+                        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count+"-"+addOrderDto.getProductName()+i);
+                        obtainOrderNumberRepository.save(addOrderNumber);
+
+                        obtainorder_detail obtainorder_detail= addOrderDto.toEntity();
+                        obtainorder_detail.setOrderNumber(addOrderNumber);
+                        obtainorder_detail.setState(obtainorder_state.ready);
+
+                        if(i >6){
+                            obtainorder_detail.setOrder_Amount(Amount%960);
+                        }else{
+                            obtainorder_detail.setOrder_Amount(160L);
+                        }
+                        obtainorderDetailRepository.save(obtainorder_detail);
+
+                    }
+
+                }
+                
+            }
+
+
+//        //인덱스가 계산된 수주번호 완성 !!
+//        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count);
+//
+//        obtainOrderNumberRepository.save(addOrderNumber);
+
+
         }
         return true;
     }
@@ -103,9 +307,7 @@ public class ObtainOrderService {
            addNumber = 1;
 
        }
-
        return addNumber;
-
     }
 
     //수주 상세 조회
@@ -175,12 +377,21 @@ public class ObtainOrderService {
 
                   //즙일 때
                   if (comeProductName.equals("양배추즙") || comeProductName.equals("흑마늘즙")) {
+                      System.out.println("여긴올듯");
 
                       //두 캡파를 더함
                       Long capacity = productPlan.getTarget_Output() + targetOutput;
 
+                      System.out.println(productPlan.getTarget_Output()+"몇이고");
+                      if (productPlan.getTarget_Output() == 250L) {
+                          System.out.println("그럼 여기 왔겠네");
+                          continue;
+                      }
+
                       //더한 캡파가 250박스 이하면 합칠 수 있으니 true
+                      System.out.println(capacity+"캡파몇인데");
                       if (capacity <= 250L) {
+                          System.out.println("여기는?");
 
                           return true;
 
@@ -220,6 +431,11 @@ public class ObtainOrderService {
                 if (comeProductName.equals("양배추즙") || comeProductName.equals("흑마늘즙")) {
 
                     Long capacity = productPlan.getTarget_Output() + targetOutput;
+
+                    if (productPlan.getTarget_Output() == 250L) {
+                        System.out.println("그럼 여기 왔겠네");
+                        continue;
+                    }
 
                     if (capacity <= 250L) {
 
