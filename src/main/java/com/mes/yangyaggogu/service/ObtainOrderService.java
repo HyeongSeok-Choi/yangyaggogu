@@ -14,10 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -27,6 +27,7 @@ public class ObtainOrderService {
     public final obtainorder_detailRepository obtainorderDetailRepository;
     public final obtainorder_numberRepository obtainOrderNumberRepository;
     public final productPlanRepository productPlanRepository;
+
 
     //수주 현황 조회, 수주 상세 조회
     public List<obtainorder_detail> getObtainOrderDtl() {
@@ -50,7 +51,6 @@ public class ObtainOrderService {
     //등록
     @Transactional
     public boolean saveList(List<AddOrderDto> addOrderDtoList){
-
 
         //인덱스가 계산되고 적절한 번호 출력
         int count = getObtainOrderNumber(addOrderDtoList.get(0).getOrder_Date());
@@ -322,13 +322,15 @@ public class ObtainOrderService {
         return findedDto;
     }
 
+
+
     //3라인이 넘는지 안넘는지 체크
-    public boolean checkPossibleDay(LocalDate localDate,String comeProductName,Long targetOutput){
+    public boolean checkPossibleDay(obtainorder_detail obtainorderDetail){
 
 
         //시작일과 끝일을 계산
-        LocalDate startDate = localDate.minusDays(3);
-        LocalDate endDate = localDate;
+        LocalDate startDate = obtainorderDetail.getDelivery_Date().minusDays(3);
+        LocalDate endDate = obtainorderDetail.getDelivery_Date();
 
         List<productPlan> productPlanList = productPlanRepository.getBestPost(startDate,endDate);
 
@@ -336,9 +338,9 @@ public class ObtainOrderService {
         int countJelly=0;
 
 
-        if(comeProductName.equals("양배추즙")||comeProductName.equals("흑마늘즙")){
+        if(obtainorderDetail.getProductName().equals("양배추즙")||obtainorderDetail.getProductName().equals("흑마늘즙")){
             countJuice = countJuice+1;
-        }else if(comeProductName.equals("석류젤리")||comeProductName.equals("매실젤리")){
+        }else if(obtainorderDetail.getProductName().equals("석류젤리")||obtainorderDetail.getProductName().equals("매실젤리")){
             countJelly=countJelly+1;
         }
 
@@ -362,47 +364,44 @@ public class ObtainOrderService {
     }
 
     //계획이 합쳐질 수 있을지 파악
-    public boolean checkPossibleAddPlan(LocalDate StartDate,String comeProductName,Long targetOutput){
+    public boolean checkPossibleAddPlan(obtainorder_detail obtainorderDetail){
 
+         LocalDate StartDate = returnStartday(obtainorderDetail);
 
         //들어온 확정예정건의 시작일과 이름이 일치하는 계획을 불러옴
-          List<productPlan> productPlanList = productPlanRepository.getEqualStartDatePlan(StartDate,comeProductName);
+          List<productPlan> productPlanList = productPlanRepository.getEqualStartDatePlan(StartDate,obtainorderDetail.getProductName());
 
 
           //계획들을 반복해서 검사
           for(productPlan productPlan : productPlanList) {
 
               //비교 하려는 제품이름이 같은지 파악
-              if (productPlan.getMaterialsName().equals(comeProductName)) {
+              if (productPlan.getMaterialsName().equals(obtainorderDetail.getProductName())) {
 
                   //즙일 때
-                  if (comeProductName.equals("양배추즙") || comeProductName.equals("흑마늘즙")) {
-                      System.out.println("여긴올듯");
+                  if (obtainorderDetail.getProductName().equals("양배추즙") || obtainorderDetail.getProductName().equals("흑마늘즙")) {
 
                       //두 캡파를 더함
-                      Long capacity = productPlan.getTarget_Output() + targetOutput;
+                      Long capacity = productPlan.getTarget_Output() + obtainorderDetail.getOrder_Amount();
 
                       System.out.println(productPlan.getTarget_Output()+"몇이고");
                       if (productPlan.getTarget_Output() == 250L) {
-                          System.out.println("그럼 여기 왔겠네");
                           continue;
                       }
 
                       //더한 캡파가 250박스 이하면 합칠 수 있으니 true
                       System.out.println(capacity+"캡파몇인데");
                       if (capacity <= 250L) {
-                          System.out.println("여기는?");
-
                           return true;
 
                           //아니라면 false
                       } else return false;
 
                       //젤리일때
-                  } else if (comeProductName.equals("매실젤리") || comeProductName.equals("석류젤리")) {
+                  } else if (obtainorderDetail.getProductName().equals("매실젤리") || obtainorderDetail.getProductName().equals("석류젤리")) {
 
                       //두 캡파를 더함
-                      Long capacity = productPlan.getTarget_Output() + targetOutput;
+                      Long capacity = productPlan.getTarget_Output() + obtainorderDetail.getOrder_Amount();
 
                       //더한 캡파가 160박스 이하면 합칠 수 있으니 true
                       if (capacity <= 160) {
@@ -421,19 +420,19 @@ public class ObtainOrderService {
     }
 
     //계획이 합쳐질 수 있을지 파악한 걸 합치는 작업
-    public productPlan JoinProductPlan(LocalDate StartDate,String comeProductName,Long targetOutput,obtainorder_number obtainorderNumber) {
+    public productPlan JoinProductPlan(LocalDate StartDate,obtainorder_detail comeObtain) {
 
-        List<productPlan> productPlanList = productPlanRepository.getEqualStartDatePlan(StartDate, comeProductName);
+        List<productPlan> productPlanList = productPlanRepository.getEqualStartDatePlan(StartDate, comeObtain.getProductName());
 
         for (productPlan productPlan : productPlanList) {
-            if (productPlan.getMaterialsName().equals(comeProductName)) {
+            if (productPlan.getMaterialsName().equals(comeObtain.getProductName())) {
 
-                if (comeProductName.equals("양배추즙") || comeProductName.equals("흑마늘즙")) {
+                if (comeObtain.getProductName().equals("양배추즙") || comeObtain.getProductName().equals("흑마늘즙")) {
 
-                    Long capacity = productPlan.getTarget_Output() + targetOutput;
+                    Long capacity = productPlan.getTarget_Output() + comeObtain.getOrder_Amount();
 
                     if (productPlan.getTarget_Output() == 250L) {
-                        System.out.println("그럼 여기 왔겠네");
+
                         continue;
                     }
 
@@ -443,10 +442,10 @@ public class ObtainOrderService {
 
                         productPlan newJoinProducePlan = new productPlan();
 
-                        if (comeProductName.equals("양배추즙")) {
-                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrderNumber() + "CB" + "," + existedPlan.getProductionPlanCode());
-                        } else if (comeProductName.equals("흑마늘즙")) {
-                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrderNumber() + "BG" + "," + existedPlan.getProductionPlanCode());
+                        if (comeObtain.getProductName().equals("양배추즙")) {
+                            newJoinProducePlan.setProductionPlanCode(comeObtain.getOrderNumber().getOrderNumber() + "CB" + "," + existedPlan.getProductionPlanCode());
+                        } else if (comeObtain.getProductName().equals("흑마늘즙")) {
+                            newJoinProducePlan.setProductionPlanCode(comeObtain.getOrderNumber().getOrderNumber() + "BG" + "," + existedPlan.getProductionPlanCode());
                         }
 
                         obtainorder_number fakeOrderNum = new obtainorder_number();
@@ -454,7 +453,7 @@ public class ObtainOrderService {
 
                         obtainOrderNumberRepository.save(fakeOrderNum);
                         newJoinProducePlan.setOrderNumber(fakeOrderNum);
-                        newJoinProducePlan.setMaterialsName(comeProductName);
+                        newJoinProducePlan.setMaterialsName(comeObtain.getProductName());
                         newJoinProducePlan.setState(productionPlan_state.beforeOrder);
                         newJoinProducePlan.setTarget_Output(capacity);
 
@@ -467,19 +466,19 @@ public class ObtainOrderService {
 
                     } else return null;
 
-                } else if (comeProductName.equals("매실젤리") || comeProductName.equals("석류젤리")) {
+                } else if (comeObtain.getProductName().equals("매실젤리") || comeObtain.getProductName().equals("석류젤리")) {
 
-                    Long capacity = productPlan.getTarget_Output() + targetOutput;
+                    Long capacity = productPlan.getTarget_Output() + comeObtain.getOrder_Amount();
 
                     productPlan existedPlan = productPlan;
 
                     productPlan newJoinProducePlan = new productPlan();
 
                     if (capacity <= 160L) {
-                        if (comeProductName.equals("매실젤리")) {
-                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrderNumber() + "MS" + "," + existedPlan.getProductionPlanCode());
-                        } else if (comeProductName.equals("석류젤리")) {
-                            newJoinProducePlan.setProductionPlanCode(obtainorderNumber.getOrderNumber() + "SS" + "," + existedPlan.getProductionPlanCode());
+                        if (comeObtain.getProductName().equals("매실젤리")) {
+                            newJoinProducePlan.setProductionPlanCode(comeObtain.getOrderNumber().getOrderNumber() + "MS" + "," + existedPlan.getProductionPlanCode());
+                        } else if (comeObtain.getProductName().equals("석류젤리")) {
+                            newJoinProducePlan.setProductionPlanCode(comeObtain.getOrderNumber().getOrderNumber() + "SS" + "," + existedPlan.getProductionPlanCode());
                         }
 
                         obtainorder_number fakeOrderNum = new obtainorder_number();
@@ -487,7 +486,7 @@ public class ObtainOrderService {
 
                         obtainOrderNumberRepository.save(fakeOrderNum);
                         newJoinProducePlan.setOrderNumber(fakeOrderNum);
-                        newJoinProducePlan.setMaterialsName(comeProductName);
+                        newJoinProducePlan.setMaterialsName(comeObtain.getProductName());
                         newJoinProducePlan.setState(productionPlan_state.beforeOrder);
                         newJoinProducePlan.setTarget_Output(capacity);
 
@@ -542,6 +541,26 @@ public class ObtainOrderService {
     public List<obtainorder_detail> findByOrderNumber(obtainorder_number orderNumber) {
         return obtainorderDetailRepository.findByOrderNumber(orderNumber);
         //shipmentApiController에서 사용, 수주 상세 테이블에서 거래처 이름 받아오는데 씀
+    }
+
+    public LocalDate returnStartday(obtainorder_detail obtainorderDetail) {
+
+        LocalDate StartDate = obtainorderDetail.getDelivery_Date().minusDays(3);
+        LocalDate endDate = obtainorderDetail.getDelivery_Date();
+
+        List<LocalDate> betweenAllDays = StartDate.datesUntil(endDate)
+                .collect(Collectors.toList());
+
+        for (LocalDate date : betweenAllDays) {
+            if (date.getDayOfWeek().getValue() == 6||date.getDayOfWeek().getValue() == 7) {
+                StartDate= StartDate.minusDays(2);
+                break;
+            }
+
+        }
+
+
+        return StartDate;
     }
 
 

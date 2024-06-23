@@ -70,12 +70,13 @@ public class obtainorderApiController {
             obtainorder_detail findObtain = obtainOrderService.getObtainOrderDtlById(findId);
 
             //해당 디테일 객체의 시작일 계산
-            LocalDate StartDay =findObtain.getDelivery_Date().minusDays(3);
+            //시작일이 주말이 포함되면 이틀이 더 소요
+            LocalDate StartDay =obtainOrderService.returnStartday(findObtain);
 
+            //합치는게 가능하다면 ?
+            if(obtainOrderService.checkPossibleAddPlan(findObtain)){
 
-            if(obtainOrderService.checkPossibleAddPlan(StartDay,findObtain.getProductName(),findObtain.getOrder_Amount())){
-
-                productPlan productPlan = obtainOrderService.JoinProductPlan(StartDay,findObtain.getProductName(),findObtain.getOrder_Amount(),findObtain.getOrderNumber());
+                productPlan productPlan = obtainOrderService.JoinProductPlan(StartDay,findObtain);
 
                 if(productPlan!=null){
                     findObtain.setState(obtainorder_state.confirmed);
@@ -88,18 +89,22 @@ public class obtainorderApiController {
                 }
             };
 
+            //3라인 체크
+           boolean check =  obtainOrderService.checkPossibleDay(findObtain);
 
-           boolean check =  obtainOrderService.checkPossibleDay(findObtain.getDelivery_Date(),findObtain.getProductName(),findObtain.getOrder_Amount());
-
+           //3라인 체크에 걸린다면
            if(!check){
+               //안되는걸로 !
                return ResponseEntity.ok(check);
            }
 
+           //3라인 체크에 안걸린다면 확정
             findObtain.setState(obtainorder_state.confirmed);
 
             obtainOrderService.save(findObtain);
 
             obtainorder_details.add(findObtain);
+
         }
 
         //수주 확정된 데이터의 생산계획이 자동적으로 만들어짐

@@ -20,6 +20,7 @@ public class workOrderPlanService {
     private final productPlanRepository productPlanRepository;
     private final com.mes.yangyaggogu.repository.finishedstockRepository finishedstockRepository;
     private final ingredientStockRepository ingredientStockRepository;
+    private final ObtainOrderService obtainOrderService;
 
     public List<workOrderPlan> getAll() {
         return workOrderPlanRepository.findAll();
@@ -410,7 +411,7 @@ public class workOrderPlanService {
                 productplan.setProductionPlanCode(obtainorder_detail.getOrderNumber().getOrderNumber() + "SS");
             }
             productplan.setState(productionPlan_state.beforeOrder);
-            productplan.setPstartDate(obtainorder_detail.getDelivery_Date().minusDays(3));
+            productplan.setPstartDate(obtainOrderService.returnStartday(obtainorder_detail));
             productplan.setPendDate(obtainorder_detail.getDelivery_Date());
             productplan.setTarget_Output(obtainorder_detail.getOrder_Amount());
             productPlanRepository.save(productplan);

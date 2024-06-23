@@ -76,7 +76,7 @@
                 </td>
 
                 <th>수량</th>
-                <td><input type="text" id="orderQuantity" name="orderNum">Box</td>
+                <td><input type="number" id="orderQuantity"  style="width: 60px;">Box</td>
                 <th>납품일</th>
                 <td><input type="date" id="deliveryDate" name="deliveryDate"></td>
                 <th>등록자</th>
@@ -137,6 +137,12 @@
                 alert('수주를 등록해주세요.');
                 return;
             }
+
+            if (orderQuantity > 1000 || orderQuantity<0) {
+                alert('최대 주문 가능 수량을 초과하였습니다.');
+                return;
+            }
+
 
             //중복 제품 확인
             var isDuplicate = false;
