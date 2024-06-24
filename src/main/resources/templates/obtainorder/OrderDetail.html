@@ -151,29 +151,33 @@
 
             // 수주 삭제
             document.getElementById('deleteBtn').addEventListener('click', function () {
-                const orderId = document.getElementById('order-id').value;
+                if (confirm('수주를 삭제하시겠습니까?')) {
+                    const orderId = document.getElementById('order-id').value;
 
-                fetch(`/api/deleteOrder/${orderId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('수주가 삭제되었습니다.');
-                            window.opener.location.reload();
-                            window.close();
-                        } else {
-                            alert('수주 삭제에 실패했습니다.');
+                    fetch(`/api/deleteOrder/${orderId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
                         }
                     })
-                    .catch(error =>{
-                        console.error('Error: ' + error);
-                        alert('수주 삭제 중 오류가 발생했습니다.');
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('수주가 삭제되었습니다.');
+                                window.opener.location.reload();
+                                window.close();
+                            } else {
+                                alert('수주 삭제에 실패했습니다.');
+                            }
+                        })
+                        .catch(error =>{
+                            console.error('Error: ' + error);
+                            alert('수주 삭제 중 오류가 발생했습니다.');
+                        });
+                } else {
+                    window.close();
+                }
             });
         });
     </script>
