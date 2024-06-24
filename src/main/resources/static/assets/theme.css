@@ -840,7 +840,7 @@
   --phoenix-table-bg: #eff2f6;
 }
 [data-bs-theme=dark] .table-dark {
-  --phoenix-table-bg: $value;
+  --phoenix-table-bg: value;
 }
 
 /*-----------------------------------------------
@@ -36599,7 +36599,7 @@ a[href].bg-body-secondary:hover, a[href].bg-body-secondary:focus {
   --phoenix-navbar-vertical-link-hover-bg: #31374a;
   --phoenix-navbar-vertical-link-active-color: #fff;
   --phoenix-navbar-vertical-link-disable-color: #8a94ad;
-  --phoenix-navbar-vertical-hr-color: $gray-800;
+  --phoenix-navbar-vertical-hr-color: gray-800;
   --phoenix-navbar-vertical-collapsed-menu-bg: #222834;
   --phoenix-logo-text: #eff2f6;
   --phoenix-navbar-footer-border-color: #31374a;

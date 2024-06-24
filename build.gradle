@@ -38,6 +38,9 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.11.0'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.17.1'
+    //엑셀 업로드 관련 의존성
+    implementation 'org.apache.poi:poi:5.2.3'
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
 
 }
 
