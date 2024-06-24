@@ -23,6 +23,11 @@
 <!--    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/searchbuilder/1.7.1/css/searchBuilder.bootstrap5.css" />-->
     <style>
 
+        .obtainNum{
+
+            white-space: nowrap;
+        }
+
         /*모달 팝업 영역 스타일링*/
         .modal {
             /*팝업 배경*/
@@ -262,7 +267,17 @@
                         data: 'processCode'},
                     {
                         title:"생산계획코드",
-                        data: 'productPlanCode'},
+                        data: 'productPlanCode',render:function (data,type,row){
+
+                            var test = "";
+
+                            data.split(",").forEach(a =>{
+                                console.log(a)
+                                test+= `<div class="obtainNum">${a}</div>`
+                            })
+                            console.log(test);
+
+                            return test}},
                     {
                         title:"수주번호",
                         data: 'obtainorder_number'},

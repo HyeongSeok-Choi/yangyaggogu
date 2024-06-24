@@ -61,6 +61,13 @@ public class rowMaterialController {
 
            }else {
                productPlan findProductPlan = productPlanservice.getProductPlan(ProductPlanCode);
+
+               if(findProductPlan.getMaterialsName().equals("양배추즙")||findProductPlan.getMaterialsName().equals("흑마늘즙")){
+                   findProductPlan.setTarget_Output((1000 * findProductPlan.getTarget_Output())/250);
+               }else{
+                   findProductPlan.setTarget_Output((findProductPlan.getTarget_Output()*25)*5);
+               }
+
                model.addAttribute("ProductPlanCode", ProductPlanCode);
                model.addAttribute("ProductPlan", findProductPlan);
            }

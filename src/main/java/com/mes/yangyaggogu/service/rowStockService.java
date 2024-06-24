@@ -69,7 +69,6 @@ public class rowStockService {
 
     public List<StockDto> searchLists(searchDto searchDto){
 
-
         List<StockDto> searchLists= ingredientStockRepository.getRowStockPage(searchDto.getStart(),searchDto.getEnd(),searchDto.getKeyword())
                 .stream()
                 .map(a -> new StockDto(a))

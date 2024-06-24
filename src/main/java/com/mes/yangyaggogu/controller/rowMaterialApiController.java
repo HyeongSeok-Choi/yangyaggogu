@@ -86,6 +86,7 @@ public class rowMaterialApiController {
 
         return ResponseEntity.ok(rowOrderStock);
     }
+
     @PostMapping(value = "/rowMaterial/search")
     public ResponseEntity<?> SearchRowStockList(@RequestBody searchDto search) {
 
