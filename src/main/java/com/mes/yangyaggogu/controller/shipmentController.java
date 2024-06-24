@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.controller;
 
 
+import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.entity.carrier;
 import com.mes.yangyaggogu.entity.company;
 import com.mes.yangyaggogu.entity.shipment;
@@ -10,9 +11,11 @@ import com.mes.yangyaggogu.service.shipmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,14 +28,17 @@ public class shipmentController {
     final private shipmentService shipmentService;
     final private CompanyService companyService;
     @GetMapping("shipment/list")
-    public String showShipmentRegisterForm()  {
+    public String showShipmentRegisterForm(Model model, searchDto searchDto)  {
+
+        model.addAttribute("searchDto", searchDto);
         return "shipment/shipmentRegister";
     }
 
 
 
     @GetMapping("/shipment/confirmedList")
-    public String showShipmentList() {
+    public String showShipmentList(Model model, searchDto searchDto) {
+        model.addAttribute("searchDto", searchDto);
         return "shipment/shipmentList";
     }
 
@@ -61,9 +67,10 @@ public class shipmentController {
         }
         model.addAttribute("carrier", carrier);
 
+
+
         return "shipment/shipmentDetailRegister";
     }
-
 
 
 

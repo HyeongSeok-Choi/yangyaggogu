@@ -23,10 +23,13 @@ public class obtainorder_number {
     @Id
     private String orderNumber;
 
+//    @JsonBackReference
     @OneToMany(mappedBy = "orderNumber", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<productPlan> productPlanList;
 
 //    @OneToMany(mappedBy = "orderNumber",  cascade = CascadeType.REMOVE)
 //    private List<finishedstock> finishedstockList;
+
+
 
 }

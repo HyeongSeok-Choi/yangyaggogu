@@ -6,8 +6,11 @@ import com.mes.yangyaggogu.entity.company;
 import com.mes.yangyaggogu.entity.shipment;
 import com.mes.yangyaggogu.service.carrierService;
 import com.mes.yangyaggogu.service.shipmentService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -60,10 +63,12 @@ public class carrierController {
             shipmentService.save(shipment);
         }
 
+
+
         redirectAttributes.addFlashAttribute("message", "성공적으로 등록되었습니다.");
         redirectAttributes.addAttribute("shipment_Number", shipment_Number);
 
-        return "shipment/shipmentList";
+        return "redirect:/shipment/confirmedList";
     }
 
 

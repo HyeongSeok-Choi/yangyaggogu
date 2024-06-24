@@ -22,6 +22,7 @@ public class productPlan {
 
     private String materialsName;
 
+//    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "orderNumber")
     private obtainorder_number orderNumber;
@@ -31,6 +32,7 @@ public class productPlan {
     private LocalDate pendDate;
 
     private Long target_Output;
+
 
     private Long now_Output;
 
