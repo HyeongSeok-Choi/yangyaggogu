@@ -2,9 +2,11 @@ package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.dto.StockDto;
 import com.mes.yangyaggogu.dto.searchDto;
+import com.mes.yangyaggogu.entity.company;
 import com.mes.yangyaggogu.entity.ingredientStock;
 import com.mes.yangyaggogu.entity.productPlan;
 import com.mes.yangyaggogu.entity.searchForm;
+import com.mes.yangyaggogu.service.CompanyService;
 import com.mes.yangyaggogu.service.productPlanService;
 import com.mes.yangyaggogu.service.rowStockService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class rowMaterialController {
 
     private final rowStockService rowStockService;
     private final productPlanService productPlanservice;
+    private final CompanyService companyService;
 
     @GetMapping(value = "/rowMaterial")
     public String rowMaterial(Model model, searchDto searchDto){
@@ -46,7 +49,7 @@ public class rowMaterialController {
     }
 
     @GetMapping(value = "/rowStockOrderRegister")
-    public String orderRegister(Model model, String ProductPlanCode ) throws Exception{
+    public String orderRegister(Model model, String ProductPlanCode, String companyName) throws Exception{
 
 
        List<productPlan> productPlanList = productPlanservice.getProductPlansBeforeOrder();
@@ -67,6 +70,21 @@ public class rowMaterialController {
        }else {
            model.addAttribute("ProductPlan", new productPlan());
        }
+
+        List<company> companyList = companyService.showCompanies();
+        model.addAttribute("companyList",companyList);
+
+       if(companyName != null) {
+           if (companyName.equals("발주처를 선택해주세요")){
+               model.addAttribute("company", new company());
+           }else{
+               model.addAttribute("companyName", companyName);
+
+           }
+       }else{
+           model.addAttribute("company", new company());
+       }
+
 
 
         return "/stockPlan/rowStockOrderRegister";
