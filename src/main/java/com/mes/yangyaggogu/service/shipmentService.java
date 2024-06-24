@@ -1,6 +1,10 @@
 package com.mes.yangyaggogu.service;
 
+import com.mes.yangyaggogu.dto.FinishedStockDTO;
+import com.mes.yangyaggogu.dto.searchDto;
+import com.mes.yangyaggogu.dto.shipmentDTO;
 import com.mes.yangyaggogu.entity.shipment;
+import com.mes.yangyaggogu.repository.finishedstockRepository;
 import com.mes.yangyaggogu.repository.shipmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +22,7 @@ public class shipmentService {
 
 
     final private shipmentRepository shipmentRepository;
+
     private final Map<String, Integer> sequenceMap = new HashMap<>();
 
 
@@ -46,4 +52,18 @@ public class shipmentService {
     public shipment findById(String id) {
         return shipmentRepository.findById(id).orElse(null);
     }
+
+
+    public List<shipmentDTO> searchLists(searchDto searchDto){
+
+
+        List<shipmentDTO> searchLists = shipmentRepository.getFinishedStockPage(searchDto.getStart(), searchDto.getEnd(), searchDto.getKeyword())
+                .stream()
+                .map(a -> new shipmentDTO(a))
+                .collect(Collectors.toList());
+
+        return searchLists;
+    }
+
+
 }

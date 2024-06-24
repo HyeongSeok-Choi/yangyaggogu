@@ -87,7 +87,7 @@ public class finishedStockApiController {
     }
 
 
-    @PostMapping(value = "/productMaterial/search")
+    @PostMapping(value ={"/productMaterial/search", "/shipment/search"} )
     public ResponseEntity<?> SearchFinishedStockList(@RequestBody searchDto search) {
 
         System.out.println("아예 안오니 ?");

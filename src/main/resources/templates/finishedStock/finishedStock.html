@@ -28,8 +28,14 @@
     <title>완제품 입/출고</title>
     <th:block layout:fragment="css">
     <style>
-        #order_list thead th {
+        #finishedStockList thead th {
             text-align: center;
+            vertical-align: middle;
+        }
+
+        #finishedStockList tbody td {
+            text-align: center;
+            vertical-align: middle;
         }
         .table-hover th, .table-hover td{
             text-align: center;
@@ -199,25 +205,43 @@
             }
 
             if (confirm("체크하신 항목을 출고하시겠습니까?")) {
-                selectedRows.each(function (data) {
+                var ajaxRequests = [];
+                var hasError = false;
 
+                selectedRows.each(function (data) {
                     console.log(data.state);
                     console.log(data.id);
                     console.log(data.orderNumber);
                     data.state = 'out';
-                    // 여기서 서버로 업데이트 요청을 보낼 수 있습니다.
-                    $.ajax({
+
+                    // AJAX 요청을 배열에 저장
+                    var ajaxRequest = $.ajax({
                         url: '/api/finishedStock/update',
                         type: 'POST',
                         data: JSON.stringify(data),
                         contentType: 'application/json',
                         success: function (response) {
                             table.ajax.reload(null, false);
+                        },
+                        error: function () {
+                            hasError = true; // 실패 플래그 설정
                         }
                     });
+
+                    ajaxRequests.push(ajaxRequest);
+                });
+
+                // 모든 AJAX 요청이 완료된 후 실행
+                $.when.apply($, ajaxRequests).done(function () {
+                    if (hasError) {
+                        alert("출고에 실패했습니다.");
+                    } else {
+                        alert("출고가 완료되었습니다.");
+                    }
                 });
             }
         });
+
     });
 
     function getSearchList(){

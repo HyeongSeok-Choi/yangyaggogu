@@ -2,6 +2,7 @@ package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.constant.shipment_state;
 import com.mes.yangyaggogu.dto.FinishedStockDTO;
+import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.dto.shipmentDTO;
 import com.mes.yangyaggogu.dto.workOrderPlanDTO;
 import com.mes.yangyaggogu.entity.*;
@@ -115,6 +116,21 @@ public class shipmentApiController {
     @GetMapping("/shipment/confirmedList/{id}")
     public shipment getShipment(@PathVariable String id) {
         return shipmentService.findById(id);
+    }
+
+
+    @PostMapping(value = "/confirmedShipment/search")
+    public ResponseEntity<?> SearchFinishedStockList(@RequestBody searchDto search) {
+
+        System.out.println("아예 안오니 ?");
+
+        System.out.println(search.getEnd());
+        System.out.println(search.getStart());
+        System.out.println(search.getKeyword());
+
+        List<shipmentDTO> searchLists =shipmentService.searchLists(search);
+
+        return ResponseEntity.ok(searchLists);
     }
 
 }
