@@ -34,6 +34,7 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
+
     public void deleteCompanies(List<Long> company_codes) {
         companyRepository.deleteAllById(company_codes);
     }
@@ -48,9 +49,9 @@ public class CompanyService {
 
     //거래처 이름 가져오기(진영)
     //거래처 중 고객사만 가져오게 바꿈 (형석)
-    public List<String> getAllCompanyNames(){
+    public List<String> getAllCompanyNames(company_state state){
 
-        return companyRepository.findByState(company_state.customer).stream()
+        return companyRepository.findByState(state).stream()
                 .map(company ::getCompany_name)
                 .collect(Collectors.toList());
     }
