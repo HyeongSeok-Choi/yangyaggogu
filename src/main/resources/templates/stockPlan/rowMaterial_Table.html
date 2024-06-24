@@ -134,7 +134,14 @@
                         {data: 'materialsName'},
                         {data: 'ingredientAmount'},
                         {data: 'inDate'},
-                        {data: 'state'},
+                        {data: 'state',render:function (data,type,row){
+                                if(data === "in"){
+                                    data = "입고";
+                                }else if(data === "out"){
+                                    data = "출고"
+                                }
+                                return data ;
+                            }},
                     ]
                 });
 

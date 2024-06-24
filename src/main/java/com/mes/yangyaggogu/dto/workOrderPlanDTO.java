@@ -35,9 +35,9 @@ public class workOrderPlanDTO {
 
     private LocalDateTime P_endDate;
 
-    private Long target_Output;
+    private double target_Output;
 
-    private Long now_Output;
+    private double now_Output;
 
     private workOrderPlan_state state;
 

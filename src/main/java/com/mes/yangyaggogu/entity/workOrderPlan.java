@@ -38,9 +38,9 @@ public class workOrderPlan {
 
     private LocalDateTime P_endDate;
 
-    private Long target_Output;
+    private double target_Output;
 
-    private Long now_Output;
+    private double now_Output;
 
     @Enumerated(EnumType.STRING)
     private workOrderPlan_state state;

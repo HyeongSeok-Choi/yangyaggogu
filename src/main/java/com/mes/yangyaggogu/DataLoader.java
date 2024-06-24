@@ -38,36 +38,35 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Obtain Order 생성
-        obtainorder_number order = new obtainorder_number();
-        order.setOrderNumber("2024-06-21-1");
-        obtainOrderNumberRepository.save(order);
-
-        productPlan plan = new productPlan();
-        plan.setProductionPlanCode("PLAN123");
-        plan.setOrderNumber(order);
-        plan.setPstartDate(LocalDate.now());
-        plan.setMaterialsName("흑마늘즙");
-        plan.setPendDate(LocalDate.now());
-        productPlanRepository.save(plan);
-
-        // Product Plan 생성
-        for (int i = 1; i <= 10; i++) {
-            workOrderPlan workOrder = workOrderPlan.builder()
-                    .processCode("A8")
-                    .productPlanCode(plan)
-                    .obtainorder_number(order)
-                    .producer(null)
-                    .processName("포장")
-                    .P_startDate(LocalDateTime.now().minusDays(i))
-                    .P_endDate(LocalDateTime.now().plusDays(i))
-                    .target_Output(100L)
-                    .now_Output(null)
-                    .state(workOrderPlan_state.completed)
-                    .materials_Name("양배추즙")
-                    .build();
-
-            workOrderPlanService.saveWorkOrderPlan(workOrder);
-        }
+//        obtainorder_number order = new obtainorder_number();
+//        order.setOrderNumber("2024-06-21-1");
+//        obtainOrderNumberRepository.save(order);
+//
+//        productPlan plan = new productPlan();
+//        plan.setProductionPlanCode("PLAN123");
+//        plan.setOrderNumber(order);
+//        plan.setPstartDate(LocalDate.now());
+//        plan.setMaterialsName("흑마늘즙");
+//        plan.setPendDate(LocalDate.now());
+//        productPlanRepository.save(plan);
+//
+//        // Product Plan 생성
+//        for (int i = 1; i <= 10; i++) {
+//            workOrderPlan workOrder = workOrderPlan.builder()
+//                    .processCode("A8")
+//                    .productPlanCode(plan)
+//                    .obtainorder_number(order)
+//                    .producer(null)
+//                    .processName("포장")
+//                    .P_startDate(LocalDateTime.now().minusDays(i))
+//                    .P_endDate(LocalDateTime.now().plusDays(i))
+//                    .target_Output(100L)
+//                    .state(workOrderPlan_state.completed)
+//                    .materials_Name("양배추즙")
+//                    .build();
+//
+//            workOrderPlanService.saveWorkOrderPlan(workOrder);
+//        }
 
             for (int i = 0; i < 10; i++) {
                 employee emp = new employee();
