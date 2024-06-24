@@ -1,5 +1,6 @@
 package com.mes.yangyaggogu.controller;
 
+import com.mes.yangyaggogu.constant.company_state;
 import com.mes.yangyaggogu.dto.StockDto;
 import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.entity.company;
@@ -71,7 +72,7 @@ public class rowMaterialController {
            model.addAttribute("ProductPlan", new productPlan());
        }
 
-        List<company> companyList = companyService.showCompanies();
+        List<String> companyList = companyService.getAllCompanyNames(company_state.delivery);
         model.addAttribute("companyList",companyList);
 
        if(companyName != null) {
