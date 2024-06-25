@@ -48,6 +48,8 @@ public class rowStockService {
 //    }
 
     public ingredientStock orderStock(StockDto stockDto){
+
+
         ingredientStock ingredientStock = new ingredientStock();
         System.out.println(stockDto.getProductPlanCodes()+"요거");
         productPlan productPlan =productPlanService.getProductPlan(stockDto.getProductPlanCodes());
@@ -59,11 +61,30 @@ public class rowStockService {
         ingredientStock.setMaterials_Name(stockDto.getMaterialsName());
         ingredientStock.setIngredient_Amount(stockDto.getIngredientAmount());
         ingredientStock.setCompany_name(stockDto.getCompanyName());
-        ingredientStock.setSubMaterialsAmount(stockDto.getSubMaterialsAmount());
-        ingredientStock.setSubMaterialsName(stockDto.getSubMaterialsName());
+        ingredientStock.setOrder_date(stockDto.getOrderDate());
 
 
         return ingredientStockRepository.save(ingredientStock);
+
+    }
+
+    public boolean checkPossibleIngOrder(StockDto stockDto){
+        List<ingredientStock> ingreList =ingredientStockRepository.getByOrder_dateAndIngredient_Amount(stockDto.getOrderDate(),stockDto.getMaterialsName(), stockDto.getCompanyName());
+
+        Long TotalAmount=0L;
+
+        for (ingredientStock sd:ingreList){
+            TotalAmount+=sd.getIngredient_Amount();
+            System.out.println(TotalAmount+"수퍼이끌림");
+        }
+
+        TotalAmount+=stockDto.getIngredientAmount();
+
+        if(TotalAmount>500L){
+            return false;
+        }else {
+            return true;
+        }
 
     }
 

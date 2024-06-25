@@ -25,6 +25,7 @@ public class StockDto {
     private String companyName;
     private rowStock_state state;
     private String productPlanCodes;
+    private LocalDate orderDate;
 
     public StockDto(ingredientStock ingredientStock){
 
@@ -37,7 +38,8 @@ public class StockDto {
         this.inDate = ingredientStock.getIn_date();
         this.companyName = ingredientStock.getCompany_name();
         this.state = ingredientStock.getState();
-
+        this.companyCode = ingredientStock.getCompany_code();
+        this.orderDate = ingredientStock.getOrder_date();
 
     }
 

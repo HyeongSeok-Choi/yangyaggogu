@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,8 +76,14 @@ public class rowMaterialApiController {
 
 
     @PostMapping(value = "/registerOrderRowStack")
-    public ResponseEntity<Map<String, Object>> rowStockOrderList(@RequestBody StockDto stockDto) {
+    public ResponseEntity<?> rowStockOrderList(@RequestBody StockDto stockDto) {
 
+        stockDto.setOrderDate(LocalDate.now());
+       boolean yOrN = rowStockService.checkPossibleIngOrder(stockDto);
+
+        if(!yOrN){
+            return ResponseEntity.ok(yOrN);
+        }
 
         HashMap<String, Object> rowOrderStock = new HashMap<>();
 

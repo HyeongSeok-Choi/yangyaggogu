@@ -48,6 +48,7 @@ public class ingredientStock {
     private String company_name;
 
     private LocalDate in_date;
+    private LocalDate order_date;
 
 
 }

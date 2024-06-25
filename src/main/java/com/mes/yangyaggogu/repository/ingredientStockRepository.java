@@ -20,4 +20,7 @@ public interface ingredientStockRepository extends JpaRepository<ingredientStock
 
     ingredientStock findByProductionPlanCode(productPlan productionPlanCode);
 
+    @Query(value = "select o from ingredientStock o where o.order_date =:orderDate And o.materials_Name =:name And o.company_name =:companyName")
+    List<ingredientStock> getByOrder_dateAndIngredient_Amount(LocalDate orderDate, String name , String companyName);
+
 }
