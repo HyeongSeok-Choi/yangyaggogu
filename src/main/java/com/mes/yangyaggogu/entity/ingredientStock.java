@@ -26,8 +26,6 @@ public class ingredientStock {
 
     private String materials_Name;
 
-    private String ingredient_Code;
-
     private Long ingredient_Amount;
 
     @Enumerated(EnumType.STRING)
@@ -48,6 +46,7 @@ public class ingredientStock {
     private String company_name;
 
     private LocalDate in_date;
+    private LocalDate order_date;
 
 
 }

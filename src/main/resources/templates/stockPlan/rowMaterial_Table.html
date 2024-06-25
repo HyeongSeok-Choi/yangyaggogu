@@ -48,10 +48,10 @@
         <th> </th>
         <th>id</th>
         <th>수주번호</th>
-        <th>발주코드</th>
         <th>발주처</th>
         <th>자재명</th>
         <th>재고량</th>
+        <th>발주일자</th>
         <th>입고일자</th>
         <th>상태</th>
     </tr>
@@ -128,11 +128,11 @@
                     columns: [
                         {title: ""},
                         {data: 'id'},
-                        {data: 'productPlanCodes'},
-                        {data: 'ingredientCode'},
+                        {data: 'materialsCode'},
                         {data: 'companyName'},
                         {data: 'materialsName'},
                         {data: 'ingredientAmount'},
+                        {data: 'orderDate'},
                         {data: 'inDate'},
                         {data: 'state',render:function (data,type,row){
                                 if(data === "in"){

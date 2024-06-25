@@ -17,7 +17,6 @@ import java.util.List;
 public class StockDto {
 
     private Long id;
-    private String ingredientCode;
     private String materialsName;
     private Long ingredientAmount;
     private LocalDate inDate;
@@ -25,18 +24,19 @@ public class StockDto {
     private rowStock_state state;
     private String companyCode;
     private String productPlanCodes;
+    private LocalDate orderDate;
 
     public StockDto(ingredientStock ingredientStock){
 
         this.id = ingredientStock.getId();
         this.productPlanCodes = ingredientStock.getProductionPlanCode().getProductionPlanCode();
-        this.ingredientCode = ingredientStock.getIngredient_Code();
         this.materialsName = ingredientStock.getMaterials_Name();
         this.ingredientAmount = ingredientStock.getIngredient_Amount();
         this.inDate = ingredientStock.getIn_date();
         this.companyName = ingredientStock.getCompany_name();
         this.state = ingredientStock.getState();
         this.companyCode = ingredientStock.getCompany_code();
+        this.orderDate = ingredientStock.getOrder_date();
 
     }
 
