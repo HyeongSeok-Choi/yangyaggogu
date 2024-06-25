@@ -102,6 +102,16 @@ public class rowMaterialController {
         return "/stockPlan/rowStockOrderRegister";
     }
 
+    @GetMapping(value = "/boxWrap")
+    public String boxWrap(Model model){
+
+        List<String> companyList = companyService.getAllCompanyNames(company_state.delivery);
+        model.addAttribute("companyList",companyList);
+
+
+        return "/stockPlan/boxWrapRegister";
+    }
+
     @GetMapping(value = "/BomList")
     public String bomList(){
         return "/stockPlan/bomList_Table";

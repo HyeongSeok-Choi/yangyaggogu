@@ -4,6 +4,7 @@ package com.mes.yangyaggogu.controller;
 import com.mes.yangyaggogu.dto.StockDto;
 import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.entity.ingredientStock;
+import com.mes.yangyaggogu.entity.wrap;
 import com.mes.yangyaggogu.service.rowStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,19 @@ public class rowMaterialApiController {
         return rowOrderStock;
     }
 
+    @GetMapping(value = "/getBoxWrapList")
+    public Map<String, Object> getBoxWrapList() {
+
+        //datatable 사용시 data를 키로 가져야 해서 넣음
+        Map<String, Object> rowOrderStock = new HashMap<String, Object>();
+
+        List<StockDto> getRowStockOrderList = rowStockService.getWrapkList().stream()
+                .map(a->new StockDto(a))
+                .collect(Collectors.toList());
+        rowOrderStock.put("data", getRowStockOrderList);
+
+        return rowOrderStock;
+    }
 
 //    @PostMapping(value = "/registerRowStack")
 //    public ResponseEntity<Map<String, Object>> rowStockList(@RequestBody StockDto stockDto) {
@@ -93,6 +107,23 @@ public class rowMaterialApiController {
 
         return ResponseEntity.ok(rowOrderStock);
     }
+
+    @PostMapping(value = "/boxWrapRegister")
+    public ResponseEntity<?> boxWrapRegister(@RequestBody wrap wrap) {
+
+        wrap.setOrder_date(LocalDate.now());
+      boolean yOrN= rowStockService.checkPossibleIngOrderBox(wrap);
+
+        if(!yOrN){
+            return ResponseEntity.ok(yOrN);
+        }
+
+        wrap wrap1 = rowStockService.boxWrapOrder(wrap);
+        return ResponseEntity.ok(wrap1);
+
+    }
+
+
 
     @PostMapping(value = "/rowMaterial/search")
     public ResponseEntity<?> SearchRowStockList(@RequestBody searchDto search) {

@@ -230,6 +230,8 @@
         })
     </script>
     <script th:inline="javascript">
+
+
         //수주 등록 스크립트
         $(document).on('click','#add-btn',function(){
 
@@ -276,7 +278,23 @@
         });
 
         //거래처 이름 불러오기
+
+
+
         $(document).ready(function() {
+
+            const picker = document.getElementById('deliveryDate');
+            picker.addEventListener('input', function(e){
+                var day = new Date(this.value).getUTCDay();
+                if([6,0].includes(day)){
+                    e.preventDefault();
+                    this.value = '';
+                    alert('주말을 제외한 날짜를 선택해주세요.');
+                }
+            });
+
+
+
             $.ajax({
                 url: '/api/companies/name',
                 method: 'GET',

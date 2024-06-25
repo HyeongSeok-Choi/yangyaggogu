@@ -4,6 +4,7 @@ package com.mes.yangyaggogu.dto;
 import com.mes.yangyaggogu.constant.rowStock_state;
 import com.mes.yangyaggogu.entity.ingredientStock;
 import com.mes.yangyaggogu.entity.obtainorder_number;
+import com.mes.yangyaggogu.entity.wrap;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -38,8 +39,18 @@ public class StockDto {
         this.inDate = ingredientStock.getIn_date();
         this.companyName = ingredientStock.getCompany_name();
         this.state = ingredientStock.getState();
-        this.companyCode = ingredientStock.getCompany_code();
         this.orderDate = ingredientStock.getOrder_date();
+
+    }
+
+    public StockDto(wrap wrap){
+
+      this.id = wrap.getId();
+      this.companyName=wrap.getCompanyName();
+      this.subMaterialsName=wrap.getSubMaterialsName();
+      this.subMaterialsAmount=wrap.getSubMaterialsAmount();
+      this.inDate=wrap.getIn_date();
+      this.orderDate=wrap.getOrder_date();
 
     }
 

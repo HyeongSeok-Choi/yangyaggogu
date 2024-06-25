@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public interface ingredientStockRepository extends JpaRepository<ingredientStock, Long> {
 
-    @Query(value = "SELECT e FROM ingredientStock e WHERE e.in_date BETWEEN :start AND :end AND e.materials_Name = :name")
+    @Query(value = "SELECT e FROM ingredientStock e WHERE e.in_date BETWEEN :start AND :end AND e.materials_Name like %:name%")
     List<ingredientStock> getRowStockPage(@Param("start") LocalDate start, @Param("end") LocalDate end, @Param("name") String name);
 
     Optional<ingredientStock> findAllById(Long id);
