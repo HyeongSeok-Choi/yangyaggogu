@@ -56,10 +56,11 @@ public class rowStockService {
 
         ingredientStock.setProductionPlanCode(productPlan);
 
-        ingredientStock.setIngredient_Code(stockDto.getIngredientCode());
         ingredientStock.setMaterials_Name(stockDto.getMaterialsName());
         ingredientStock.setIngredient_Amount(stockDto.getIngredientAmount());
         ingredientStock.setCompany_name(stockDto.getCompanyName());
+        ingredientStock.setSubMaterialsAmount(stockDto.getSubMaterialsAmount());
+        ingredientStock.setSubMaterialsName(stockDto.getSubMaterialsName());
 
 
         return ingredientStockRepository.save(ingredientStock);

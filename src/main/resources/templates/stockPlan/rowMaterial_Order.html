@@ -32,10 +32,11 @@
                 <th> </th>
                 <th>id</th>
                 <th>생산계획번호</th>
-                <th>발주코드</th>
                 <th>발주처</th>
                 <th>자재명</th>
                 <th>수량</th>
+                <th>부자재명</th>
+                <th>부자재량</th>
                 <th>입고일자</th>
             </tr>
             </thead>
@@ -110,11 +111,22 @@
                     columns: [
                         {title: ""},
                         {data: 'id'},
-                        {data: 'productPlanCodes'},
-                        {data: 'ingredientCode'},
+                        {data: 'productPlanCodes',render:function (data,type,row){
+
+                                var test = "";
+
+                                data.split(",").forEach(a =>{
+                                    console.log(a)
+                                    test+= `<p class="obtainNum">${a}</p>`
+                                })
+
+
+                                return test}},
                         {data: 'companyName'},
                         {data: 'materialsName'},
                         {data: 'ingredientAmount'},
+                        {data: 'subMaterialsName'},
+                        {data: 'subMaterialsAmount'},
                         {data: 'inDate'},
                     ]
                 })

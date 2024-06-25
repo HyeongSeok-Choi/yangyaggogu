@@ -301,7 +301,7 @@ public class workOrderPlanService {
                 workOrderPlanPakaging.setObtainorder_number(productplan.getOrderNumber());
                 workOrderPlanPakaging.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanPakaging.setProcessCode("A8");
-                workOrderPlanPakaging.setTarget_Output( ((Math.round((((((calculatorOutput * 0.75) * 0.2) / 2)/10))* 10)/10.0)*1000)/30);
+                workOrderPlanPakaging.setTarget_Output( productplan.getTarget_Output());
                 workOrderPlanRepository.save(workOrderPlanPakaging);
 
             }else if(productplan.getMaterialsName().equals("매실젤리") || productplan.getMaterialsName().equals("석류젤리")){
@@ -510,7 +510,7 @@ public class workOrderPlanService {
                 workOrderPlanPakaging.setObtainorder_number(obtainorder_detail.getOrderNumber());
                 workOrderPlanPakaging.setMaterials_Name(productplan.getMaterialsName());
                 workOrderPlanPakaging.setProcessCode("A8");
-                workOrderPlanPakaging.setTarget_Output((Math.round(((((((calculatorOutput * 0.75) * 0.2) / 2)/10)*1000)/30)* 10)/10.0));
+                workOrderPlanPakaging.setTarget_Output(productplan.getTarget_Output());
                 workOrderPlanRepository.save(workOrderPlanPakaging);
 
             }else if(productplan.getMaterialsName().equals("매실젤리") || productplan.getMaterialsName().equals("석류젤리")){

@@ -67,8 +67,12 @@ public class rowMaterialController {
                productPlan findProductPlan = productPlanservice.getProductPlan(ProductPlanCode);
 
                if(findProductPlan.getMaterialsName().equals("양배추즙")||findProductPlan.getMaterialsName().equals("흑마늘즙")){
+                   model.addAttribute("subMaterials", "벌꿀");
+                   model.addAttribute("subMaterialsAmount", findProductPlan.getTarget_Output()*150);
                    findProductPlan.setTarget_Output((1000 * findProductPlan.getTarget_Output())/250);
                }else{
+                   model.addAttribute("subMaterials", "콜라겐");
+                   model.addAttribute("subMaterialsAmount", findProductPlan.getTarget_Output()*50);
                    findProductPlan.setTarget_Output((findProductPlan.getTarget_Output()*25)*5);
                }
 
