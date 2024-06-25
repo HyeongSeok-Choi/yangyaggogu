@@ -130,7 +130,7 @@
             </div>
 
             <div class="text-center">
-                <button id="registerShipmentDetail" class="btn btn-secondary" th:text="${shipment.state}">출하지시서 등록</button>
+                <button id="registerShipmentDetail" class="btn btn-secondary" th:text="${status == 'completed'} ? '출하지시서 수정' : '출하지시서 등록'"></button>
             </div>
         </form>
     </div>
