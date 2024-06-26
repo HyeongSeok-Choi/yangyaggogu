@@ -203,7 +203,16 @@
                         data: 'delivery_Date'},
                     {
                         title:"진행상태",
-                        data: 'state'},
+                        data: 'state',render:function (data,type,row){
+                            if(data === "ready"){
+                                data = "대기";
+                            }else if(data === "confirmed"){
+                                data = "수주확정"
+                            }else if(data === "completed"){
+                                data = "완료"
+                            }
+                            return data ;
+                        }},
                     {
                         title:"등록자",
                         data: 'writer'}

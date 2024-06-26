@@ -11,10 +11,16 @@ import com.mes.yangyaggogu.repository.obtainorder_detailRepository;
 import com.mes.yangyaggogu.repository.obtainorder_numberRepository;
 import com.mes.yangyaggogu.repository.productPlanRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -558,11 +564,38 @@ public class ObtainOrderService {
             }
 
         }
-
-
         return StartDate;
     }
 
 
+    //엑셀 업로드 후 DB 저장
+    /*public String upload(MultipartFile file){
+        ArrayList<AddOrderDto> addOrderDtoList = new ArrayList<AddOrderDto>();
+        String fileExtsn =
+    }*/
+    public List<AddOrderDto> ExcelFileUpload(MultipartFile file){
+        List<AddOrderDto> addOrderDtoList = new ArrayList<>();
 
+        try (Workbook workbook = WorkbookFactory.create(file.getInputStream())){
+            Sheet sheet = workbook.getSheetAt(0);
+            for (Row row : sheet){
+                //첫 번째 행은 헤더이므로 건너 뛴다
+                if (row.getRowNum() == 0){
+                    continue;
+                }
+                AddOrderDto addOrderDto = new AddOrderDto();
+                addOrderDto.setCompany_name(row.getCell(0).getStringCellValue());
+                addOrderDto.setProductName(row.getCell(1).getStringCellValue());
+                addOrderDto.setOrder_Date(row.getCell(2).getLocalDateTimeCellValue().toLocalDate());
+                addOrderDto.setOrder_Amount((long) row.getCell(3).getNumericCellValue());
+                addOrderDto.setDelivery_Date(row.getCell(4).getLocalDateTimeCellValue().toLocalDate());
+                addOrderDto.setWriter(row.getCell(5).getStringCellValue());
+
+                addOrderDtoList.add(addOrderDto);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return addOrderDtoList;
+    }
 }

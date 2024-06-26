@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.service;
 
 
+import com.mes.yangyaggogu.constant.company_state;
 import com.mes.yangyaggogu.entity.carrier;
 import com.mes.yangyaggogu.entity.company;
 
@@ -33,6 +34,7 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
+
     public void deleteCompanies(List<Long> company_codes) {
         companyRepository.deleteAllById(company_codes);
     }
@@ -45,9 +47,11 @@ public class CompanyService {
 
     //거래처 코드 어떻게 짤지 정하고 나중에 수정
 
-    //거래처 이름 가져오기
-    public List<String> getAllCompanyNames(){
-        return companyRepository.findAll().stream()
+    //거래처 이름 가져오기(진영)
+    //거래처 중 고객사만 가져오게 바꿈 (형석)
+    public List<String> getAllCompanyNames(company_state state){
+
+        return companyRepository.findByState(state).stream()
                 .map(company ::getCompany_name)
                 .collect(Collectors.toList());
     }

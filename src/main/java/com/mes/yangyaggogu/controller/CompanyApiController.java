@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.controller;
 
 
+import com.mes.yangyaggogu.constant.company_state;
 import com.mes.yangyaggogu.dto.CompanyDto;
 import com.mes.yangyaggogu.entity.company;
 import com.mes.yangyaggogu.entity.shipment;
@@ -46,7 +47,7 @@ public class CompanyApiController {
     //거래처 이름 가져오기
     @GetMapping("/companies/name")
     public List<String> getCompanies() {
-        return companyService.getAllCompanyNames();
+        return companyService.getAllCompanyNames(company_state.customer);
     }
 
     //거래처 등록

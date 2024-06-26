@@ -111,6 +111,12 @@
         <div class="button-container">
             <button class="btn btn-danger" onclick="deleteSelectedRows()">삭제</button>
         </div>
+
+        <!-- 엑셀 업로드 -->
+        <form id="uploadForm" enctype="multipart/form-data">
+           <input type="file" name="file" id="fileInput">
+            <button type="button" onclick="uploadExcel()">업로드</button>
+        </form>
     </div>
 
     <!-- script -->
@@ -224,6 +230,8 @@
         })
     </script>
     <script th:inline="javascript">
+
+
         //수주 등록 스크립트
         $(document).on('click','#add-btn',function(){
 
@@ -270,7 +278,23 @@
         });
 
         //거래처 이름 불러오기
+
+
+
         $(document).ready(function() {
+
+            const picker = document.getElementById('deliveryDate');
+            picker.addEventListener('input', function(e){
+                var day = new Date(this.value).getUTCDay();
+                if([6,0].includes(day)){
+                    e.preventDefault();
+                    this.value = '';
+                    alert('주말을 제외한 날짜를 선택해주세요.');
+                }
+            });
+
+
+
             $.ajax({
                 url: '/api/companies/name',
                 method: 'GET',
@@ -287,6 +311,39 @@
                 }
             });
         });
+
+        //엑셀 업로드
+        function uploadExcel() {
+            var formData = new FormData();
+            var fileInput = document.getElementById('fileInput');
+            formData.append("file", fileInput.files[0]);
+
+            fetch('/api/uploadExcel', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    //데이터를 테이블에 추가
+                    data.forEach(order => {
+                        var newRowHtml = `
+                        <tr>
+                            <td><input type="checkbox" class="rowCheckbox"></td>
+                            <td>${order.company_name}</td>
+                            <td>${order.productName}</td>
+                            <td>${order.order_Date}</td>
+                            <td>${order.order_Amount} Box</td>
+                            <td>${order.delivery_Date}</td>
+                            <td>${order.writer}</td>
+                        </tr>
+                        `
+                        $('#orderMng tbody').append(newRowHtml);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error: ', error);
+                });
+        }
     </script>
 </th:block>
 </body>

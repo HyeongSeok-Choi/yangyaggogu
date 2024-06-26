@@ -22,40 +22,21 @@
 </head>
 <body>
 
-<h3 style="padding: 30px; text-align: center">원자재 발주 등록</h3>
-<div class="row mb-5 text-center">
-    <label class="col-sm-2 col-form-label col-form-label-sm" for="productPlanCodes">생산계획번호</label>
-    <div class="col-sm-10">
-        <form th:action="@{/rowStockOrderRegister}" method="get" >
-    <select class="form-control form-control-sm" id="productPlanCodes" name="ProductPlanCode" onchange="this.form.submit()">
-        <option value="선택없음">전체</option>
-        <option th:each="productPlan : ${productPlanListBefore}" th:value="${productPlan.getProductionPlanCode()}" th:text="${productPlan.getProductionPlanCode()}" th:selected="${ProductPlanCode == productPlan.getProductionPlanCode() }"></option>
-    </select>
-        </form>
-    </div>
-</div>
+<h3 style="padding: 30px; text-align: center">포장지/박스 발주 등록</h3>
 <div class="row mb-5 text-center">
     <label class="col-sm-2 col-form-label col-form-label-sm" for="materialsName">자재명</label>
     <div class="col-sm-10">
-        <input th:value="${ProductPlan.getMaterialsName()}"  readonly class="form-control form-control-sm" id="materialsName" type="text" placeholder="자재명을 입력해주세요"/>
+        <select class="form-control form-control-sm" id="materialsName" name="companyName">
+            <option value="선택없음">선택</option>
+            <option value="포장지">포장지</option>
+            <option value="박스">박스</option>
+        </select>
     </div>
 </div>
 <div class="row mb-5 text-center">
-    <label class="col-sm-2 col-form-label col-form-label-sm" for="ingredientAmount">원자재 발주량</label>
+    <label class="col-sm-2 col-form-label col-form-label-sm" for="ingredientAmount">발주량</label>
     <div class="col-sm-10">
-        <input th:value="${ProductPlan.getTarget_Output()}"  readonly class="form-control form-control-sm" id="ingredientAmount" type="text" placeholder="발주량을 입력해주세요"/>
-    </div>
-</div>
-<div class="row mb-5 text-center">
-        <label class="col-sm-2 col-form-label col-form-label-sm" for="ingredientAmount">부자재명</label>
-    <div class="col-sm-10">
-        <input th:value="${subMaterials}"  readonly class="form-control form-control-sm" id="subMaterialsName" type="text" placeholder="부자재명을 입력해주세요"/>
-    </div>
-</div>
-<div class="row mb-5 text-center">
-    <label class="col-sm-2 col-form-label col-form-label-sm" for="ingredientAmount">부자재 발주량</label>
-    <div class="col-sm-10">
-        <input th:value="${subMaterialsAmount}"  readonly class="form-control form-control-sm" id="subMaterialsAmount" type="text" placeholder="부자재명을 입력해주세요"/>
+        <input  class="form-control form-control-sm" id="ingredientAmount" type="text" placeholder="발주량을 입력해주세요"/>
     </div>
 </div>
 <div class="row mb-5 text-center">
@@ -65,7 +46,7 @@
             <option value="선택없음">발주처를 선택해주세요</option>
             <option th:each="company: ${companyList}" th:value="${company}" th:text="${company}"></option>
         </select>
-<!--        <input class="form-control form-control-sm" id="companyName" type="text" placeholder="발주처를 입력해주세요"/>-->
+        <!--        <input class="form-control form-control-sm" id="companyName" type="text" placeholder="발주처를 입력해주세요"/>-->
     </div>
 </div>
 <div class="text-center">
@@ -79,17 +60,14 @@
             alert("발주처를 선택해주세요");
             return false;
         }
-        fetch("/api/registerOrderRowStack", {
+        fetch("/api/boxWrapRegister", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                productPlanCodes: document.getElementById("productPlanCodes").value,
-                materialsName: document.getElementById("materialsName").value,
-                ingredientAmount: document.getElementById("ingredientAmount").value,
-                subMaterialsName: document.getElementById("subMaterialsName").value,
-                subMaterialsAmount: document.getElementById("subMaterialsAmount").value,
+                subMaterialsName: document.getElementById("materialsName").value,
+                subMaterialsAmount: document.getElementById("ingredientAmount").value,
                 companyName:  document.getElementById("companyName").value,
 
             }),
@@ -98,9 +76,8 @@
             .then((result) => {
 
                 if(!result){
-                    alert("허용 일일 발주량을 초과하였습니다.");
+                    alert("발주량이 허용 가능 범위가 아닙니다.");
                     return false;
-
                 }
 
                 window.opener.location.reload();

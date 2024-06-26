@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.expression.Ids;
 
 import java.time.LocalDate;
@@ -142,5 +143,16 @@ public class obtainorderApiController {
             response.put("error", e.getMessage());
         }
         return ResponseEntity.ok(response);
+    }
+
+    //엑셀 업로드 후 DB 저장
+    /*@PostMapping("excel_upload_order")
+    public String registExcelOrder(@RequestParam("file") MultipartFile file){
+        return obtainOrderService.upload(file);
+    }*/
+    @PostMapping("/uploadExcel")
+    public ResponseEntity<?> uploadExcel(@RequestParam("file") MultipartFile file) {
+        List<AddOrderDto> addOrderDtoList = obtainOrderService.ExcelFileUpload(file);
+        return ResponseEntity.ok(addOrderDtoList);
     }
 }

@@ -26,12 +26,15 @@ public class ingredientStock {
 
     private String materials_Name;
 
-    private String ingredient_Code;
-
     private Long ingredient_Amount;
+
+    private String subMaterialsName;
+
+    private Long subMaterialsAmount;
 
     @Enumerated(EnumType.STRING)
     private rowStock_state state;
+
 
 //    private String reason;
 
@@ -43,11 +46,10 @@ public class ingredientStock {
     @ManyToOne
     private productPlan productionPlanCode;
 
-    private String company_code;
-
     private String company_name;
 
     private LocalDate in_date;
+    private LocalDate order_date;
 
 
 }

@@ -118,10 +118,10 @@
                 columnDefs: [
                     {
                         targets: 11,
-                        render: DataTable.render.datetime('yyyy-MM-DD HH:mm')
+                        render: DataTable.render.datetime('YYYY-MM-DD HH:mm')
                     }, {
                         targets: 12,
-                        render: DataTable.render.datetime('yyyy-MM-DD HH:mm')
+                        render: DataTable.render.datetime('YYYY-MM-DD HH:mm')
                     },
                     {
                         orderable: false,
@@ -262,7 +262,17 @@
                         data: 'processCode'},
                     {
                         title:"생산계획코드",
-                        data: 'productPlanCode'},
+                        data: 'productPlanCode',render:function (data,type,row){
+
+                            var test = "";
+
+                            data.split(",").forEach(a =>{
+                                console.log(a)
+                                test+= `<p class="obtainNum">${a}</p>`
+                            })
+                            console.log(test);
+
+                            return test}},
                     {
                         title:"수주번호",
                         data: 'obtainorder_number'},
@@ -275,16 +285,56 @@
                     {
                         title:"목표량",
                         data: 'target_Output',render:function (data,type,row){
-                            return data+"kg";
-                        }},
-                    {
-                        title:"생산량",
-                        data: 'now_Output',render:function (data,type,row){
                             if(data == null){
                                 data = " ";
                             }else{
-                                data = data+"kg";
+                                if(row.processName === '포장'){
+                                    data = data + "box"
+                                }else if(row.processName === '살균' && row.processCode === "B3"){
+                                    data = data + "ml"
+                                }else if(row.processName === '칭량' && row.processCode === "B1"){
+                                    data = data + "ml"
+                                }else if(row.processName === '혼합'){
+                                    data = data + "ml"
+                                }else if(row.processName ==='냉각'){
+                                    data = data +"개"
+                                }else if(row.processName ==='충진'){
+                                    data = data + "개"
+                                }else if(row.processName ==='검사'){
+                                    data = data + "개"
+                                }else {
+                                    data = data + "kg";
+                                }
                             }
+
+                            return data}},
+                    {
+                        title:"생산량",
+                        data: 'now_Output',render:function (data,type,row){
+
+
+                            if(data == null){
+                                data = " ";
+                            }else{
+                                if(row.processName === '포장'){
+                                    data = data + "box"
+                                }else if(row.processName === '살균' && row.processCode === "B3"){
+                                    data = data + "ml"
+                                }else if(row.processName === '칭량' && row.processCode === "B1"){
+                                    data = data + "ml"
+                                }else if(row.processName === '혼합'){
+                                    data = data + "ml"
+                                }else if(row.processName ==='냉각'){
+                                    data = data +"개"
+                                }else if(row.processName ==='충진'){
+                                    data = data + "개"
+                                }else if(row.processName ==='검사'){
+                                    data = data + "개"
+                                }else {
+                                    data = data + "kg";
+                                }
+                            }
+
                             return data}},
                     {
                         title:"상태",
