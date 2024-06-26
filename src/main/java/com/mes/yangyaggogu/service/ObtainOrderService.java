@@ -270,18 +270,8 @@ public class ObtainOrderService {
                         obtainorderDetailRepository.save(obtainorder_detail);
 
                     }
-
                 }
-                
             }
-
-
-//        //인덱스가 계산된 수주번호 완성 !!
-//        addOrderNumber.setOrderNumber(LocalDate.now().toString()+"-"+count);
-//
-//        obtainOrderNumberRepository.save(addOrderNumber);
-
-
         }
         return true;
     }
@@ -311,7 +301,6 @@ public class ObtainOrderService {
 
        }else{
            addNumber = 1;
-
        }
        return addNumber;
     }
@@ -319,8 +308,7 @@ public class ObtainOrderService {
     //수주 상세 조회
     public OrderDtlDto getOrderDetailById(Long id){
 
-        obtainorder_detail findObtain=
-        obtainorderDetailRepository.findById(id)
+        obtainorder_detail findObtain= obtainorderDetailRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found :" + id));
 
         OrderDtlDto findedDto = new OrderDtlDto(findObtain);
@@ -363,9 +351,7 @@ public class ObtainOrderService {
         if(countJuice >= 3 || countJelly >= 2){
 
             return false;
-
         }
-
         return true;
     }
 
@@ -512,6 +498,8 @@ public class ObtainOrderService {
         }
         return null;
     }
+
+
    //팝업창 데이터 수정
     public boolean updateOrder(OrderDtlDto orderDtlDto){
         try {
@@ -569,10 +557,6 @@ public class ObtainOrderService {
 
 
     //엑셀 업로드 후 DB 저장
-    /*public String upload(MultipartFile file){
-        ArrayList<AddOrderDto> addOrderDtoList = new ArrayList<AddOrderDto>();
-        String fileExtsn =
-    }*/
     public List<AddOrderDto> ExcelFileUpload(MultipartFile file){
         List<AddOrderDto> addOrderDtoList = new ArrayList<>();
 
