@@ -1,16 +1,11 @@
 package com.mes.yangyaggogu;
 
+import com.mes.yangyaggogu.constant.equipment_state;
 import com.mes.yangyaggogu.constant.workOrderPlan_state;
-import com.mes.yangyaggogu.entity.employee;
-import com.mes.yangyaggogu.entity.productPlan;
-import com.mes.yangyaggogu.entity.workOrderPlan;
-import com.mes.yangyaggogu.repository.employeeRepository;
-import com.mes.yangyaggogu.repository.obtainorder_numberRepository;
-import com.mes.yangyaggogu.repository.workOrderPlanRepository;
+import com.mes.yangyaggogu.entity.*;
+import com.mes.yangyaggogu.repository.*;
 import com.mes.yangyaggogu.service.workOrderPlanService;
-import com.mes.yangyaggogu.entity.obtainorder_number;
 
-import com.mes.yangyaggogu.repository.productPlanRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -25,13 +20,15 @@ public class DataLoader implements CommandLineRunner {
     private final productPlanRepository productPlanRepository;
     private final workOrderPlanService workOrderPlanService;
     private final employeeRepository employeeRepository;
+    private final equipmentRepository equipmentRepository;
 
-    public DataLoader(productPlanRepository productPlanRepository,obtainorder_numberRepository obtainOrderNumberRepository,workOrderPlanRepository workOrderPlanRepository,workOrderPlanService workOrderPlanService,employeeRepository employeeRepository) {
+    public DataLoader(productPlanRepository productPlanRepository,obtainorder_numberRepository obtainOrderNumberRepository,workOrderPlanRepository workOrderPlanRepository,workOrderPlanService workOrderPlanService,employeeRepository employeeRepository,equipmentRepository equipmentRepository) {
         this.workOrderPlanRepository = workOrderPlanRepository;
         this.obtainOrderNumberRepository = obtainOrderNumberRepository;
         this.productPlanRepository = productPlanRepository;
         this.workOrderPlanService = workOrderPlanService;
         this.employeeRepository = employeeRepository;
+        this.equipmentRepository = equipmentRepository;
 
     }
 
@@ -77,6 +74,61 @@ public class DataLoader implements CommandLineRunner {
                 employeeRepository.save(emp);
 
             }
+
+
+        equipment equip = new equipment();
+        for (int i = 1; i < 3; i++) {
+
+            equip.setEquipmentCode("JW" + i);
+            equip.setSettingDate(LocalDate.now().minusYears(10));
+            equip.setEquipmentName("즙 포장기");
+            equip.setOperationRate(0L);
+            equip.setState(equipment_state.run);
+            equip.setReasonNoOp("-");
+            equipmentRepository.save(equip);
+
+            equip.setEquipmentCode("SW" + i);
+            equip.setEquipmentName("스틱 포장기");
+            equip.setSettingDate(LocalDate.now().minusYears(8).minusMonths(1).minusDays(14));
+            equipmentRepository.save(equip);
+
+            equip.setEquipmentCode("JC" + i);
+            equip.setEquipmentName("착즙기");
+            equip.setSettingDate(LocalDate.now().minusYears(14).minusDays(7));
+            equipmentRepository.save(equip);
+
+            equip.setEquipmentCode("SZ" + i);
+            equip.setEquipmentName("살균기");
+            equip.setSettingDate(LocalDate.now().minusYears(8).minusMonths(4).minusDays(2));
+            equipmentRepository.save(equip);
+
+            equip.setEquipmentCode("MX");
+            equip.setEquipmentName("혼합기");
+            equip.setSettingDate(LocalDate.now().minusYears(14).minusDays(14));
+            equipmentRepository.save(equip);
+
+            equip.setEquipmentCode("PC");
+            equip.setEquipmentName("여과기");
+            equip.setSettingDate(LocalDate.now().minusYears(18).minusMonths(3).minusDays(5));
+            equipmentRepository.save(equip);
+
+            equip.setEquipmentCode("BX");
+            equip.setEquipmentName("박스 포장기");
+            equip.setSettingDate(LocalDate.now().minusYears(16).minusDays(6));
+            equipmentRepository.save(equip);
+
+            equip.setEquipmentCode("MD");
+            equip.setEquipmentName("금속검출기");
+            equip.setSettingDate(LocalDate.now().minusYears(6).minusMonths(7).minusDays(7));
+            equipmentRepository.save(equip);
+
+
+
+
+        }
+
+
+
 
     }
 }

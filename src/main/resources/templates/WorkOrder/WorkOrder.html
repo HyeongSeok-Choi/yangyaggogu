@@ -90,6 +90,16 @@
     </div>
     <!--dataTables관련 -->
     <script th:inline="javascript">
+
+        <!--진행률 갱신-->
+        fetch('/api/updateOperationRate', {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: 'POST',
+        })
+
+
         var table = null;
         $(document).ready(function() {
             table = $('#Table').DataTable({
@@ -341,7 +351,12 @@
                         data: 'state'},
                     {
                         title:"제품이름",
-                        data: 'materials_Name'},
+                        data: 'materials_Name'},{
+
+                        title:"진행률",
+                        data: 'operationRate',render:function (data,type,row){
+
+                            return data.toFixed(1)+"%"}},
                     {
                         title:"생산시작일",
                         data: 'p_startDate'},
