@@ -49,15 +49,56 @@
             display: flex;
             align-items: center;
             margin-bottom: 15px;
+            padding-right: 15px;
         }
 
         .form-group label {
             width: 150px;
-            margin-right: 10px;
+            margin-right: 5px;
         }
 
         .form-group input {
             flex: 1;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .form-row label {
+            width: 150px;
+            margin-right: 10px;
+        }
+
+        .form-row input {
+            flex: 1;
+        }
+
+        .form-inline-group {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-right: 15px;
+        }
+
+        .form-inline-group label {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        .form-inline-group input {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .form-inline-group input:last-child {
+            margin-right: 0;
+        }
+        .text-center {
+            margin-top: 300px; /* 버튼의 위치를 300px 아래로 내리기 */
         }
     </style>
 </head>
@@ -92,9 +133,6 @@
                 <input class="form-control form-control-sm" type="text" th:field="*{productionName}" readonly>
                 <label>출하수량</label>
                 <input class="form-control form-control-sm" type="text" th:field="*{shipment_Amount}" readonly>
-            </div>
-
-            <div class="form-group">
                 <label>총 중량</label>
                 <input class="form-control form-control-sm" type="text" th:value="${shipment.productionName.contains('즙') ? shipment.shipment_Amount * 2.4 + 'kg' :
                 (shipment.productionName.contains('젤리') ? shipment.shipment_Amount * 0.375 + 'kg' : shipment.shipment_Amount + 'kg')}" readonly>
@@ -104,27 +142,15 @@
         <form action="/carrier/register" method="post" th:object="${carrier}">
             <input type="hidden" name="shipment_Number" th:value="${shipment.shipment_Number}">
 
-            <div class="form-group">
+            <div class="form-inline-group">
                 <label>운송업체명</label>
                 <input class="form-control form-control-sm" type="text" name="carrier_Name" th:field="*{carrier_Name}">
-            </div>
-
-            <div class="form-group">
                 <label>연락처</label>
                 <input class="form-control form-control-sm" type="text" name="carrier_PhoneNumber" th:field="*{carrier_PhoneNumber}">
-            </div>
-
-            <div class="form-group">
                 <label>운송수단</label>
                 <input class="form-control form-control-sm" type="text" name="carrier_Vehicle" th:field="*{carrier_Vehicle}">
-            </div>
-
-            <div class="form-group">
                 <label>운송비용</label>
                 <input class="form-control form-control-sm" type="number" name="carrier_Price" th:field="*{carrier_Price}">
-            </div>
-
-            <div class="form-group">
                 <label>담당자</label>
                 <input class="form-control form-control-sm" type="text" name="carrier_manager" th:field="*{carrier_manager}">
             </div>

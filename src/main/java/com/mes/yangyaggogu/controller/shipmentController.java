@@ -41,34 +41,7 @@ public class shipmentController {
     }
 
 
-//    @GetMapping("/shipment/confirmedList/{id}")
-//    //출하지시서 번호를 눌러 들어가는 상세페이지, shipment, company, carrier 모델로 데이터 받아줌. 운송업체 정보 기입한적이 있으면 shipment번호 기준으로 carrier데이터에서
-//    //데이터 받아와서 가져옴
-//    public String getShipment(@PathVariable String id, Model model) {
-//
-//        shipment shipment = shipmentService.findById(id);
-//        model.addAttribute("shipment", shipment);
-//
-//        String companyName = shipment.getCompany_name();
-//        Optional<company> company = companyService.findByCompanyName(companyName);
-//
-//        // company 데이터를 모델에 추가합니다.
-//        if (company.isPresent()) {
-//            model.addAttribute("company", company.get());
-//        } else {
-//            model.addAttribute("company", new company()); // 기본 빈 객체를 추가하여 NPE 방지
-//        }
-//
-//        carrier carrier = carrierService.findByShipment(shipment);
-//        if (carrier == null) {
-//            carrier = new carrier(); // 운송업체 정보 기입한적이 없으면 빈칸 출력.
-//        }
-//        model.addAttribute("carrier", carrier);
-//
-//
-//
-//        return "shipment/shipmentDetailRegister";
-//    }
+
 @GetMapping("/shipment/confirmedList/{id}")
 public String getShipment(@PathVariable String id, @RequestParam(required = false) shipment_state status, Model model) {
     shipment shipment = shipmentService.findById(id);

@@ -3,6 +3,7 @@ package com.mes.yangyaggogu.controller;
 import com.mes.yangyaggogu.dto.AddOrderDto;
 import com.mes.yangyaggogu.dto.OrderDtlDto;
 import com.mes.yangyaggogu.dto.OrderStateDto;
+import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.entity.obtainorder_detail;
 import com.mes.yangyaggogu.service.ObtainOrderService;
 import lombok.RequiredArgsConstructor;
@@ -56,4 +57,11 @@ public class obtainorderController {
         return "obtainorder/OrderRegistration";
     }
 
+
+    @GetMapping("/completed-orders")
+    public String showOrdersPage(Model model, searchDto searchDto) {
+
+        model.addAttribute("searchDto" ,searchDto);
+        return "company/companyOrderAmount";
+    }
 }

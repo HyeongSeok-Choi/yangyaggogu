@@ -1,5 +1,6 @@
 package com.mes.yangyaggogu.controller;
 
+import com.mes.yangyaggogu.constant.obtainorder_state;
 import com.mes.yangyaggogu.constant.shipment_state;
 import com.mes.yangyaggogu.dto.FinishedStockDTO;
 import com.mes.yangyaggogu.dto.searchDto;
@@ -62,10 +63,18 @@ public class shipmentApiController {
                 obtainorder_number orderNumber = existingStock.getOrderNumber();
                 List<obtainorder_detail> odList = obtainOrderService.findByOrderNumber(orderNumber);
 
-                for (obtainorder_detail od : odList) { // 각 납품일에 대해 반복
-                    shipment shipment = new shipment();
-                    shipment.setShipment_Number(shipmentService.generateShipmentNumber());
 
+                for (obtainorder_detail od : odList) { // 각 납품일에 대해 반복
+
+                    shipment shipment = new shipment();
+                    String newShipmentNumber;
+
+                    // 새로운 shipment_Number가 고유한지 확인하는 루프
+                    do {
+                        newShipmentNumber = shipmentService.generateShipmentNumber();
+                    } while (shipmentService.existsByShipmentNumber(newShipmentNumber));
+
+                    shipment.setShipment_Number(newShipmentNumber);
                     shipment.setCompany_name(od.getCompany_name());
                     shipment.setCompany_Address(""); //
 
@@ -73,10 +82,16 @@ public class shipmentApiController {
                     shipment.setShipment_Amount(existingStock.getAmount());
                     shipment.setProductionName(existingStock.getMaterials_Name());
                     shipment.setShippingDate(LocalDateTime.now());
-                    shipment.setDeliveryDate(od.getDelivery_Date()); //변경됨
+                    shipment.setDeliveryDate(od.getDelivery_Date());
                     shipment.setCreatedAt(null);
                     shipment.setState(shipment_state.ready);
+
+
+
                     shipmentService.save(shipment);
+
+                    od.setState(obtainorder_state.completed);
+                    obtainOrderService.save(od); // state completed로 변경
 
                     shipments.add(shipment); // 각 출하 객체를 리스트에 추가
                 }
@@ -92,11 +107,6 @@ public class shipmentApiController {
 
 
 
-//    private shipmentDTO convertToDTO(shipment shipment) {
-//        shipmentDTO shipmentDTO = new shipmentDTO();
-//
-//
-//    }
 
 
     @GetMapping("/shipment/confirmedList")
@@ -128,7 +138,7 @@ public class shipmentApiController {
         System.out.println(search.getStart());
         System.out.println(search.getKeyword());
 
-        List<shipmentDTO> searchLists =shipmentService.searchLists(search);
+        List<shipmentDTO> searchLists = shipmentService.searchLists(search);
 
         return ResponseEntity.ok(searchLists);
     }

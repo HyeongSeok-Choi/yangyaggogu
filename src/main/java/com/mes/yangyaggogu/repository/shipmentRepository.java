@@ -15,5 +15,8 @@ public interface shipmentRepository extends JpaRepository<shipment, String> {
     List<shipment> getFinishedStockPage(@Param("start") LocalDate start, @Param("end") LocalDate end, @Param("name") String name);
 
 
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM shipment s WHERE s.shipment_Number = :shipmentNumber")
+    boolean existsByShipmentNumber(@Param("shipmentNumber") String shipmentNumber);
+
     //납품일 기준 검색 중
 }

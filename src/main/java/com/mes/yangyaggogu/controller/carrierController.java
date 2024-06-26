@@ -45,7 +45,7 @@ public class carrierController {
         carrier existingCarrier = carrierService.findByShipment(shipment);
 
         if (existingCarrier != null) {
-            // Update existing carrier
+
             existingCarrier.setCarrier_Name(carrier.getCarrier_Name());
             existingCarrier.setCarrier_PhoneNumber(carrier.getCarrier_PhoneNumber());
             existingCarrier.setCarrier_Vehicle(carrier.getCarrier_Vehicle());
@@ -53,7 +53,7 @@ public class carrierController {
             existingCarrier.setCarrier_manager(carrier.getCarrier_manager());
             carrierService.registerCarrier(existingCarrier);
         } else {
-            // Save new carrier
+
             carrierService.registerCarrier(carrier);
         }
 

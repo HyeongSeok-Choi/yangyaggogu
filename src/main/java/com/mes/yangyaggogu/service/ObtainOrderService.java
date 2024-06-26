@@ -2,8 +2,7 @@ package com.mes.yangyaggogu.service;
 
 import com.mes.yangyaggogu.constant.obtainorder_state;
 import com.mes.yangyaggogu.constant.productionPlan_state;
-import com.mes.yangyaggogu.dto.AddOrderDto;
-import com.mes.yangyaggogu.dto.OrderDtlDto;
+import com.mes.yangyaggogu.dto.*;
 import com.mes.yangyaggogu.entity.obtainorder_detail;
 import com.mes.yangyaggogu.entity.obtainorder_number;
 import com.mes.yangyaggogu.entity.productPlan;
@@ -15,6 +14,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.hibernate.query.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,6 +52,24 @@ public class ObtainOrderService {
 
         return obtainorderDetailRepository.save(obtainorder_detail);
     }
+
+
+    public List<obtainorder_detail> showOrderAmount() {
+        return obtainorderDetailRepository.findByState(obtainorder_state.confirmed);
+    }
+
+
+    public List<OrderStateDto> searchLists(searchDto searchDto){
+
+
+        List<OrderStateDto> searchLists = obtainorderDetailRepository.getFinishedStockPage(searchDto.getStart(), searchDto.getEnd(), searchDto.getKeyword())
+                .stream()
+                .map(a -> new OrderStateDto(a))
+                .collect(Collectors.toList());
+
+        return searchLists;
+    }
+
 
 
     //등록
