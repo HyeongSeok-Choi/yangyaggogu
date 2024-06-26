@@ -96,11 +96,9 @@
         })
             .then((response) => response.json())
             .then((result) => {
-
                 if(!result){
                     alert("허용 일일 발주량을 초과하였습니다.");
                     return false;
-
                 }
 
                 window.opener.location.reload();

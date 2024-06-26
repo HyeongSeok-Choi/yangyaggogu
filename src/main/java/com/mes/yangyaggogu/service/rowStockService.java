@@ -95,12 +95,20 @@ public class rowStockService {
 
         TotalAmount+=stockDto.getIngredientAmount();
 
-        if(TotalAmount>2000L){
-            return false;
-        }else {
-            return true;
+        if(stockDto.getMaterialsName().equals("양배추즙") || stockDto.getMaterialsName().equals("흑마늘즙")) {
+            if (TotalAmount > 2000L ) {
+                return false;
+            } else {
+                return true;
+            }
+        }else{
+            if (TotalAmount > 2000000L ) {
+                System.out.println("여기 오냐고");
+                return false;
+            } else {
+                return true;
+            }
         }
-
     }
 
     public boolean checkPossibleIngOrderBox(wrap wrap){
