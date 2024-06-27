@@ -143,10 +143,6 @@ public class obtainorderApiController {
     }
 
     //엑셀 업로드 후 DB 저장
-    /*@PostMapping("excel_upload_order")
-    public String registExcelOrder(@RequestParam("file") MultipartFile file){
-        return obtainOrderService.upload(file);
-    }*/
     @PostMapping("/uploadExcel")
     public ResponseEntity<?> uploadExcel(@RequestParam("file") MultipartFile file) {
         List<AddOrderDto> addOrderDtoList = obtainOrderService.ExcelFileUpload(file);

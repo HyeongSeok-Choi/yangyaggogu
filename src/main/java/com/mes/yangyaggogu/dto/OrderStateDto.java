@@ -33,6 +33,7 @@ public class OrderStateDto {
 
     private String writer;
 
+    //entity -> dto 로 변환
     public OrderStateDto(obtainorder_detail obtainorder_detail) {
         this.id = obtainorder_detail.getId();
         this.orderNumber = obtainorder_detail.getOrderNumber().getOrderNumber();

@@ -114,8 +114,18 @@
 
             // 수주 수정
             document.getElementById('editBtn').addEventListener('click', function () {
-                const orderId = document.getElementById('order-id').value;
                 const orderAmount = document.getElementById('order-amount').value;
+                //최소 주문 수량 유효성 검사
+                if (orderAmount < 20){
+                    alert('최소 주문 수량은 20개 이상부터 입니다.');
+                    return;
+                }
+                //최대 주문 수량 유효성 검사
+                if (orderAmount > 1000) {
+                    alert('최대 주문 가능 수량을 초과하였습니다.');
+                    return;
+                }
+                const orderId = document.getElementById('order-id').value;
                 const deliveryDate = document.getElementById('delivery-date').value;
 
                 const updatedData = {
@@ -177,6 +187,26 @@
                         });
                 } else {
                     window.close();
+                }
+            });
+
+            //납풉일 변경 시 유효성 검사
+            const deliveryDateInput = document.getElementById('delivery-date');
+            deliveryDateInput.addEventListener('input', function (e) {
+                const orderDate = new Date();
+                const selectedDate = new Date(this.value);
+                const diffTime = selectedDate - orderDate;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 *24));
+
+                const day = selectedDate.getUTCDay();
+                if ([6,0].includes(day)){
+                    e.preventDefault();
+                    this.value = '';
+                    alert('주말을 제외한 날짜를 선택해주세요.');
+                } else if (diffDays <= 4) {
+                    e.preventDefault();
+                    this.value = '';
+                    alert('수주일자를 기준으로 4일 뒤부터 선택 가능합니다.');
                 }
             });
         });
