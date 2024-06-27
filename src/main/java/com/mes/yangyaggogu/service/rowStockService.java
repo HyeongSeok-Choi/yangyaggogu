@@ -172,6 +172,7 @@ public class rowStockService {
 
     public ingredientStock updateRowStockUpdate(Long id, String state){
 
+
        ingredientStock rowStock = ingredientStockRepository.findAllById(id)
                .orElseThrow(() -> new RuntimeException("RowStock not found"));
         rowStock.setState(rowStock_state.valueOf(state));
@@ -191,6 +192,7 @@ public class rowStockService {
 
         }else{
             LocalDate inDate = rowStock.getOrder_date().plusDays(3);
+            rowStock.setIn_date(inDate);
             System.out.println("inDate"+inDate);
 
             if(inDate.getDayOfWeek().getValue() == 6){

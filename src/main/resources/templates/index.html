@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en' xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layouts/layout1}">
+      layout:decorate="~{layouts/layout1}">
 <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -27,7 +27,6 @@
         .chart-box {
             flex: 1 0 20%;
             /*min-width: 300px;*/
-            max-width: 20%;
             padding: 10px;
             box-sizing: border-box;
         }
@@ -55,14 +54,14 @@
                         </div>
                         <div class="row">
                             <div class="box mt-4">
-                            <h4 style="padding-bottom: 20px">생산계획별 설비 가동률</h4>
-                                <select  class="form-select" aria-label="Default select example">
-                                    <option selected>Open this select menu</option>
+                            <h4 style="padding-bottom: 20px">금일 생산계획별 설비 가동률</h4>
+                                <select id="operate" class="form-select" aria-label="Default select example">
+                                    <option value="생계" selected>생산계획번호 선택</option>
                                     <option th:each="plan:${plans}" th:text="${plan.getProductionPlanCode()}" th:value="${plan.getProductionPlanCode()}">One</option>
                                 </select>
                             <div class="box mt-4 chart-container">
-                                <div class="chart-box" th:each="i : ${#numbers.sequence(1,10)}">
-                                        <div th:id="'circleChart' + ${i}" style="min-height:300px"></div>
+                                <div class="chart-box">
+                                        <div th:id="'circleChart'" style="min-height:300px"><h3 class="box mt-4 chart-container">선택된 계획이 없습니다.</h3></div>
                                 </div>
                             </div>
                             </div>
@@ -93,7 +92,7 @@
 
 
 
-        var options = {
+        var options1 = {
             series: [{
                 name: '흑마늘',
                 data: [44, 55, 41]
@@ -164,101 +163,229 @@
             }
         };
 
-        var chart = new ApexCharts(document.querySelector("#myChart"), options);
-        chart.render();
+        var chart1 = new ApexCharts(document.querySelector("#myChart"), options1);
+        chart1.render();
         })
     </script>
     <script>
 
-
-        fetch('/api/todayProductAmount', {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: 'GET',
-        })
-            .then(response => response.json())
-            .then(data => {
-                var options = {
-
-
-
-                    series: [{
-                        name:"todayPro",
-                        data: data.data
-                    }],
-                    chart: {
-                        height: 350,
-                        type: 'bar',
-                        events: {
-                            click: function(chart, w, e) {
-                                // console.log(chart, w, e)
-                            }
-                        }
-                    },
-                    colors: ["red", "yellow", "blue", "red"],
-                    plotOptions: {
-                        bar: {
-                            columnWidth: '30%',
-                            distributed: true,
-                        }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    legend: {
-                        show: false
-                    },
-                    title:{
-                        text:'일일 생산량',
-                    },
-                    xaxis: {
-                        categories: [
-                            '양배추즙',
-                            '흑마늘즙',
-                            '석류젤리스틱',
-                            '매실젤리스틱',
-                        ],
-                        labels: {
-                            style: {
-                                colors: ["red", "yellow", "blue", "red"],
-                                fontSize: '12px'
-                            }
-                        }
-                    }
-                };
-
-                var chart = new ApexCharts(document.querySelector("#barChart"), options);
-                chart.render();
-
-            })
-
-
-
-
-
-    </script>
-    <script>
-        var options = {
-            series: [70],
-            chart: {
-                height: 350,
-                type: 'radialBar',
-            },
-            plotOptions: {
-                radialBar: {
-                    hollow: {
-                        size: '70%',
-                    }
+        $(document).ready(function() {
+            fetch('/api/todayProductAmount', {
+                headers: {
+                    "Content-Type": "application/json",
                 },
-            },
-            labels: ['Cricket'],
-        };
+                method: 'GET',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    var options2 = {
 
-        for (var i = 1; i <= 10; i++) {
-            var chart = new ApexCharts(document.querySelector("#circleChart" + i), options);
-            chart.render();
-        }
+
+                        series: [{
+                            name: "todayPro",
+                            data: data.data
+                        }],
+                        chart: {
+                            height: 350,
+                            type: 'bar',
+                            events: {
+                                click: function (chart, w, e) {
+                                    // console.log(chart, w, e)
+                                }
+                            }
+                        },
+                        colors: ["red", "yellow", "blue", "red"],
+                        plotOptions: {
+                            bar: {
+                                columnWidth: '30%',
+                                distributed: true,
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        legend: {
+                            show: false
+                        },
+                        title: {
+                            text: '일일 생산량',
+                        },
+                        xaxis: {
+                            categories: [
+                                '양배추즙',
+                                '흑마늘즙',
+                                '석류젤리스틱',
+                                '매실젤리스틱',
+                            ],
+                            labels: {
+                                style: {
+                                    colors: ["red", "yellow", "blue", "red"],
+                                    fontSize: '12px'
+                                }
+                            }
+                        }
+                    };
+
+                    var chart2 = new ApexCharts(document.querySelector("#barChart"), options2);
+                    chart2.render();
+
+                })
+
+        });
+
+    </script>
+    <script>
+
+        $("select[id=operate]").change(function(){
+
+
+            var chart3 = document.querySelector("#circleChart")
+            chart3.replaceChildren();
+
+          var ProductPlanCode=  $(this).val();
+
+          console.log(ProductPlanCode);
+
+
+
+            if($(this).val()==="생계"){
+
+                return false;
+
+            }else {
+
+                fetch('/api/getProcessOperate', {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        productionPlanCode: ProductPlanCode,
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+
+                        console.log("나와바라");
+                        if (data.data.length === 8) {
+
+                            console.log("즙");
+
+
+                            var options3 = {
+
+                                series: [{
+                                    name: "todayPro",
+                                    data: data.data
+                                }],
+                                chart: {
+                                    height: 350,
+                                    type: 'bar',
+                                    events: {
+                                        click: function (chart, w, e) {
+                                            // console.log(chart, w, e)
+                                        }
+                                    }
+                                },
+                                colors: ["red", "yellow", "blue", "red", "red", "red", "red", "red"],
+                                plotOptions: {
+                                    bar: {
+                                        columnWidth: '30%',
+                                        distributed: true,
+                                    }
+                                },
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                legend: {
+                                    show: false
+                                },
+                                title: {
+                                    text: '공정별 진행률',
+                                },
+                                xaxis: {
+                                    categories: [
+                                        '전처리',
+                                        '칭량',
+                                        '착즙',
+                                        '여과',
+                                        '살균',
+                                        '충진',
+                                        '검사',
+                                        '포장'
+                                    ],
+                                    labels: {
+                                        style: {
+                                            colors: ["red", "yellow", "blue", "red", "red", "yellow", "blue", "red"],
+                                            fontSize: '12px'
+                                        }
+                                    }
+                                }
+                            };
+                            var chart4 = new ApexCharts(document.querySelector("#circleChart"), options3);
+                            chart4.render();
+
+                        } else if (data.data.length === 7) {
+                            console.log("젤리");
+
+                            var options6 = {
+
+                                series: [{
+                                    name: "todayPro",
+                                    data: data.data,
+                                }],
+                                chart: {
+                                    height: 350,
+                                    type: 'bar',
+                                    events: {
+                                        click: function (chart, w, e) {
+                                            // console.log(chart, w, e)
+                                        }
+                                    }
+                                },
+                                colors: ["red", "yellow", "blue", "red", "red", "red", "red"],
+                                plotOptions: {
+                                    bar: {
+                                        columnWidth: '30%',
+                                        distributed: true,
+                                    }
+                                },
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                legend: {
+                                    show: false
+                                },
+                                title: {
+                                    text: '공정별 진행률',
+                                },
+                                xaxis: {
+                                    categories: [
+                                        '칭량',
+                                        '혼합',
+                                        '살균',
+                                        '충진',
+                                        '냉각',
+                                        '검사',
+                                        '포장',
+                                    ],
+                                    labels: {
+                                        style: {
+                                            colors: ["red", "yellow", "blue", "red", "red", "yellow", "blue"],
+                                            fontSize: '12px'
+                                        }
+                                    }
+                                }
+                            };
+                            var chart5 = new ApexCharts(document.querySelector("#circleChart"), options6);
+                            chart5.render();
+
+                        }
+                    })
+            }
+
+        });
+
     </script>
 </th:block>
 </body>

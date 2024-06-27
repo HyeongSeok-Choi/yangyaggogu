@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class testcontroller {
+public class testController {
 
     private final productPlanService productPlanService;
 

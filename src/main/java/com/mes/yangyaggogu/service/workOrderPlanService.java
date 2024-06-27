@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -30,6 +32,25 @@ public class workOrderPlanService {
     //모든 작업지시 출력
     public List<workOrderPlan> getAll() {
         return workOrderPlanRepository.findAll();
+    }
+
+
+    //작업계획 출력
+    public ArrayList<Float> getByProductPlanCode(productPlan productPlan) {
+
+       List<workOrderPlan> workOrderPlanList=  workOrderPlanRepository.findByProductPlanCode(productPlan);
+
+//       Map<String,Float> Operation = new HashMap<>();
+
+        ArrayList<Float> Operation = new ArrayList();
+
+       for (workOrderPlan workOrderPlan : workOrderPlanList) {
+//           Operation.put(workOrderPlan.getProcessName(),workOrderPlan.getOperationRate());
+           Operation.add(workOrderPlan.getOperationRate());
+       }
+
+       return Operation;
+
     }
 
     //모든 작업지시 출력

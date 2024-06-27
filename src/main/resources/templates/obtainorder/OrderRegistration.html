@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='en' xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/layouts/layout1}">
+      layout:decorate="~{layouts/layout1}">
 <head>
     <!-- 납품일 캘린더 사용 -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
@@ -303,9 +303,9 @@
                     alert('주말을 제외한 날짜를 선택해주세요.');
                 } else if (diffDays <= 4){
                     //수주일자 기준으로 4일 이후부터 선택 가능
-                    e.preventDefault();
-                    this.value = '';
-                    alert('수주일자를 기준으로 4일 뒤부터 날짜 선택 가능합니다.');
+                    // e.preventDefault();
+                    // this.value = '';
+                    // alert('수주일자를 기준으로 4일 뒤부터 날짜 선택 가능합니다.');
                 }
             });
 
