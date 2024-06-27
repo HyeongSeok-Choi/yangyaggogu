@@ -103,7 +103,7 @@ public class rowMaterialApiController {
 
 
         if(stockDto.getMaterialsName().equals("양배추즙")||stockDto.getMaterialsName().equals("흑마늘즙")){
-            lowStockRegisterDate = deliveryDate.minusDays(6);
+            lowStockRegisterDate = deliveryDate.minusDays(8);
             System.out.println(lowStockRegisterDate);
 
 
@@ -112,7 +112,7 @@ public class rowMaterialApiController {
             }
 
         }else{
-            lowStockRegisterDate = deliveryDate.minusDays(7);
+            lowStockRegisterDate = deliveryDate.minusDays(9);
             System.out.println(lowStockRegisterDate);
 
             if(lowStockRegisterDate.getDayOfWeek().getValue() == 6||lowStockRegisterDate.getDayOfWeek().getValue() == 7){
