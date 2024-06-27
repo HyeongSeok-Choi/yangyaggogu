@@ -65,6 +65,13 @@ public class rowStockService {
 
         ingredientStock.setProductionPlanCode(productPlan);
 
+//        if(stockDto.getMaterialsName().equals("흑마늘즙") || stockDto.getMaterialsName().equals("양배추즙")){
+//            String name = stockDto.getMaterialsName();
+//            ingredientStock.setMaterials_Name(name.substring(0,3));
+//        }else{
+//            String name = stockDto.getMaterialsName();
+//            ingredientStock.setMaterials_Name(name.substring(0,2) + "농축액");
+//        }
         ingredientStock.setMaterials_Name(stockDto.getMaterialsName());
         ingredientStock.setIngredient_Amount(stockDto.getIngredientAmount());
         ingredientStock.setCompany_name(stockDto.getCompanyName());
@@ -191,6 +198,7 @@ public class rowStockService {
 
         }else{
             LocalDate inDate = rowStock.getOrder_date().plusDays(3);
+            rowStock.setIn_date(inDate);
             System.out.println("inDate"+inDate);
 
             if(inDate.getDayOfWeek().getValue() == 6){

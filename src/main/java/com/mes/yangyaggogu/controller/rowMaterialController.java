@@ -73,6 +73,7 @@ public class rowMaterialController {
                    model.addAttribute("subMaterials", "벌꿀");
                    model.addAttribute("subMaterialsAmount", findProductPlan.getTarget_Output()*150);
                    findProductPlan.setTarget_Output((1000 * findProductPlan.getTarget_Output())/250);
+                   findProductPlan.setMaterialsName(findProductPlan.getMaterialsName().substring(0,3));
 
 
                    companyList = companyService.findByTradeGoods(company_state.delivery, "즙");
@@ -82,6 +83,7 @@ public class rowMaterialController {
                    model.addAttribute("subMaterials", "콜라겐");
                    model.addAttribute("subMaterialsAmount", findProductPlan.getTarget_Output()*50);
                    findProductPlan.setTarget_Output((findProductPlan.getTarget_Output()*25)*5);
+                   findProductPlan.setMaterialsName(findProductPlan.getMaterialsName().substring(0,2)+"농축액");
 
                    companyList = companyService.findByTradeGoods(company_state.delivery, "젤리스틱");
                }
