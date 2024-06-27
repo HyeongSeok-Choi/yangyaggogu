@@ -286,9 +286,9 @@
 
         //납품일 제한
         $(document).ready(function() {
-
             const picker = document.getElementById('deliveryDate');
-            picker.addEventListener('input', function(e){
+            //input 이벤트는 모든 입력 변화에 반응하지만, change 이벤트는 사용자가 날짜를 선택한 후에만 반응
+            picker.addEventListener('change', function(e){
                 //수주일자 기준으로 4일 이후부터 선택 가능
                 var orderDate = new Date();
                 var selectedDate = new Date(this.value);

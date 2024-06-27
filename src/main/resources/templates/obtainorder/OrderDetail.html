@@ -192,7 +192,7 @@
 
             //납풉일 변경 시 유효성 검사
             const deliveryDateInput = document.getElementById('delivery-date');
-            deliveryDateInput.addEventListener('input', function (e) {
+            deliveryDateInput.addEventListener('change', function (e) {
                 const orderDate = new Date();
                 const selectedDate = new Date(this.value);
                 const diffTime = selectedDate - orderDate;
