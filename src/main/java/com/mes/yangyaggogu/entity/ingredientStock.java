@@ -35,13 +35,6 @@ public class ingredientStock {
     @Enumerated(EnumType.STRING)
     private rowStock_state state;
 
-
-//    private String reason;
-
-//    private Long avaliable_Amount;
-
-//    private Long out_Amount;
-
     @JoinColumn(name = "productionPlanCode")
     @ManyToOne
     private productPlan productionPlanCode;

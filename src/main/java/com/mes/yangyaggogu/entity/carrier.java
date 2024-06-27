@@ -19,9 +19,7 @@ public class carrier {
 
     private String carrier_PhoneNumber;
 
-
     private String carrier_Vehicle;
-
 
     private Long carrier_Price;
 

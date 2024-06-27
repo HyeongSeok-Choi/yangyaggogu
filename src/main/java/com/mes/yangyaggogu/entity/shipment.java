@@ -34,7 +34,6 @@ public class shipment {
 
     private LocalDateTime shippingDate;
 
-
     private LocalDate deliveryDate;
 
     private LocalDateTime createdAt;
