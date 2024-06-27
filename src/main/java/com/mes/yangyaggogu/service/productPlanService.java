@@ -38,8 +38,14 @@ public class productPlanService {
         return productPlan;
     }
 
+    //오늘 생산계획 모두 출력
+    public List<productPlan> getProductPlansToday() {
 
-    //생산 시작적 계획 모두 출력
+        return P_planRepository.getTodayPlan(LocalDate.now());
+    }
+
+
+    //생산 시작전 계획 모두 출력
     public List<productPlan> getProductPlansBeforeOrder() {
 
         return P_planRepository.findAllByState(productionPlan_state.beforeOrder);

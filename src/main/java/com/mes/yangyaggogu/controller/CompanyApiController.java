@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class CompanyApiController {
 
 
-    final private CompanyService companyService;
+    private final CompanyService companyService;
 
 
     @GetMapping("/company/list")

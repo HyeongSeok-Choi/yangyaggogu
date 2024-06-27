@@ -43,6 +43,8 @@ public class workOrderPlanDTO {
 
     private String materials_Name;
 
+    private double operationRate;
+
     public workOrderPlanDTO(workOrderPlan workOrderPlan) {
 
         this.Id = workOrderPlan.getId();
@@ -57,6 +59,7 @@ public class workOrderPlanDTO {
         this.now_Output = workOrderPlan.getNow_Output();
         this.state = workOrderPlan.getState();
         this.materials_Name = workOrderPlan.getMaterials_Name();
+        this.operationRate = workOrderPlan.getOperationRate();
 
     }
 }

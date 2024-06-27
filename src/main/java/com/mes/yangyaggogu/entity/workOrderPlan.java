@@ -34,6 +34,8 @@ public class workOrderPlan {
 
     private String processName;
 
+    private Float operationRate;
+
     private LocalDateTime P_startDate;
 
     private LocalDateTime P_endDate;
