@@ -20,9 +20,11 @@ public class workPerform {
     @JoinColumn(name = "productionPlanCode")
     private productPlan productionPlanCode;
 
-    private Long target_Output;
+    private Float operationRate;
 
-    private Long now_Output;
+    private double target_Output;
+
+    private double now_Output;
 
     private String processName;
 

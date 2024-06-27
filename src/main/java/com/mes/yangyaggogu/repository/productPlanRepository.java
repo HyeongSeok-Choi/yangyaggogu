@@ -20,6 +20,10 @@ public interface productPlanRepository extends JpaRepository<productPlan, String
 
     List<productPlan> findAllByState(productionPlan_state productionPlanState);
 
+    @Query("select p from productPlan p where (p.pstartDate <= :todayDate) and (:todayDate <= p.pendDate)")
+    List<productPlan> getTodayPlan(LocalDate todayDate);
+
+
 
     // boolean existsByPstartDateLessThanEqualAndPendDateGreaterThanEqual(LocalDate start, LocalDate end);
 

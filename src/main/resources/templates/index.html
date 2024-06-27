@@ -165,53 +165,74 @@
         })
     </script>
     <script>
-        var options = {
-            series: [{
-                data: [21, 22, 10, 28]
-            }],
-            chart: {
-                height: 350,
-                type: 'bar',
-                events: {
-                    click: function(chart, w, e) {
-                        // console.log(chart, w, e)
-                    }
-                }
-            },
-            colors: ["red", "yellow", "blue", "red"],
-            plotOptions: {
-                bar: {
-                    columnWidth: '30%',
-                    distributed: true,
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            legend: {
-                show: false
-            },
-            title:{
-                text:'일일 생산량',
-            },
-            xaxis: {
-                categories: [
-                    '양배추즙',
-                    '흑마늘즙',
-                    '석류젤리스틱',
-                    '매실젤리스틱',
-                ],
-                labels: {
-                    style: {
-                        colors: ["red", "yellow", "blue", "red"],
-                        fontSize: '12px'
-                    }
-                }
-            }
-        };
 
-        var chart = new ApexCharts(document.querySelector("#barChart"), options);
-        chart.render();
+
+        fetch('/api/todayProductAmount', {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: 'GET',
+        })
+            .then(response => response.json())
+            .then(data => {
+                var options = {
+
+
+
+                    series: [{
+                        name:"todayPro",
+                        data: data.data
+                    }],
+                    chart: {
+                        height: 350,
+                        type: 'bar',
+                        events: {
+                            click: function(chart, w, e) {
+                                // console.log(chart, w, e)
+                            }
+                        }
+                    },
+                    colors: ["red", "yellow", "blue", "red"],
+                    plotOptions: {
+                        bar: {
+                            columnWidth: '30%',
+                            distributed: true,
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    legend: {
+                        show: false
+                    },
+                    title:{
+                        text:'일일 생산량',
+                    },
+                    xaxis: {
+                        categories: [
+                            '양배추즙',
+                            '흑마늘즙',
+                            '석류젤리스틱',
+                            '매실젤리스틱',
+                        ],
+                        labels: {
+                            style: {
+                                colors: ["red", "yellow", "blue", "red"],
+                                fontSize: '12px'
+                            }
+                        }
+                    }
+                };
+
+                var chart = new ApexCharts(document.querySelector("#barChart"), options);
+                chart.render();
+
+            })
+
+
+
+
+
     </script>
     <script>
         var options = {
