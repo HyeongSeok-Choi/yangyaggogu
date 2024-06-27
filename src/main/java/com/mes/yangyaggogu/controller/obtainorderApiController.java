@@ -1,10 +1,7 @@
 package com.mes.yangyaggogu.controller;
 
 import com.mes.yangyaggogu.constant.obtainorder_state;
-import com.mes.yangyaggogu.dto.AddOrderDto;
-import com.mes.yangyaggogu.dto.OrderDtlDto;
-import com.mes.yangyaggogu.dto.OrderStateDto;
-import com.mes.yangyaggogu.dto.workOrderPlanDTO;
+import com.mes.yangyaggogu.dto.*;
 import com.mes.yangyaggogu.entity.obtainorder_detail;
 import com.mes.yangyaggogu.entity.productPlan;
 import com.mes.yangyaggogu.service.ObtainOrderService;
@@ -155,4 +152,33 @@ public class obtainorderApiController {
         List<AddOrderDto> addOrderDtoList = obtainOrderService.ExcelFileUpload(file);
         return ResponseEntity.ok(addOrderDtoList);
     }
+
+    @GetMapping("/completed-orders")
+    public Map<String,Object> showOrderAmount() {
+
+
+        Map<String,Object> map = new HashMap<>();
+
+        List<OrderStateDto> OrderStateDto = obtainOrderService.showOrderAmount().stream()
+                .map(a -> new OrderStateDto(a))
+                .collect(Collectors.toList());
+        map.put("data",OrderStateDto);
+
+        return map;
+    }
+
+    @PostMapping("/showOrderAmount/search")
+    public ResponseEntity<?> SearchFinishedStockList(@RequestBody searchDto search) {
+
+        System.out.println("아예 안오니 ?");
+        System.out.println("검색 조건: " + search);
+
+        List<OrderStateDto> searchLists =obtainOrderService.searchLists(search);
+
+        return ResponseEntity.ok(searchLists);
+    }
+
+
 }
+
+

@@ -1,73 +1,197 @@
-<div>
-    <canvas id="myChart"></canvas>
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layouts/layout1}">
+<head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>월별 주문량</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+</head>
+<body>
+<th:block layout:fragment="content">
+<div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
+<div class="container1">
+<form class="searchForm" name="searchForm" style="text-align:center; display: contents; align-items: center; padding:10px 0;">
+    <label>기간
+        <input type="month" id="startDay" placeholder="시작날짜">
+        ~
+        <input type="month" id="EndDay" placeholder="종료날짜">
+    </label>
+    <label>거래처명</label>
+    <select id="customerSelect">
+        <option value="">선택하세요</option>
+    </select>
+    <label>
+        <input class="btn btn-dark" type="button" onclick="getSearchList()" value="조회"></label>
+</form>
+
+<div id="showOrderAmount"></div>
 </div>
+<script th:inline="javascript">
+    let chart; // 차트를 전역 변수로 선언
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    function fetchDataAndRenderChart(data) {
+        // 데이터를 월 단위로 그룹화
+        const groupedData  = data.reduce((acc, item) => {
+            const date = new Date(item.order_Date);
+            const month = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}`;
+            //padStart -> 월 숫자를 가져온 후 2자리로 맞춰주고 앞에 0을 채워넣음 ex) 5 -> 05
+            const productName = item.productName;
 
-<script>
-    const ctx = document.getElementById('myChart');
-
-    const data = {
-        labels: ['2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06'],
-        datasets: [
-            {
-                label: '양배추즙',
-                data: [100, 150, 200, 100, 0, 50],
-                borderWidth: 1
-            },
-            {
-                label: '흑마늘즙',
-                data: [100, 100, 100, 100, 100, 100],
-                borderWidth: 1
-            },
-            {
-                label: '석류 젤리스틱',
-                data: [50, 50, 50, 50, 20, 30],
-                borderWidth: 1
-            },
-            {
-                label: '매실 젤리스틱',
-                data: [150, 50, 50, 50, 0, 0],
-                borderWidth: 1
+            if (!acc[month]) {
+                acc[month] = {};
             }
-        ]
-    };
 
-    const chart = new Chart(ctx, {
-        type: 'bar',
-        data: data,
-        options: {
-            scales: {
-                x: {
-                    stacked: true
+            if (!acc[month][productName]) {
+                acc[month][productName] = 0;
+            }
+
+            acc[month][productName] += item.order_Amount;
+            return acc;
+        }, {});
+
+
+        const months = Object.keys(groupedData);
+        const series = []; //series 빈 배열 선언
+
+        months.forEach(month => {
+            Object.keys(groupedData[month]).forEach(productName => {
+                let productSeries = series.find(series => series.name === productName);
+                if (!productSeries) {
+                    productSeries = { name: productName, data: Array(months.length).fill(0) };
+                    series.push(productSeries);
+                }
+                productSeries.data[months.indexOf(month)] = groupedData[month][productName];
+            });
+            //groupedData[month], productName 기준 이중반복
+            // productSeries가 비어있으면 productName만 집어넣고 data: Array(months.length).fill(0) 데이터 배열은 0으로 채워넣음(초기화 필요없게 미리 채워넣음)
+            //productSeries.data[months.indexOf(month)] = groupedData[month][productName]; 이부분에서 데이터에 값이 들어감(여기서는 order_amount)
+        });
+
+        const options = {
+            chart: {
+                type: 'bar',
+                stacked: 'true'
+
+            },
+            series: series,
+            xaxis: {
+                categories: months
+            },
+            title: {
+                text: '월별 주문량',
+                align: 'center'
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '25%',
+                    endingShape: 'rounded'
                 },
-                y: {
-                    stacked: true
+            },
+            dataLabels: {
+                enabled: true,
+                style: {
+                    fontSize: '20px',
+                    // fontFamily: 'Helvetica, Arial, sans-serif',
+                    fontWeight: 'bold',
+                    // colors: undefined
+                },
+
+            },
+            yaxis: {
+                title: {
+                    text: '주문량'
                 }
             }
+
+        };
+
+        if (chart) {
+            chart.updateOptions(options);
+        } else {
+            chart = new ApexCharts(document.querySelector("#showOrderAmount"), options);
+            chart.render();
         }
+    }
+
+
+    $(document).ready(function() {
+        $.ajax({
+            url: '/api/completed-orders',
+            method: 'GET',
+            success: function(response) {
+                fetchDataAndRenderChart(response.data);
+            },
+            error: function(error) {
+                console.error('데이터를 가져오는 중 오류 발생:', error);
+            }
+        });
+
+
+        $.ajax({
+            url: '/api/companies/name',
+            method: 'GET',
+            success: function (data){
+                var $customerSelect = $('#customerSelect');
+                console.log($customerSelect + "확인용")
+                $customerSelect.empty();
+                $customerSelect.append('<option value="">선택하세요</option>');
+                data.forEach(function (company) {
+                    $customerSelect.append('<option value="'+company+'">'+company+'</option>');
+                });
+            },
+            error: function (err) {
+                console.error('거래처 목록을 가져오는 중 오류가 발생했습니다:', err);
+            }
+        });
     });
 
-    const cabbageJuiceData = data.datasets[0].data;
-    const cabbageJuiceSum = cabbageJuiceData.reduce((acc, value) => acc + value, 0);
-    const cabbageJuiceAvg = cabbageJuiceSum/cabbageJuiceData.length;
-    console.log('양배추즙의 월평균 생산량: = ' + cabbageJuiceAvg);
+    function getSearchList() {
+        const startMonth = document.getElementById("startDay").value;
+        const endMonth = document.getElementById("EndDay").value;
 
-    const drakGarlicJuiceData = data.datasets[1].data;
-    const drakGarlicJuiceSum = drakGarlicJuiceData.reduce((acc, value) => acc + value, 0);
-    const drakGarlicJuiceAvg = drakGarlicJuiceSum/drakGarlicJuiceData.length;
-    console.log('흑마늘즙의 월평균 생산량: = ' + drakGarlicJuiceAvg);
+        // 시작 월의 첫날과 종료 월의 마지막 날을 계산합니다.
+        const startDate = new Date(startMonth + "-01");
+        const endDate = new Date(endMonth + "-01");
+        endDate.setMonth(endDate.getMonth() + 1); // 다음 달로 설정
+        endDate.setDate(0);
+        //자바스크립트에 setDate(0)을 하면 전달의 가장 마지막날로 설정됨
+        //json은 yyyy-mm-dd 형태로 받아오기때문에 이렇게 안바꿔주면 에러생김
+        fetch('/api/showOrderAmount/search', {
 
-    const jelly1Data = data.datasets[2].data;
-    const jelly1Sum = jelly1Data.reduce((acc, value) => acc + value, 0);
-    const jelly1Avg = jelly1Sum/jelly1Data.length;
-    console.log('석류젤리스틱의 월평균 생산량: = ' + jelly1Avg);
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                start: startDate.toISOString().split('T')[0], // YYYY-MM-DD 형식으로 변환
+                end: endDate.toISOString().split('T')[0],
+                keyword: document.getElementById("customerSelect").value
+            }),
+        })
+            .then(response => response.json())
+            .then(searchList => {
+                if (Array.isArray(searchList)) {
+                    fetchDataAndRenderChart(searchList);
+                    console.log(searchList);
+                } else {
+                    console.error('응답 데이터가 예상한 배열 형식이 아닙니다:', searchList);
+                }
+            })
+            .catch(error => {
+                console.error('검색 데이터를 가져오는 중 오류 발생:', error);
+            });
 
 
-    const jelly2Data = data.datasets[3].data;
-    const jelly2Sum = jelly2Data.reduce((acc, value) => acc + value, 0);
-    const jelly2Avg = jelly2Sum/jelly2Data.length;
-    console.log('매실젤리스틱의 월평균 생산량: = ' + jelly2Avg);
+
+
+
+    }
 </script>
-
+</th:block>
+</body>
+</html>

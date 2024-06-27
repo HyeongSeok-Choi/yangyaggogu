@@ -66,4 +66,8 @@ public class shipmentService {
     }
 
 
+    public boolean existsByShipmentNumber(String shipmentNumber) {
+        return shipmentRepository.existsByShipmentNumber(shipmentNumber);
+    }
+
 }
