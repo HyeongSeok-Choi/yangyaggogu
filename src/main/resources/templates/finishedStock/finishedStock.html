@@ -124,13 +124,20 @@
 
             ajax: {
                 url: '/api/finishedStock/list',
-                type: 'GET'
-                // data: function(d) {
-                //     d.startDate = $('#startDate').val();
-                //     d.endDate = $('#endDate').val();
-                //
-                //     console.log(d.startDate + "," + d.endDate);
-                // }
+                type: 'GET',
+                dataSrc: function (json) {
+
+                    var data = json.data.filter(function (item) {
+                        return item.materialsName !== null;
+                    });
+                    data.forEach(function (item) {
+                        var date = new Date(item.exp);
+                         date.setMonth(date.getMonth() + 6);
+                        item.exp = date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 설정
+                    });
+
+                    return data;
+                }
             },
             columns: [
                 {data: null},
@@ -193,9 +200,7 @@
             ]
         });
 
-        // $('#filterButton').on('click', function () {
-        //     table.ajax.reload(null,false);
-        // });
+
         $('#releaseStock').on('click', function () {
             var selectedRows = table.rows({selected: true}).data();
 

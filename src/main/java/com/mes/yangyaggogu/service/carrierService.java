@@ -23,4 +23,8 @@ public class carrierService {
 
     }
 
+//    public carrier deleteCarrier(carrier carrier) {
+//        return carrierRepository.deleteAllById(carrier);
+//    }
+
 }

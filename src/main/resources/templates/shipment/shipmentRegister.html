@@ -119,7 +119,6 @@
                     // exp 필드의 날짜를 6개월 감소
                     data.forEach(function (item) {
                         var date = new Date(item.exp);
-                        date.setMonth(date.getMonth() - 6);
                         item.exp = date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 설정
                     });
 

@@ -1,11 +1,10 @@
 package com.mes.yangyaggogu.service;
 
-import com.mes.yangyaggogu.dto.FinishedStockDTO;
 import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.dto.shipmentDTO;
 import com.mes.yangyaggogu.entity.shipment;
-import com.mes.yangyaggogu.repository.finishedstockRepository;
 import com.mes.yangyaggogu.repository.shipmentRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -70,4 +69,14 @@ public class shipmentService {
         return shipmentRepository.existsByShipmentNumber(shipmentNumber);
     }
 
+//    public void delete(List<String> shipmentNumber) {
+//        shipmentRepository.deleteByShipmentNumbers(shipmentNumber);
+//    }
+    @Transactional
+    public void deleteByShipmentNumbers(List<String> shipmentNumbers) {
+        for (String shipmentNumber : shipmentNumbers) {
+            shipmentRepository.deleteById(shipmentNumber);
+        }
+    }
 }
+

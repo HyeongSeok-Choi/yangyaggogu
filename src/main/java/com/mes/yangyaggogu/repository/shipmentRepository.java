@@ -2,7 +2,9 @@ package com.mes.yangyaggogu.repository;
 
 import com.mes.yangyaggogu.entity.finishedstock;
 import com.mes.yangyaggogu.entity.shipment;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -19,4 +21,9 @@ public interface shipmentRepository extends JpaRepository<shipment, String> {
     boolean existsByShipmentNumber(@Param("shipmentNumber") String shipmentNumber);
 
     //납품일 기준 검색 중
+
+//    @Modifying
+//    @Transactional
+//    @Query("DELETE FROM shipment s WHERE s.shipment_Number IN :shipmentNumbers")
+//    void deleteByShipmentNumbers(@Param("shipmentNumbers") List<String> shipmentNumbers);
 }

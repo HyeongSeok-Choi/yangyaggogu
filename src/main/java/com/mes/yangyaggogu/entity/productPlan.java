@@ -1,6 +1,7 @@
 package com.mes.yangyaggogu.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.mes.yangyaggogu.constant.productionPlan_state;
 import jakarta.persistence.*;
@@ -22,7 +23,7 @@ public class productPlan {
 
     private String materialsName;
 
-//    @JsonManagedReference
+//
     @ManyToOne
     @JoinColumn(name = "orderNumber")
     private obtainorder_number orderNumber;
@@ -46,6 +47,7 @@ public class productPlan {
     @OneToMany(mappedBy = "productionPlanCode",fetch = FetchType.LAZY,  cascade = CascadeType.REMOVE)
     private List<workPerform> workPerformList;
 
+//    @JsonBackReference
     @OneToMany(mappedBy = "productionPlanCode",fetch = FetchType.LAZY,  cascade = CascadeType.REMOVE)
     private List<ingredientStock> productPlanList;
 

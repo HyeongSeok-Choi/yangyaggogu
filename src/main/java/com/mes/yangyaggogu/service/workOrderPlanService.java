@@ -212,12 +212,12 @@ public class workOrderPlanService {
 
                       obtainorder_detail finded_obtainorder_detail = obtain_order_DetailRepository.findByProductNameAndOrderNumber(ProductName,obtainorderNumber);
 
-                    LocalDate expDate = LocalDate.from(find_WorkPlan.getP_endDate().plusMonths(6));
+//                    LocalDate expDate = LocalDate.from(find_WorkPlan.getP_endDate().plusMonths(6));
 
                     finishedstock finished = finishedstock.builder()
                             .orderNumber(finded_obtainorder_detail.getOrderNumber())
                             .amount(finded_obtainorder_detail.getOrder_Amount())
-                            .exp(expDate)
+                            .exp(LocalDate.now())
                             .materials_Name(finded_obtainorder_detail.getProductName())
                             .state(finishedstock_state.in)
                             .build();
@@ -228,13 +228,13 @@ public class workOrderPlanService {
 
             }else {
 
-                LocalDate expDate = LocalDate.from(find_WorkPlan.getP_endDate().plusMonths(6));
+//                LocalDate expDate = LocalDate.from(find_WorkPlan.getP_endDate().plusMonths(6));
 
                 finishedstock finished = finishedstock.builder()
                         .orderNumber(find_WorkPlan.getObtainorder_number())
                         .amount((long) find_WorkPlan.getNow_Output())
                         //지금 생산량 받아오는중 . 나중에 수정필요할수도 있음
-                        .exp(expDate)
+                        .exp(LocalDate.now())
                         .materials_Name(find_WorkPlan.getMaterials_Name())
                         .state(finishedstock_state.in)
                         .build();

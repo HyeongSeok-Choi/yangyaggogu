@@ -10,4 +10,6 @@ public interface carrierRepository extends JpaRepository<carrier,Long> {
 
     carrier findByShipment(shipment shipment);
 
+//    carrier deleteAllById(carrier carrier);
+
 }

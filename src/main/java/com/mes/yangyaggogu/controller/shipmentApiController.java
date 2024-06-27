@@ -143,4 +143,11 @@ public class shipmentApiController {
         return ResponseEntity.ok(searchLists);
     }
 
+
+    @PostMapping("/shipment/delete")
+    public ResponseEntity<Void> delete(@RequestBody List<String> shipmentNumber) {
+        shipmentService.deleteByShipmentNumbers(shipmentNumber);
+        return ResponseEntity.ok().build();
+    }
+
 }
