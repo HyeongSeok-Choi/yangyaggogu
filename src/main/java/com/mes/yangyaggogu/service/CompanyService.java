@@ -45,6 +45,14 @@ public class CompanyService {
         //수주상세 테이블에서 받아온 거래처 이름으로 찾기
     }
 
+    //거래처 주요 거래품에 따른 리스트 보여주기
+    public List<String> findByTradeGoods(company_state state, String tradeGoods){
+
+        return companyRepository.findByStateAndTradeGoods(state,tradeGoods).stream()
+                .map(company :: getCompany_name)
+                .collect(Collectors.toList());
+    }
+
     //거래처 코드 어떻게 짤지 정하고 나중에 수정
 
     //거래처 이름 가져오기(진영)

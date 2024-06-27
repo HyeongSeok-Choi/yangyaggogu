@@ -19,7 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,10 +52,11 @@ public class rowMaterialController {
     }
 
     @GetMapping(value = "/rowStockOrderRegister")
-    public String orderRegister(Model model, String ProductPlanCode, String companyName) throws Exception{
+    public String orderRegister(Model model, String ProductPlanCode, String companyName, String tradeGoods) throws Exception{
 
 
        List<productPlan> productPlanList = productPlanservice.getProductPlansBeforeOrder();
+       List<String> companyList = new ArrayList<>();
 
        model.addAttribute("productPlanListBefore", productPlanList);
 
@@ -70,12 +73,30 @@ public class rowMaterialController {
                    model.addAttribute("subMaterials", "벌꿀");
                    model.addAttribute("subMaterialsAmount", findProductPlan.getTarget_Output()*150);
                    findProductPlan.setTarget_Output((1000 * findProductPlan.getTarget_Output())/250);
+
+
+                   companyList = companyService.findByTradeGoods(company_state.delivery, "즙");
+
+
                }else{
                    model.addAttribute("subMaterials", "콜라겐");
                    model.addAttribute("subMaterialsAmount", findProductPlan.getTarget_Output()*50);
                    findProductPlan.setTarget_Output((findProductPlan.getTarget_Output()*25)*5);
+
+                   companyList = companyService.findByTradeGoods(company_state.delivery, "젤리스틱");
                }
 
+               if(companyName != null) {
+                   if (companyName.equals("발주처를 선택해주세요")){
+                       model.addAttribute("company", new company());
+                   }else{
+                       model.addAttribute("companyName", companyName);
+
+                   }
+               }else{
+                   model.addAttribute("company", new company());
+               }
+               model.addAttribute("companyList",companyList);
                model.addAttribute("ProductPlanCode", ProductPlanCode);
                model.addAttribute("ProductPlan", findProductPlan);
            }
@@ -83,29 +104,13 @@ public class rowMaterialController {
            model.addAttribute("ProductPlan", new productPlan());
        }
 
-        List<String> companyList = companyService.getAllCompanyNames(company_state.delivery);
-        model.addAttribute("companyList",companyList);
-
-       if(companyName != null) {
-           if (companyName.equals("발주처를 선택해주세요")){
-               model.addAttribute("company", new company());
-           }else{
-               model.addAttribute("companyName", companyName);
-
-           }
-       }else{
-           model.addAttribute("company", new company());
-       }
-
-
-
         return "/stockPlan/rowStockOrderRegister";
     }
 
     @GetMapping(value = "/boxWrap")
     public String boxWrap(Model model){
 
-        List<String> companyList = companyService.getAllCompanyNames(company_state.delivery);
+        List<String> companyList = companyService.findByTradeGoods(company_state.delivery, "박스/포장지");
         model.addAttribute("companyList",companyList);
 
 
@@ -115,6 +120,11 @@ public class rowMaterialController {
     @GetMapping(value = "/BomList")
     public String bomList(){
         return "/stockPlan/bomList_Table";
+    }
+
+    @GetMapping(value="/routingTable")
+    public String routingTable(){
+        return "/ReferenceInfo/routing_Table";
     }
 
 }
