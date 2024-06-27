@@ -4,11 +4,9 @@ import com.mes.yangyaggogu.constant.productionPlan_state;
 import com.mes.yangyaggogu.constant.rowStock_state;
 import com.mes.yangyaggogu.dto.StockDto;
 import com.mes.yangyaggogu.dto.searchDto;
-import com.mes.yangyaggogu.entity.ingredientStock;
-import com.mes.yangyaggogu.entity.obtainorder_number;
-import com.mes.yangyaggogu.entity.productPlan;
-import com.mes.yangyaggogu.entity.wrap;
+import com.mes.yangyaggogu.entity.*;
 import com.mes.yangyaggogu.repository.ingredientStockRepository;
+import com.mes.yangyaggogu.repository.obtainorder_detailRepository;
 import com.mes.yangyaggogu.repository.obtainorder_numberRepository;
 import com.mes.yangyaggogu.repository.wrapRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +24,8 @@ public class rowStockService {
     private final ingredientStockRepository ingredientStockRepository;
     private final productPlanService productPlanService;
     private final wrapRepository wrapRepository;
+    private final obtainorder_detailRepository obtainorder_detailRepository;
+    private final obtainorder_numberRepository obtainorder_NumberRepository;
 
 
     public List<ingredientStock> getRowStockList(){
@@ -83,6 +83,25 @@ public class rowStockService {
         return wrapRepository.save(wrap);
     }
 
+    public LocalDate deliveryDate(String productCode){
+
+      String[] orderNum =  productCode.split(",");
+
+        System.out.println(orderNum[0].substring(0,orderNum[0].length() - 2)+"매그네릭");
+        obtainorder_number findObtainNum =obtainorder_NumberRepository.findById(orderNum[0].substring(0,orderNum[0].length() - 2)).orElseThrow();
+
+       List<obtainorder_detail> obtainorderDetailList = obtainorder_detailRepository.findByOrderNumber(findObtainNum);
+
+
+       LocalDate deliveryDate = null;
+       for (obtainorder_detail obtainorderDetail:obtainorderDetailList){
+           deliveryDate= obtainorderDetail.getDelivery_Date();
+       }
+       
+       return deliveryDate;
+
+    }
+
     public boolean checkPossibleIngOrder(StockDto stockDto){
         List<ingredientStock> ingreList =ingredientStockRepository.getByOrder_dateAndIngredient_Amount(stockDto.getOrderDate(),stockDto.getMaterialsName(), stockDto.getCompanyName());
 
@@ -95,12 +114,20 @@ public class rowStockService {
 
         TotalAmount+=stockDto.getIngredientAmount();
 
-        if(TotalAmount>2000L){
-            return false;
-        }else {
-            return true;
+        if(stockDto.getMaterialsName().equals("양배추즙") || stockDto.getMaterialsName().equals("흑마늘즙")) {
+            if (TotalAmount > 2000L ) {
+                return false;
+            } else {
+                return true;
+            }
+        }else{
+            if (TotalAmount > 2000000L ) {
+                System.out.println("여기 오냐고");
+                return false;
+            } else {
+                return true;
+            }
         }
-
     }
 
     public boolean checkPossibleIngOrderBox(wrap wrap){
@@ -148,9 +175,32 @@ public class rowStockService {
        ingredientStock rowStock = ingredientStockRepository.findAllById(id)
                .orElseThrow(() -> new RuntimeException("RowStock not found"));
         rowStock.setState(rowStock_state.valueOf(state));
-        rowStock.setIn_date(LocalDate.now());
+        if(rowStock.getMaterials_Name().equals("양배추즙")||rowStock.getMaterials_Name().equals("흑마늘즙")){
+            LocalDate inDate = rowStock.getOrder_date().plusDays(2);
+            rowStock.setIn_date(inDate);
+            System.out.println("inDate"+inDate);
 
 
+            if(inDate.getDayOfWeek().getValue() == 6){
+                rowStock.setIn_date(inDate.plusDays(2));
+                System.out.println("inDate"+inDate);
+            }else if(inDate.getDayOfWeek().getValue() == 7){
+                rowStock.setIn_date(inDate.plusDays(1));
+                System.out.println("inDate"+inDate);
+            }
+
+        }else{
+            LocalDate inDate = rowStock.getOrder_date().plusDays(3);
+            System.out.println("inDate"+inDate);
+
+            if(inDate.getDayOfWeek().getValue() == 6){
+                rowStock.setIn_date(inDate.plusDays(2));
+                System.out.println("inDate"+inDate);
+            }else if(inDate.getDayOfWeek().getValue() == 7){
+                rowStock.setIn_date(inDate.plusDays(1));
+                System.out.println("inDate"+inDate);
+            }
+        }
         return ingredientStockRepository.save(rowStock);
     }
 }

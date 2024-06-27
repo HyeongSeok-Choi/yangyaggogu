@@ -4,7 +4,10 @@ package com.mes.yangyaggogu.controller;
 import com.mes.yangyaggogu.dto.StockDto;
 import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.entity.ingredientStock;
+import com.mes.yangyaggogu.entity.obtainorder_detail;
+import com.mes.yangyaggogu.entity.obtainorder_number;
 import com.mes.yangyaggogu.entity.wrap;
+import com.mes.yangyaggogu.service.ObtainOrderService;
 import com.mes.yangyaggogu.service.rowStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
 public class rowMaterialApiController {
 
     private final rowStockService rowStockService;
+    private final ObtainOrderService obtainOrderService;
 
     @GetMapping(value = "/getRowStockList")
     public Map<String, Object> rowStockList() {
@@ -92,7 +96,36 @@ public class rowMaterialApiController {
     @PostMapping(value = "/registerOrderRowStack")
     public ResponseEntity<?> rowStockOrderList(@RequestBody StockDto stockDto) {
 
-        stockDto.setOrderDate(LocalDate.now());
+        LocalDate deliveryDate = rowStockService.deliveryDate(stockDto.getProductPlanCodes());
+
+        LocalDate lowStockRegisterDate=null;
+
+
+
+        if(stockDto.getMaterialsName().equals("양배추즙")||stockDto.getMaterialsName().equals("흑마늘즙")){
+            lowStockRegisterDate = deliveryDate.minusDays(6);
+            System.out.println(lowStockRegisterDate);
+
+
+            if(lowStockRegisterDate.getDayOfWeek().getValue() == 6||lowStockRegisterDate.getDayOfWeek().getValue() == 7){
+                lowStockRegisterDate = lowStockRegisterDate.minusDays(2);
+            }
+
+        }else{
+            lowStockRegisterDate = deliveryDate.minusDays(7);
+            System.out.println(lowStockRegisterDate);
+
+            if(lowStockRegisterDate.getDayOfWeek().getValue() == 6||lowStockRegisterDate.getDayOfWeek().getValue() == 7){
+                lowStockRegisterDate = lowStockRegisterDate.minusDays(2);
+            }
+
+        }
+
+
+
+        System.out.println(deliveryDate);
+        stockDto.setOrderDate(lowStockRegisterDate);
+
        boolean yOrN = rowStockService.checkPossibleIngOrder(stockDto);
 
         if(!yOrN){
@@ -150,8 +183,8 @@ public class rowMaterialApiController {
         System.out.println(ingredientStock.getId());
         System.out.println(ingredientStock.getState());
 
-
         ingredientStock rowStockInputList = rowStockService.updateRowStockUpdate(ingredientStock.getId(), String.valueOf(ingredientStock.getState()));
+
         return ResponseEntity.ok().body(rowStockInputList);
 
     }
@@ -163,7 +196,6 @@ public class rowMaterialApiController {
 
         System.out.println(ingredientStock.getId());
         System.out.println(ingredientStock.getState());
-
 
         ingredientStock rowStockOutputList = rowStockService.updateRowStockUpdate(ingredientStock.getId(), String.valueOf(ingredientStock.getState()));
         return ResponseEntity.ok().body(rowStockOutputList);
