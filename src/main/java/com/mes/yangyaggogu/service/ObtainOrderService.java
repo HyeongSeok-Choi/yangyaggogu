@@ -557,7 +557,17 @@ public class ObtainOrderService {
 
     public LocalDate returnStartday(obtainorder_detail obtainorderDetail) {
 
-        LocalDate StartDate = obtainorderDetail.getDelivery_Date().minusDays(3);
+        LocalDate StartDate = null;
+
+        if(obtainorderDetail.getProductName().equals("양배추즙")||obtainorderDetail.getProductName().equals("흑마늘즙")){
+
+            StartDate = obtainorderDetail.getDelivery_Date().minusDays(3);
+
+        }else{
+
+            StartDate = obtainorderDetail.getDelivery_Date().minusDays(2);
+        }
+
         LocalDate endDate = obtainorderDetail.getDelivery_Date();
 
         List<LocalDate> betweenAllDays = StartDate.datesUntil(endDate)

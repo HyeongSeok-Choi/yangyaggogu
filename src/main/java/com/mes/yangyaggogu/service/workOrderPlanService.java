@@ -91,9 +91,15 @@ public class workOrderPlanService {
 
     //작업 시작
     public String start_Work(Long id,String producer){
+
+
         
        workOrderPlan find_WorkPlan= workOrderPlanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such data"));
 
+
+        if(find_WorkPlan.getProductPlanCode().getPstartDate().compareTo(LocalDate.now()) != 0){
+            return "금일 시작 가능 공정이 아닙니다.";
+        }
 
        //공정코드에서 숫자만 추출
         String[] strArr = find_WorkPlan.getProcessCode().replaceAll("[^0-9]" , "").split("");
@@ -134,6 +140,7 @@ public class workOrderPlanService {
             //첫 공정
         }else if(answer==1){
 
+
             //첫 공정 시 생산계획 번호와 같은 원자재 조회
 
             ingredientStock findIngredientStock = ingredientStockRepository.findByProductionPlanCode(find_WorkPlan.getProductPlanCode());
@@ -150,6 +157,9 @@ public class workOrderPlanService {
                 return "원자재가 출고되지 않았습니다.";
             }else{
                 //첫 공정이면서 원자재 입 출고가 다 이루어 졌다면 작업을 시작
+
+                find_WorkPlan.getProductPlanCode().setState(productionPlan_state.proceeding);
+                productPlanRepository.save(find_WorkPlan.getProductPlanCode());
 
                 find_WorkPlan.setProducer(producer);
                 find_WorkPlan.setState(workOrderPlan_state.proceeding);

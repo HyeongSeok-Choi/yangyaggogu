@@ -55,7 +55,11 @@
                         </div>
                         <div class="row">
                             <div class="box mt-4">
-                            <h4 style="padding-bottom: 20px">설비별 가동율</h4>
+                            <h4 style="padding-bottom: 20px">생산계획별 설비 가동률</h4>
+                                <select  class="form-select" aria-label="Default select example">
+                                    <option selected>Open this select menu</option>
+                                    <option th:each="plan:${plans}" th:text="${plan.getProductionPlanCode()}" th:value="${plan.getProductionPlanCode()}">One</option>
+                                </select>
                             <div class="box mt-4 chart-container">
                                 <div class="chart-box" th:each="i : ${#numbers.sequence(1,10)}">
                                         <div th:id="'circleChart' + ${i}" style="min-height:300px"></div>
