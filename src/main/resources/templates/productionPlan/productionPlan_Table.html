@@ -56,7 +56,7 @@
             ordering: true,
             scrollX: true,
             ajax: {
-                url: 'http://localhost:8080/api/getProductionPlanList',
+                url: '/api/getProductionPlanList',
                 type: 'GET',
                 dataFilter: function(res) {
                     var json = $.parseJSON(res);

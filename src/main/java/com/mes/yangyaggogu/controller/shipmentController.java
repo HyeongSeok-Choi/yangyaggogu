@@ -2,7 +2,10 @@ package com.mes.yangyaggogu.controller;
 
 
 import com.mes.yangyaggogu.constant.shipment_state;
+import com.mes.yangyaggogu.dto.CarrierDTO;
+import com.mes.yangyaggogu.dto.CompanyDto;
 import com.mes.yangyaggogu.dto.searchDto;
+import com.mes.yangyaggogu.dto.shipmentDTO;
 import com.mes.yangyaggogu.entity.carrier;
 import com.mes.yangyaggogu.entity.company;
 import com.mes.yangyaggogu.entity.shipment;
@@ -42,36 +45,40 @@ public class shipmentController {
 
 
 
-@GetMapping("/shipment/confirmedList/{id}")
-public String getShipment(@PathVariable String id, @RequestParam(required = false) shipment_state status, Model model) {
-    shipment shipment = shipmentService.findById(id);
-    model.addAttribute("shipment", shipment);
+    @GetMapping("/shipment/confirmedList/{id}")
+    public String getShipment(@PathVariable String id, @RequestParam(required = false) shipment_state status, Model model) {
+        shipment shipment = shipmentService.findById(id);
+        shipmentDTO shipmentDTO = new shipmentDTO(shipment);
+        model.addAttribute("shipment", shipmentDTO);
 
-    String companyName = shipment.getCompany_name();
-    Optional<company> company = companyService.findByCompanyName(companyName);
+        String companyName = shipmentDTO.getCompany_name();
+        Optional<company> company = companyService.findByCompanyName(companyName);
 
-    // company 데이터를 모델에 추가합니다.
-    if (company.isPresent()) {
-        model.addAttribute("company", company.get());
-    } else {
-        model.addAttribute("company", new company()); // 기본 빈 객체를 추가하여 NPE 방지
+        // company 데이터를 모델에 추가합니다.
+        if (company.isPresent()) {
+            model.addAttribute("company", new CompanyDto(company.get()));
+        } else {
+            model.addAttribute("company", new CompanyDto()); // 기본 빈 객체를 추가하여 NPE 방지
+        }
+
+        carrier carrier = carrierService.findByShipment(shipment);
+        CarrierDTO carrierDTO;
+        if (carrier == null) {
+            carrierDTO = new CarrierDTO(); // 운송업체 정보가 없으면 빈 객체 출력
+        } else {
+            carrierDTO = new CarrierDTO(carrier);
+        }
+        model.addAttribute("carrier", carrierDTO);
+
+        // 상태를 모델에 추가합니다.
+        if (status == shipment_state.completed) {
+            model.addAttribute("status", "completed");
+        } else {
+            model.addAttribute("status", "new");
+        }
+
+        return "shipment/shipmentDetailRegister";
     }
-
-    carrier carrier = carrierService.findByShipment(shipment);
-    if (carrier == null) {
-        carrier = new carrier(); // 운송업체 정보 기입한적이 없으면 빈칸 출력.
-    }
-    model.addAttribute("carrier", carrier);
-
-    // 상태를 모델에 추가합니다.
-    if (status == shipment_state.completed) {
-        model.addAttribute("status", "completed");
-    } else {
-        model.addAttribute("status", "new");
-    }
-
-    return "shipment/shipmentDetailRegister";
-}
 
 
 

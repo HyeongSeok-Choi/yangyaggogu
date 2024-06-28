@@ -140,9 +140,21 @@
                                 return test}},
                         {data: 'companyName'},
                         {data: 'materialsName'},
-                        {data: 'ingredientAmount'},
+                        {data: 'ingredientAmount',
+                            render: function (data,type,row){
+
+                            if(row.materialsName === "양배추"|| row.materialsName ==="흑마늘") {
+
+                                return data + 'kg';
+                            }else{
+                                return data+'ml';
+                            }
+                            }},
                         {data: 'subMaterialsName'},
-                        {data: 'subMaterialsAmount'},
+                        {data: 'subMaterialsAmount',
+                            render: function (data){
+                                return data + 'ml';
+                            }},
                         {data: 'inDate'},
                     ]
                 })
@@ -237,7 +249,10 @@
                         {title: ""},
                         {data: 'id'},
                         {data: 'subMaterialsName'},
-                        {data: 'subMaterialsAmount'},
+                        {data: 'subMaterialsAmount',
+                            render: function (data){
+                                return data + '개';
+                            }},
                         {data: 'companyName'},
                         {data: 'orderDate'},
                         {data: 'inDate'},

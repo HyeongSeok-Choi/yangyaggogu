@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -42,4 +43,6 @@ public class shipment {
     @Enumerated(EnumType.STRING)
     private shipment_state state;
 
+    @OneToMany(mappedBy = "shipment", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<carrier> carriers;
 }

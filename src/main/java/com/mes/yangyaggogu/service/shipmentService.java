@@ -8,6 +8,7 @@ import com.mes.yangyaggogu.repository.finishedstockRepository;
 import com.mes.yangyaggogu.repository.shipmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -68,6 +69,13 @@ public class shipmentService {
 
     public boolean existsByShipmentNumber(String shipmentNumber) {
         return shipmentRepository.existsByShipmentNumber(shipmentNumber);
+    }
+
+    @Transactional
+    public void deleteByShipmentNumbers(List<String> shipmentNumbers) {
+        for (String shipmentNumber : shipmentNumbers) {
+            shipmentRepository.deleteById(shipmentNumber);
+        }
     }
 
 }

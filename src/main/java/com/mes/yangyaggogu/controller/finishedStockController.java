@@ -24,6 +24,6 @@ public class finishedStockController {
 
         finishedstockService.showFinishedStockList();
         model.addAttribute("searchDto", searchDto);
-        return "/finishedStock/finishedStock";
+        return "finishedStock/finishedStock";
     }
 }

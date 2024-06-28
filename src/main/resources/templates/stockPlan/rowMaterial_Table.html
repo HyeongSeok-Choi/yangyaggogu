@@ -143,9 +143,15 @@
                                 return test}},
                         {data: 'companyName'},
                         {data: 'materialsName'},
-                        {data: 'ingredientAmount'},
+                        {data: 'ingredientAmount',
+                            render: function (data){
+                                return data + 'kg';
+                            }},
                         {data: 'subMaterialsName'},
-                        {data: 'subMaterialsAmount'},
+                        {data: 'subMaterialsAmount',
+                            render: function (data){
+                                return data + 'ml';
+                            }},
                         {data: 'orderDate'},
                         {data: 'inDate'},
                         {data: 'state',render:function (data,type,row){

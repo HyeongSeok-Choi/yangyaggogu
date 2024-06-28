@@ -4,7 +4,7 @@
       layout:decorate="~{layouts/layout1}">
 <head>
 
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<!--    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
 
     <!-- css files for DataTables -->
     <th:block layout:fragment="css">
@@ -25,6 +25,7 @@
             }
         </style>
     </th:block>
+    <title>거래처 목록</title>
 </head>
 <body>
 <th:block layout:fragment="content">
@@ -133,7 +134,7 @@
     });
 
     $('#registerCompany').on("click", function (e){
-        let popURL = "/company/regist";
+        let popURL = "http://222.119.100.90:8229/company/regist";
         let popOption = "width=750px, height=650px, top=300px, left=300px, scrollbars=yes";
 
         window.open(popURL, "거래처 등록", popOption);

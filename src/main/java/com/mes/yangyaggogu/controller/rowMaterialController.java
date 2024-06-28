@@ -39,7 +39,7 @@ public class rowMaterialController {
         model.addAttribute("searchDto", searchDto);
 
 
-        return "/stockPlan/rowMaterial_Table";
+        return "stockPlan/rowMaterial_Table";
     }
 
 
@@ -48,7 +48,7 @@ public class rowMaterialController {
 
         rowStockService.getRowStockList();
 
-        return "/stockPlan/rowMaterial_Order";
+        return "stockPlan/rowMaterial_Order";
     }
 
     @GetMapping(value = "/rowStockOrderRegister")
@@ -73,7 +73,7 @@ public class rowMaterialController {
                    model.addAttribute("subMaterials", "벌꿀");
                    model.addAttribute("subMaterialsAmount", findProductPlan.getTarget_Output()*150);
                    findProductPlan.setTarget_Output((1000 * findProductPlan.getTarget_Output())/250);
-
+                   findProductPlan.setMaterialsName(findProductPlan.getMaterialsName().substring(0,3));
 
                    companyList = companyService.findByTradeGoods(company_state.delivery, "즙");
 
@@ -82,6 +82,7 @@ public class rowMaterialController {
                    model.addAttribute("subMaterials", "콜라겐");
                    model.addAttribute("subMaterialsAmount", findProductPlan.getTarget_Output()*50);
                    findProductPlan.setTarget_Output((findProductPlan.getTarget_Output()*25)*5);
+                   findProductPlan.setMaterialsName(findProductPlan.getMaterialsName().substring(0,2)+"농축액");
 
                    companyList = companyService.findByTradeGoods(company_state.delivery, "젤리스틱");
                }
@@ -104,7 +105,7 @@ public class rowMaterialController {
            model.addAttribute("ProductPlan", new productPlan());
        }
 
-        return "/stockPlan/rowStockOrderRegister";
+        return "stockPlan/rowStockOrderRegister";
     }
 
     @GetMapping(value = "/boxWrap")
@@ -114,17 +115,17 @@ public class rowMaterialController {
         model.addAttribute("companyList",companyList);
 
 
-        return "/stockPlan/boxWrapRegister";
+        return "stockPlan/boxWrapRegister";
     }
 
     @GetMapping(value = "/BomList")
     public String bomList(){
-        return "/stockPlan/bomList_Table";
+        return "stockPlan/bomList_Table";
     }
 
     @GetMapping(value="/routingTable")
     public String routingTable(){
-        return "/ReferenceInfo/routing_Table";
+        return "ReferenceInfo/routing_Table";
     }
 
 }

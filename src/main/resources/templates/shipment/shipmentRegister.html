@@ -24,11 +24,11 @@
             padding-top: 50px;
         }
     </style>
+    <title>출하 등록</title>
 </head>
 
 <body>
 <th:block layout:fragment="content">
-<div class="navbar navbar-vertical navbar-expand-lg" th:replace="~{/fragments/header::header}"></div>
 <div class="container1">
 
     <form  class="searchForm" name="searchForm" method="GET" th:object="${searchDto}" th:action="@{/shipment/search}" style="text-align:center; display: contents; align-items: center; padding:10px 0;">
