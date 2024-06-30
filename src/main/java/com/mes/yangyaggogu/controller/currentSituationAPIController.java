@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,20 @@ public class currentSituationAPIController {
 
         data.put("data",workOrderPlanService.getAllToday());
 
+
+
+        return ResponseEntity.ok().body(data);
+    }
+
+    @GetMapping("/MonthProductAmount")
+    public ResponseEntity<?> MonthProductAmount() {
+
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("last2Month",workOrderPlanService.getMonthAmount(LocalDate.now().minusMonths(2)));
+        data.put("lastMonth",workOrderPlanService.getMonthAmount(LocalDate.now().minusMonths(1)));
+        data.put("data",workOrderPlanService.getMonthAmount(LocalDate.now()));
 
 
         return ResponseEntity.ok().body(data);

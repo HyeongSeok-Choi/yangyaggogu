@@ -19,4 +19,6 @@ public interface workOrderPlanRepository extends JpaRepository<workOrderPlan, Lo
     @Query(value = "select w.now_Output from workOrderPlan w where DATE_FORMAT( w.P_endDate,'%Y-%m-%d') =:endDate And  w.processCode =:processCode And w.materials_Name =:productName")
     List<Long> getWorkOrderPlanToday(LocalDate endDate, String processCode, String productName);
 
+    @Query(value = "select w.now_Output from workOrderPlan w where DATE_FORMAT( w.P_endDate,'%Y-%m') =DATE_FORMAT( :endDate,'%Y-%m') And  w.processCode =:processCode And w.materials_Name =:productName")
+    List<Long> getWorkOrderPlanMonth(LocalDate endDate, String processCode, String productName);
 }

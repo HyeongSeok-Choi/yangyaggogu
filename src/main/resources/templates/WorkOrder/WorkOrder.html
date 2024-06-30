@@ -74,7 +74,7 @@
             <p style="margin-bottom: 20px;">작업자를 선택해주세요</p>
                 <input id="SelectedRow" name="SelectedRow" type="hidden" th:value="0">
             <select id="producer-selectBox" class="form-select" name="producer" style="margin-bottom: 20px;">
-                <option  value="none">=== 선택 ===</option>
+                <option  value="noProducer">=== 선택 ===</option>
                 <option th:each="produce : ${producers}" th:text="${produce.getEmployeeName()}" th:value="${produce.getEmployeeName()}"></option>
             </select>
             <button type="button" class="work_start_btn btn btn-primary" style="float: left">작업시작</button>
@@ -91,7 +91,7 @@
     <!--dataTables관련 -->
     <script th:inline="javascript">
 
-        <!--진행률 갱신-->
+        <!--진행률갱신-->
         fetch('/api/updateOperationRate', {
             headers: {
                 "Content-Type": "application/json",
@@ -380,9 +380,16 @@
 
         //작업시작 버튼 클릭 이벤트
         modalWorkStart.addEventListener('click',function(){
+
+
             var SelectedRow = $('#SelectedRow').val();
             var SelectedProducer = $('#producer-selectBox').val();
             console.log(SelectedProducer+"프로듀샤");
+
+            if(SelectedProducer === "noProducer"){
+                alert("작업자를 선택해주세요");
+                return false;
+            }
 
             console.log(SelectedRow+"이건데");
 

@@ -66,14 +66,54 @@ public class DataLoader implements CommandLineRunner {
 //            workOrderPlanService.saveWorkOrderPlan(workOrder);
 //        }
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 1; i < 5; i++) {
                 employee emp = new employee();
                 emp.setEmployeeCode("p-"+i);
-                emp.setEmployeeName("안드로이드"+i);
-                emp.setPositionName("생산자");
+                emp.setPositionName("생산");
+
+                if(i == 1){
+                  emp.setEmployeeName("강두일");
+                }else if(i == 2){
+                    emp.setEmployeeName("김진영");
+                }else if (i == 3) {
+                    emp.setEmployeeName("최형석");
+                }else{
+                    emp.setEmployeeName("손현민");
+                }
                 employeeRepository.save(emp);
 
+                emp.setEmployeeCode("pl-"+i);
+                emp.setPositionName("안전");
+
+                if(i == 1){
+                    emp.setEmployeeName("최돌석");
+                }else if(i == 2){
+                    emp.setEmployeeName("강두식");
+                }else if (i == 3) {
+                    emp.setEmployeeName("김진숙");
+                }else{
+                    emp.setEmployeeName("손현식");
+                }
+                employeeRepository.save(emp);
+
+                emp.setEmployeeCode("ad-"+i);
+                emp.setPositionName("행정");
+
+                if(i == 1){
+                    emp.setEmployeeName("장이수");
+                }else if(i == 2){
+                    emp.setEmployeeName("김상철");
+                }else if (i == 3) {
+                    emp.setEmployeeName("마춘식");
+                }else{
+                    emp.setEmployeeName("장첸");
+                }
+                employeeRepository.save(emp);
+
+
             }
+
+
 
 
         equipment equip = new equipment();

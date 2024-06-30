@@ -76,96 +76,108 @@
 
     <script>
 
-        $(document).ready(function(){
+        $(document).ready(function() {
 
-            function getMonth(){
-                const dates=[];
+
+            function getMonth() {
+                const dates = [];
                 const now = new Date();
-                for( let i=-1; i<2; i++){
+                for (let i = -2; i < 1; i++) {
                     const date = new Date();
-                    date.setMonth(now.getMonth()+i);
+                    date.setMonth(now.getMonth() + i);
                     dates.push(date.toLocaleDateString('default', {month: 'long'}));
                 }
                 return dates;
             }
+
             const datesArr = getMonth();
 
 
+            fetch('/api/MonthProductAmount', {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method: 'GET',
+            })
+                .then(response => response.json())
+                .then(data => {
 
-        var options1 = {
-            series: [{
-                name: '흑마늘',
-                data: [44, 55, 41]
-            }, {
-                name: '양배추',
-                data: [53, 32, 33]
-            }, {
-                name: '매실 젤리스틱',
-                data: [12, 17, 11]
-            }, {
-                name: '석류 젤리스틱',
-                data: [9, 7, 5]
-            }, ],
-            chart: {
-                type: 'bar',
-                height: 350,
-                stacked: true,
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: true,
-                    dataLabels: {
-                        total: {
-                            enabled: true,
-                            offsetX: 0,
-                            style: {
-                                fontSize: '13px',
-                                fontWeight: 900
+                    var options1 = {
+                        series: [{
+                            name: '흑마늘',
+                            data: [data.last2Month[1],data.lastMonth[1],data.data[1]]
+                        }, {
+                            name: '양배추',
+                            data: [data.last2Month[0],data.lastMonth[0],data.data[0]]
+                        }, {
+                            name: '매실 젤리스틱',
+                            data: [data.last2Month[3],data.lastMonth[3],data.data[3]]
+                        }, {
+                            name: '석류 젤리스틱',
+                            data: [data.last2Month[2],data.lastMonth[2],data.data[2]]
+                        },],
+                        chart: {
+                            type: 'bar',
+                            height: 350,
+                            stacked: true,
+                        },
+                        plotOptions: {
+                            bar: {
+                                horizontal: true,
+                                dataLabels: {
+                                    total: {
+                                        enabled: true,
+                                        offsetX: 0,
+                                        style: {
+                                            fontSize: '13px',
+                                            fontWeight: 900
+                                        }
+                                    }
+                                }
+                            },
+                        },
+                        stroke: {
+                            width: 1,
+                            colors: ['#fff']
+                        },
+                        title: {
+                            text: '월간 생산량'
+                        },
+                        xaxis: {
+                            categories: datesArr,
+                            labels: {
+                                formatter: function (val) {
+                                    return val + "BOX"
+                                },
                             }
+                        },
+                        yaxis: {
+                            title: {
+                                text: undefined
+                            },
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: function (val) {
+                                    return val + "BOX"
+                                }
+                            }
+                        },
+                        fill: {
+                            opacity: 1
+                        },
+                        legend: {
+                            position: 'top',
+                            horizontalAlign: 'left',
+                            offsetX: 40
                         }
-                    }
-                },
-            },
-            stroke: {
-                width: 1,
-                colors: ['#fff']
-            },
-            title: {
-                text: '월간 생산량'
-            },
-            xaxis: {
-                categories: datesArr,
-                labels: {
-                    formatter: function (val) {
-                        return val + "BOX"
-                    },
-                }
-            },
-            yaxis: {
-                title: {
-                    text: undefined
-                },
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return val + "BOX"
-                    }
-                }
-            },
-            fill: {
-                opacity: 1
-            },
-            legend: {
-                position: 'top',
-                horizontalAlign: 'left',
-                offsetX: 40
-            }
-        };
+                    };
 
-        var chart1 = new ApexCharts(document.querySelector("#myChart"), options1);
-        chart1.render();
-        })
+                    var chart1 = new ApexCharts(document.querySelector("#myChart"), options1);
+                    chart1.render();
+                })
+
+        });
     </script>
     <script>
 

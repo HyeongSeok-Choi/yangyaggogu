@@ -9,4 +9,7 @@ public interface employeeRepository extends JpaRepository<employee, String> {
 
     List<employee> findByPositionName(String positionName);
 
+    Long countByPositionName(String positionName);
+
+
 }

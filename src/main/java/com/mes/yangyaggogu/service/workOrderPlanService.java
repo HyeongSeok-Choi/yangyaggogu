@@ -92,6 +92,46 @@ public class workOrderPlanService {
         return workOrderPlans;
     }
 
+    //모든 작업지시 출력
+    public ArrayList<Long> getMonthAmount(LocalDate date) {
+
+
+        Long TotalCb=0L;
+        Long TotalBg=0L;
+        Long TotalSj=0L;
+        Long TotalMj=0L;
+
+
+        List<Long> cb=  workOrderPlanRepository.getWorkOrderPlanMonth(date,"A8","양배추즙");
+        for( Long value:cb){
+            System.out.println(cb+"나와");
+            TotalCb+=value;
+        }
+
+        List<Long> bg= workOrderPlanRepository.getWorkOrderPlanMonth(date,"A8","흑마늘즙");
+        for( Long value:bg){
+            TotalBg+=value;
+        }
+        List<Long> sj=workOrderPlanRepository.getWorkOrderPlanMonth(date,"B7","석류젤리");
+        for( Long value:sj){
+            TotalSj+=value;
+        }
+        List<Long> mj=workOrderPlanRepository.getWorkOrderPlanMonth(date,"B7","매실젤리");
+        for( Long value:mj){
+            TotalMj+=value;
+        }
+
+
+        ArrayList<Long> workOrderPlans = new ArrayList<Long>();
+        workOrderPlans.add(TotalCb);
+        workOrderPlans.add(TotalBg);
+        workOrderPlans.add(TotalSj);
+        workOrderPlans.add(TotalMj);
+
+
+        return workOrderPlans;
+    }
+
 
     public void saveWorkOrderPlan(workOrderPlan workOrder) {
         workOrderPlanRepository.save(workOrder);
