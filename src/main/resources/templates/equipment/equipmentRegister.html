@@ -18,54 +18,57 @@
     <link href="/assets/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
     <link href="/assets/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
     <link href="/assets/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
-    <title>사원 등록</title>
+    <title>설비 등록</title>
 </head>
 <body>
 
-<h3 style="padding: 30px; text-align: center">사원 등록</h3>
+<h3 style="padding: 30px; text-align: center">설비 등록</h3>
 <div class="row mb-5 text-center">
-    <label class="col-sm-2 col-form-label col-form-label-sm" for="employeeName">사원명</label>
+    <label class="col-sm-2 col-form-label col-form-label-sm" for="equName">설비명</label>
     <div class="col-sm-10">
-        <input  class="form-control form-control-sm" id="employeeName" type="text" placeholder="사원명을 입력해주세요"/>
+        <input  class="form-control form-control-sm" id="equName" type="text" placeholder="설비명을 입력해주세요"/>
     </div>
 </div>
 <div class="row mb-5 text-center">
-    <label class="col-sm-2 col-form-label col-form-label-sm" for="employeePosition">담당 직무</label>
+    <label class="col-sm-2 col-form-label col-form-label-sm" for="equCode">설비 코드</label>
     <div class="col-sm-10">
-    <select id="employeePosition"  class="form-select" aria-label="Default select example">
-        <option value="선택">선택</option>
-        <option value="생산">생산</option>
-        <option value="안전">안전</option>
-        <option value="행정">행정</option>
-    </select>
+        <input  class="form-control form-control-sm" id="equCode" type="text" placeholder="설비 코드를 입력해주세요"/>
+    </div>
+</div>
+<div class="row mb-5 text-center">
+    <label class="col-sm-2 col-form-label col-form-label-sm" for="inDate">설치일</label>
+    <div class="col-sm-10">
+        <input  class="form-control form-control-sm" id="inDate" type="date"/>
     </div>
 </div>
 <div class="text-center">
-    <button type="submit" class="btn btn-secondary" id="employeeConfirm" onclick="EmpConfirm();">등록</button>
+    <button type="submit" class="btn btn-secondary" id="employeeConfirm" onclick="EquConfirm();">등록</button>
 </div>
 <script>
 
-    function EmpConfirm() {
-        if(document.getElementById("employeePosition").value ==="선택"){
-            alert("담당 직무를 선택 해주세요");
-            return false;
-        }
+    function EquConfirm() {
+        var equName = document.getElementById("equName").value;
+        var equCode = document.getElementById("equCode").value;
+        var inDate = document.getElementById("inDate").value;
 
-        if(document.getElementById("employeeName").value.length === 0 ||document.getElementById("employeePosition").value.length === 0){
+        console.log(equName);
+        console.log(equCode);
+        console.log(inDate);
+
+        if(equName.length === 0 ||equCode.length === 0||inDate.length === 0){
             alert("빈 값 없이 입력해주세요");
             return false;
         }
 
-
-
-        fetch("/api/emp/register", {
+        fetch("/api/addEquipment", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                employeeName: document.getElementById("employeeName").value,
-                positionName: document.getElementById("employeePosition").value,
+                equipmentCode: equCode,
+                equipmentName: equName,
+                settingDate: inDate
             }),
         })
             .then((response) => response.json())
@@ -73,7 +76,7 @@
                 window.opener.location.reload();
                 window.close();
             })
-            .catch((error)=>console.error("Error: " , error));
+            .catch((error)=>alert("중복된 설비 코드입니다."));
 
     }
 

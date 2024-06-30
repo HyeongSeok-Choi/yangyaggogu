@@ -15,12 +15,10 @@ public class employeeService {
     private final employeeRepository employeerepository;
 
     //생산자 모두 출력
-    public List<employee> getProductor(){
-        
+    public List<employee> getEmpByPosition(String empPosition){
 
-        employeerepository.findByPositionName("생산");
 
-        return employeerepository.findByPositionName("생산");
+        return employeerepository.findByPositionName(empPosition);
 
     }
 

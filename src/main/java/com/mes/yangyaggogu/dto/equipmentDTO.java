@@ -38,4 +38,16 @@ public class equipmentDTO {
 
     }
 
+    public equipment toEntity() {
+        equipment emp = new equipment();
+
+       emp.setEquipmentCode(EquipmentCode);
+       emp.setEquipmentName(EquipmentName);
+       emp.setOperationRate(operationRate);
+       emp.setReasonNoOp(ReasonNoOp);
+       emp.setState(state);
+       emp.setSettingDate(settingDate);
+       return emp;
+    }
+
 }

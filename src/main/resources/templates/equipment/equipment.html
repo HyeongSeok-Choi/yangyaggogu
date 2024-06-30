@@ -24,8 +24,10 @@
     <div class="container1">
         <h3><strong>설비 현황</strong></h3>
         <br>
-        <button type="button" class="btn btn-primary" id="rowStockOrder_input" value="설비 등록">
+        <button type="button" class="btn btn-primary" id="AddEqu_input" value="설비 등록">
             설비 등록</button>
+        <button type="button" class="btn btn-danger" id="deleteSelected" value="설비 삭제">
+            설비 삭제</button>
         <table id="Table" class="table table-striped table-bordered table-hover" style="text-align: center">
 
         </table>
@@ -101,10 +103,51 @@
                         {title: ""},
                         {title:"설비코드", data: 'equipmentCode'},
                         {title:"설비명",data: 'equipmentName'},
-                        {title:"상태",data: 'state'},
+                        {title:"상태",data: 'state',render:function (data,type,row){
+                                        if(data !== "breakdown"){
+                                            return "이상 없음"
+                                        }else{
+                                            return "고장"
+                                        }
+                                }},
                         {title:"설치일",data: 'settingDate'}
                     ]
                 })
+            });
+        </script>
+        <script>
+            $('#AddEqu_input').on("click", function(e){
+                let popURL = "/AddEquipment";
+                let popOption = "width=750px, height=450px, top=300px, left=300px, scrollbars=yes";
+
+                window.open(popURL, "설비 등록", popOption);
+            })
+
+            $('#deleteSelected').on('click', function () {
+                var selectedRows = table.rows({selected: true}).data();
+                var selectedCompany = [];
+
+                selectedRows.each(function (data) {
+                    selectedCompany.push(data.equipmentCode); // 각 행의 고유 ID 수집
+                });
+
+                if (selectedCompany.length > 0) {
+                    $.ajax({
+                        url: '/api/Equipment/delete',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(selectedCompany), // 선택된 ID 목록을 JSON 형식으로 전송
+                        success: function (response) {
+                            table.rows({selected: true}).remove().draw(false);
+                            alert("설비 데이터가 삭제되었습니다.");
+                        },
+                        error: function (xhr, status, error) {
+                            alert('삭제 중 오류가 발생했습니다.');
+                        }
+                    });
+                } else {
+                    alert('삭제할 행을 선택해주세요.');
+                }
             });
         </script>
 

@@ -4,6 +4,7 @@ import com.mes.yangyaggogu.dto.AddOrderDto;
 import com.mes.yangyaggogu.dto.OrderDtlDto;
 import com.mes.yangyaggogu.dto.searchDto;
 import com.mes.yangyaggogu.service.ObtainOrderService;
+import com.mes.yangyaggogu.service.employeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import java.util.List;
 @Controller
 public class obtainorderController {
 
+    private final employeeService empService;
     private final ObtainOrderService obtainOrderService;
     @GetMapping("/orderstate")
     public String orderState() {
@@ -44,6 +46,11 @@ public class obtainorderController {
     //수주 등록 페이지 띄우기(임시)
     @GetMapping("/order_reg")
     public String orderReg(@RequestParam(required = false) Long id, Model model){
+
+        if(empService.getEmpByPosition("행정")!= null){
+         model.addAttribute("emp",empService.getEmpByPosition("행정"));
+        }
+
         if (id == null) {
             model.addAttribute("obtainorderDetail", new AddOrderDto());
 

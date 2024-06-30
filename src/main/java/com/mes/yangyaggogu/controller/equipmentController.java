@@ -16,4 +16,11 @@ public class equipmentController {
         return "equipment/equipment";
     }
 
+    @GetMapping(value="/AddEquipment")
+    public String AddEquipment() {
+
+        return "equipment/equipmentRegister";
+    }
+
+
 }

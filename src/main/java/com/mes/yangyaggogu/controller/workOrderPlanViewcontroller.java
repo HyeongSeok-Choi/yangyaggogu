@@ -27,7 +27,7 @@ public class workOrderPlanViewcontroller {
 
 
 
-            List<employee> producers = empService.getProductor();
+            List<employee> producers = empService.getEmpByPosition("생산");
 
             for (employee employee : producers) {
                 System.out.println(employee.getEmployeeName());

@@ -158,9 +158,9 @@ public class workOrderPlanService {
        workOrderPlan find_WorkPlan= workOrderPlanRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("no such data"));
 
 
-        if(find_WorkPlan.getProductPlanCode().getPstartDate().compareTo(LocalDate.now()) != 0){
-            return "금일 시작 가능 공정이 아닙니다.";
-        }
+//        if(find_WorkPlan.getProductPlanCode().getPstartDate().compareTo(LocalDate.now()) != 0){
+//            return "금일 시작 가능 공정이 아닙니다.";
+//        }
 
        //공정코드에서 숫자만 추출
         String[] strArr = find_WorkPlan.getProcessCode().replaceAll("[^0-9]" , "").split("");

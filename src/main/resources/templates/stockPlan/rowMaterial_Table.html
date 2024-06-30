@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout1}">
 <head>
-    <title>원자재 입/출고</title>
+    <title>원/부자재 입/출고</title>
     <th:block layout:fragment="css">
         <style>
 
@@ -183,11 +183,17 @@
                 const id = selectedRows[0].id;
                 const currentState = selectedRows[0].state;
 
-                if(state==='입고' && currentState ==='입고'){
+                console.log(state);
+                console.log(currentState);
+
+                if(state==='in' && currentState ==='in'){
                     alert("이미 입고된 상태입니다");
                     return;
-                }else if(state==='출고' && currentState ==='출고'){
+                }else if(state==='out' && currentState ==='out'){
                     alert("이미 출고된 상태입니다");
+                    return;
+                }else if(state==='in' && currentState ==='out'){
+                    alert("출고된 상태의 재료를 입고할 수 없습니다.")
                     return;
                 }
 

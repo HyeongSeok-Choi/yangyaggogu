@@ -83,10 +83,7 @@
                 <td>
                     <select id="registrar">
                         <option>선택하세요</option>
-                        <option>최형석</option>
-                        <option>강두일</option>
-                        <option>김진영</option>
-                        <option>손현민</option>
+                        <option th:each="employee:${emp}" th:value="${employee.getEmployeeName()}" th:text="${employee.getEmployeeName()}"></option>
                     </select>
                 </td>
             </tr>
