@@ -18,6 +18,7 @@ public interface productPlanRepository extends JpaRepository<productPlan, String
     @Query("select p from productPlan p where (p.pstartDate = :start) and (p.materialsName = :productName)")
     List<productPlan> getEqualStartDatePlan(LocalDate start,String productName);
 
+
     List<productPlan> findAllByState(productionPlan_state productionPlanState);
 
     @Query("select p from productPlan p where (p.pstartDate <= :todayDate) and (:todayDate <= p.pendDate)")
