@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="edf5ff">
+    <script src="/vendors/simplebar.min.js"></script>
+    <script src="/assets/config.js"></script>
+    <link th:href="@{/css/layout1.css}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="/vendors/simplebar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link href="/assets/theme-rtl.min.css" type="text/css" rel="stylesheet" id="style-rtl">
+    <link href="/assets/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
+    <link href="/assets/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
+    <link href="/assets/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
+    <title>거래처 등록 폼</title>
+</head>
+<body>
+<h3 style="padding: 30px; text-align: center">거래처 등록</h3>
+    <div class="row g-3 mb-6" th:object="${companyDto}">
+            <div class="row mb-5 text-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm" for="state">type</label>
+                <div class="col-sm-10">
+                <select class="form-select" th:field="*{state}">
+                    <option name="state" id="state" th:each="state:${T(com.mes.yangyaggogu.constant.company_state).values()}" th:value="${state.name()}" th:text="${state.value}"></option>
+                </select>
+                </div>
+            </div>
+            <div class="row mb-5 text-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm" for="company_name">거래처명</label>
+                <div class="col-sm-10">
+                <input type="text" id="company_name" class="form-control form-control-sm" name="company_name">
+                </div>
+            </div>
+
+            <div class="row mb-5 text-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm" for="company_tel_number">연락처</label>
+                <div class="col-sm-10">
+                <input type="text" id="company_tel_number" class="form-control form-control-sm" name="company_tel_number">
+                </div>
+            </div>
+
+            <div class="row mb-5 text-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm" for="company_manager">담당자</label>
+                <div class="col-sm-10">
+                <input type="text" id="company_manager" class="form-control form-control-sm" name="company_manager">
+                </div>
+            </div>
+
+            <div class="row mb-5 text-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm" for="company_address">주소</label>
+                <div class="col-sm-10">
+                <textarea class="form-control form-control-sm" id="company_address" style="height: 100px" name="company_address"></textarea>
+                </div>
+            </div>
+
+            <div class="row mb-5 text-center">
+                <label class="col-sm-2 col-form-label col-form-label-sm" for="trade_goods">주요 거래품</label>
+                <div class="col-sm-10">
+<!--                <input type="text" id="trade_goods" class="form-control form-control-sm" name="trade_goods">-->
+                    <select class="form-select" id="trade_goods" name="선택없음">
+                        <option id="juice">즙</option>
+                        <option id="jellyStick">젤리스틱</option>
+                        <option id="wrap">박스/포장지</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-center">
+                <button id="add" onclick="registerCompany()" class="btn btn-primary px-5 px-sm-15 submit-button text-center">거래처 등록</button>
+            </div>
+    </div>
+<script>
+    function registerCompany() {
+        console.log(document.getElementById("state").value);
+        console.log(document.getElementById("company_name").value);
+        console.log(document.getElementById("company_tel_number").value);
+        console.log(document.getElementById("company_manager").value);
+        console.log(document.getElementById("company_address").value);
+        console.log(document.getElementById("trade_goods").value);
+        fetch("/api/company/register",{
+            method: "POST",
+            headers:{
+                "Content-Type" : "application/json",
+            },
+            body: JSON.stringify({
+                state : document.getElementById("state").value,
+                company_name: document.getElementById("company_name").value,
+                company_tel_number : document.getElementById("company_tel_number").value,
+                company_manager : document.getElementById("company_manager").value,
+                company_address : document.getElementById("company_address").value,
+                trade_goods : document.getElementById("trade_goods").value,
+            }),
+        })
+
+            .then((response) => response.json())
+            .then(result=>{
+                if(result.state ==="customer") {
+                    alert("고객사 등록이 완료되었습니다.")
+                }else{
+                    alert("거래처 등록이 완료되었습니다.")
+                }
+                 window.opener.location.reload();
+                 window.close();
+            })
+            .catch((error)=>console.error("오류: 등록에 실패했습니다."));
+
+    }
+</script>
+</body>
+</html>

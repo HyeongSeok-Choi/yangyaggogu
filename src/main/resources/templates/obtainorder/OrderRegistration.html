@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<head>
+    <!-- 납품일 캘린더 사용 -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/autofill/2.7.0/css/autoFill.bootstrap5.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.min.css" />
+    <meta charset="UTF-8">
+    <title>수주등록</title>
+    <th:block layout:fragment="css">
+    <style>
+        .button-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .order-add-table {
+            width: 100%;
+            text-align: center;
+        }
+        .order-add-table th, .order-add-table td {
+            padding: 5px;
+            text-align: center;
+            vertical-align: middle;
+            width: 5%;
+        }
+        .order-add-table input {
+            width: 50%;
+            box-sizing: border-box;
+        }
+        .table-bordered{
+            text-align: center;
+        }
+        .container1{
+            max-width: 90%;
+            /*margin: auto;*/
+        }
+    </style>
+    </th:block>
+</head>
+<body>
+<th:block layout:fragment="content">
+
+    <div class="container1" style="margin: 40px">
+        <h3><strong>수주 등록</strong></h3>
+        <div class="button-container">
+            <button class="btn btn-primary" onclick="addNewOrder()">추가</button>
+            <button class="btn btn-info" id="add-btn" >저장</button>
+        </div>
+        <!-- 수주 등록하는 부분 -->
+        <table id="orderAdd" class="table table-striped table-bordered order-add-table">
+            <thead>
+            <tr>
+                <th>거래처</th>
+                <td>
+                    <select id="customerSelect">
+                        <option value="">선택하세요</option>
+                    </select>
+                </td>
+                <th>제품명</th>
+                <td>
+                    <select id="product">
+                        <option>선택하세요</option>
+                        <option>양배추즙</option>
+                        <option>흑마늘즙</option>
+                        <option>석류젤리</option>
+                        <option>매실젤리</option>
+                    </select>
+                </td>
+
+                <th>수량</th>
+                <td><input type="number" id="orderQuantity"  style="width: 60px;">Box</td>
+                <th>출하일</th>
+                <td><input type="date" id="deliveryDate" name="deliveryDate"></td>
+                <th>등록자</th>
+                <td>
+                    <select id="registrar">
+                        <option>선택하세요</option>
+                        <option th:each="employee:${emp}" th:value="${employee.getEmployeeName()}" th:text="${employee.getEmployeeName()}"></option>
+                    </select>
+                </td>
+            </tr>
+            </thead>
+        </table>
+        <!-- 추가된 수주 테이블 -->
+        <table id="orderMng" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="checkAll"></th>
+                    <th scope="col">거래처</th>
+                    <th scope="col">제품명</th>
+                    <th scope="col">수주일자</th>
+                    <th scope="col">수주수량</th>
+                    <th scope="col">납품일</th>
+                    <th scope="col">등록자</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="button-container">
+            <button class="btn btn-danger" onclick="deleteSelectedRows()">삭제</button>
+        </div>
+
+        <!-- 엑셀 업로드 -->
+<!--        <form id="uploadForm" enctype="multipart/form-data">-->
+<!--           <input type="file" name="file" id="fileInput">-->
+<!--            <button type="button" onclick="uploadExcel()">업로드</button>-->
+<!--        </form>-->
+<!--    </div>-->
+
+    <!-- script -->
+    <script th:inline="javascript">
+        var isFirstOrder =true;
+        var originalCustomerOptions = [];
+
+        // 추가 버튼 클릭 시 실행될 함수
+        function addNewOrder() {
+            //각 입력 필드의 값을 가져오기
+            var customer = $('#customerSelect').val();
+            var product = $('#product').val();
+            var orderDate = new Date;
+            let year = orderDate.getFullYear(); // 년도
+            let month = orderDate.getMonth() + 1;  // 월
+            let date = orderDate.getDate();  // 날짜
+
+            var orderQuantity = $('#orderQuantity').val();
+            var deliveryDate = $('#deliveryDate').val();
+            var registrar = $('#registrar').val();
+
+            //필수 입력 필드가 비어있는지 확인
+            if (!customer || !product || !orderDate || !orderQuantity || !deliveryDate || !registrar) {
+                alert('수주를 등록해주세요.');
+                return;
+            }
+
+            //최소 주문 수량 검사
+            if (orderQuantity < 20) {
+                alert('최소 주문 수량은 20개 이상부터 입니다.');
+                return;
+            }
+
+            if (orderQuantity > 1000) {
+                alert('최대 주문 가능 수량을 초과하였습니다.');
+                return;
+            }
+
+
+            //중복 제품 확인
+            var isDuplicate = false;
+            $('#orderMng tbody tr').each(function () {
+                var existingProduct = $(this).find('td:eq(2)').text();
+                if (existingProduct == product) {
+                    isDuplicate = true;
+                    return false;
+                }
+            });
+            if (isDuplicate){
+                alert('중복 되는 제품입니다.');
+                return;
+            }
+
+            // 첫 번째 주문 추가 후 한개 거래처로 유지
+            if (isFirstOrder){
+                originalCustomerOptions = $('#customerSelect').html();
+                $('#customerSelect').empty();
+                $('#customerSelect').append('<option value="'+customer+'">'+customer+'</option>');
+                isFirstOrder = false;
+            }
+
+
+            //새로운 행을 생성하고 값 삽입
+            var newRowHtml = `
+                <tr>
+                <td><input type="checkbox" class="rowCheckbox"></td>
+                <td>${customer}</td>
+                <input class="customer" type="hidden" value="${customer}">
+                <td>${product}</td>
+                <input class="product" type="hidden" value="${product}">
+                <td>${year + "-" + (month < 10 ? '0' + month : month) + "-" + (date < 10 ? '0' + date : date)}</td>
+                <input class="orderDate" type="hidden" value="${year + "-" + (month < 10 ? '0' + month : month) + "-" + (date < 10 ? '0' + date : date)}">
+                <td>${orderQuantity} Box</td>
+                <input class="orderQuantity" type="hidden" value="${orderQuantity}">
+                <td>${deliveryDate}</td>
+                <input class="deliveryDate" type="hidden" value="${deliveryDate}">
+                <td>${registrar}</td>
+                <input class="register" type="hidden" value="${registrar}">
+                </tr>
+            `;
+
+            //새로운 행 추가
+            $('#orderMng tbody').append(newRowHtml);
+
+            //입력 필드 초기화
+            $('#customerSelect').val('');
+            $('#product').val('');
+            $('#orderDate').val('');
+            $('#orderQuantity').val('');
+            $('#deliveryDate').val('');
+            $('#registrar').val('');
+        }
+
+        // 삭제 버튼 클릭 시 삭제
+        function deleteSelectedRows() {
+
+            //체크된 체크박스가 있는지 확인
+            if ($('.rowCheckbox:checked').length == 0){
+                alert('삭제할 항목을 선택해 주세요.');
+                return;
+            }
+            $('.rowCheckbox:checked').each(function (){
+                $(this).closest('tr').remove();
+            });
+
+            //추가된 수주 테이블이 비어있는지 확인
+            if ($('#orderMng tbody tr').length == 0) {
+                //거래처 선택 옵션 원상복구
+                $('#customerSelect').html(originalCustomerOptions);
+                isFirstOrder = true;
+            }
+        }
+
+        //체크박스 전체 선택/해제
+        $('#checkAll').click(function (){
+            $('.rowCheckbox').prop('checked', this.checked);
+        })
+    </script>
+    <script th:inline="javascript">
+
+
+        //수주 등록 스크립트
+        $(document).on('click','#add-btn',function(){
+
+            var dataArray = [];
+
+            $('.rowCheckbox:checked').each(function () {
+                var $row = $(this).closest('tr');
+                var company_name = $row.find('.customer').val();
+                var productName = $row.find('.product').val();
+                var order_Date = $row.find('.orderDate').val();
+                var order_Amount = $row.find('.orderQuantity').val();
+                var delivery_Date = $row.find('.deliveryDate').val();
+                var writer = $row.find('.register').val();
+
+                dataArray.push({company_name, productName, order_Date, order_Amount, delivery_Date, writer});
+                $row.remove();
+            });
+            if (dataArray.length == 0){
+                alert('저장할 항목을 선택해 주세요.');
+                return;
+            }
+
+                fetch("/api/addOrder", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(dataArray),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("수주가 등록되었습니다.");
+                            if ($('#orderMng tbody tr').length == 0){
+                                $("#customerSelect").html(originalCustomerOptions);
+                                isFirstOrder = true;
+                            }
+                        } else {
+                            return response.json().then(err => { throw new Error(err.message);});
+                        }
+                    })
+                    .catch(error => {
+                        alert("수주 등록 중 오류가 발생 했습니다: " + error.message);
+                    });
+        });
+
+
+        //납품일 제한
+        $(document).ready(function() {
+            const picker = document.getElementById('deliveryDate');
+            //input 이벤트는 모든 입력 변화에 반응하지만, change 이벤트는 사용자가 날짜를 선택한 후에만 반응
+            picker.addEventListener('change', function(e){
+                //수주일자 기준으로 4일 이후부터 선택 가능
+                var orderDate = new Date();
+                var selectedDate = new Date(this.value);
+                var diffTime = selectedDate - orderDate;
+                var diffDays = Math.ceil(diffTime / (1000*60*60*24));
+
+                //주말 선택 x
+                var day = new Date(this.value).getUTCDay();
+                if([6,0].includes(day)){
+                    e.preventDefault();
+                    this.value = '';
+                    alert('주말을 제외한 날짜를 선택해주세요.');
+                } else if (diffDays <= 4){
+                    //수주일자 기준으로 4일 이후부터 선택 가능
+                    // e.preventDefault();
+                    // this.value = '';
+                    // alert('수주일자를 기준으로 4일 뒤부터 날짜 선택 가능합니다.');
+                }
+            });
+
+            //거래처 이름 불러오기
+            $.ajax({
+                url: '/api/companies/name',
+                method: 'GET',
+                success: function (data){
+                    var $customerSelect = $('#customerSelect');
+                    $customerSelect.empty();
+                    $customerSelect.append('<option value="">선택하세요</option>');
+                    data.forEach(function (company) {
+                        $customerSelect.append('<option value="'+company+'">'+company+'</option>');
+                    });
+                },
+                error: function (err) {
+                    console.error('거래처 목록을 가져오는 중 오류가 발생했습니다:', err);
+                }
+            });
+        });
+
+        //엑셀 업로드
+        // function uploadExcel() {
+        //     var formData = new FormData();
+        //     var fileInput = document.getElementById('fileInput');
+        //     formData.append("file", fileInput.files[0]);
+        //
+        //     fetch('/api/uploadExcel', {
+        //         method: 'POST',
+        //         body: formData
+        //     })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             //데이터를 테이블에 추가
+        //             data.forEach(order => {
+        //                 var newRowHtml = `
+        //                 <tr>
+        //                     <td><input type="checkbox" class="rowCheckbox"></td>
+        //                     <td>${order.company_name}</td>
+        //                     <td>${order.productName}</td>
+        //                     <td>${order.order_Date}</td>
+        //                     <td>${order.order_Amount} Box</td>
+        //                     <td>${order.delivery_Date}</td>
+        //                     <td>${order.writer}</td>
+        //                 </tr>
+        //                 `
+        //                 $('#orderMng tbody').append(newRowHtml);
+        //             });
+        //         })
+        //         .catch(error => {
+        //             console.error('Error: ', error);
+        //         });
+        // }
+    </script>
+</th:block>
+</body>
+</html>

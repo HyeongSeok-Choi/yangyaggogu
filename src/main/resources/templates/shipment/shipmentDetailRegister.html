@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!-- 출하지시서 리스트 페이지 -->
+<html lang='en' xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<head>
+<!--    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">-->
+    <!-- css files for DataTables -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="edf5ff">
+    <script src="/vendors/simplebar.min.js"></script>
+    <script src="/assets/config.js"></script>
+    <link th:href="@{/css/layout1.css}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap"
+          rel="stylesheet">
+    <link href="/vendors/simplebar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link href="/assets/theme-rtl.min.css" type="text/css" rel="stylesheet" id="style-rtl">
+    <link href="/assets/theme.min.css" type="text/css" rel="stylesheet" id="style-default">
+    <link href="/assets/user-rtl.min.css" type="text/css" rel="stylesheet" id="user-style-rtl">
+    <link href="/assets/user.min.css" type="text/css" rel="stylesheet" id="user-style-default">
+    <style>
+        .table-form {
+            font-size: 1.05em;
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            padding-right: 50px;
+        }
+        .container1 {
+            padding-right: 50px; /* 오른쪽에 패딩 추가 */
+        }
+
+        .table-form td, .table-form th {
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            font-size: 1.05em;
+
+        }
+
+        .table-form .form-label {
+            font-size: 1.1em;
+        }
+        .form-control-sm {
+            width: 100%;
+            max-width: none; /* Override the max-width set previously */
+            font-size: 1.05em;
+        }
+        form {
+            margin-top: 100px;
+            margin-bottom: 200px; /* Add space between forms */
+        }
+        .carrier-input {
+            max-width: 300px; /* Set a maximum width for carrier inputs */
+            flex: 1; /* Allow it to grow and shrink as needed */
+        }
+        body {
+            font-size: 1.1em; /* Increase overall font size */
+        }
+        .form-inline-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Add space between form items */
+            justify-content: center;
+        }
+
+        .form-item {
+            width: 100%; /* 각 항목이 전체 너비를 차지하도록 설정 */
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px; /* Add some bottom margin for spacing */
+        }
+
+        .form-item label {
+            margin-right: 10px; /* Space between label and input */
+            font-size: 1.2em; /* Increase font size */
+            width: 150px;
+            text-align: right;
+        }
+
+        .form-item input {
+            font-size: 1.2em; /* Increase font size */
+            flex: 1;     /*가로 전체 차지*/
+            max-width: 300px;
+        }
+
+        .carrier-input {
+            max-width: 300px; /* Set a maximum width for carrier inputs */
+            flex: 1; /* Allow it to grow and shrink as needed */
+        }
+        .text-center{
+            padding-top: 100px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center; /* 버튼 중앙 정렬 */
+            padding-top: 100px;
+        }
+
+        .button-container button {
+            font-size: 1.2em; /* 버튼 폰트 크기 증가 */
+            padding: 10px 20px; /* 버튼 크기 증가 */
+        }
+
+    </style>
+</head>
+
+<body>
+<th:block layout:fragment="content">
+
+    <div class="container1">
+        <form th:object="${shipment}">
+            <table class="table-form">
+                <tr>
+                    <td><label class="form-label">번호</label></td>
+                    <td><input class="form-control-plaintext form-control-sm" type="text" th:value="${shipment.shipment_Number}" readonly></td>
+                    <td><label class="form-label">출하일</label></td>
+                    <td><input class="form-control-plaintext form-control-sm" type="text" th:field="*{shippingDate}" readonly></td>
+                    <td><label class="form-label">납품일</label></td>
+                    <td><input class="form-control-plaintext form-control-sm" type="text" th:field="*{deliveryDate}" readonly></td>
+                </tr>
+                <tr>
+                    <td><label class="form-label">거래처</label></td>
+                    <td><input class="form-control-plaintext form-control-sm" type="text" th:field="*{company_name}" readonly></td>
+                    <td><label class="form-label">거래처 주소</label></td>
+                    <td><input class="form-control-plaintext form-control-sm" id="companyAddress" th:value="${company.company_address}" type="text" readonly></td>
+                    <td><label class="form-label">담당자</label></td>
+                    <td><input class="form-control-plaintext form-control-sm" type="text" th:value="${company.company_manager}" readonly></td>
+                </tr>
+                <tr>
+                    <td><label class="form-label">수주번호</label></td>
+                    <td><input class="form-control-plaintext form-control-sm" type="text" th:field="*{order_Number}" readonly></td>
+                    <td><label class="form-label">제품명</label></td>
+                    <td><input class="form-control-plaintext form-control-sm" type="text" th:field="*{productionName}" readonly></td>
+                    <td><label class="form-label">출하수량</label></td>
+                    <td><input class="form-control-plaintext form-control-sm" type="text" th:field="*{shipment_Amount}" readonly></td>
+                    <td><label class="form-label">총 중량</label></td>
+                    <td><input class="form-control-plaintext form-control-sm" type="text" th:value="${shipment.productionName.contains('즙') ? shipment.shipment_Amount * 2.4 + 'kg' :
+                        (shipment.productionName.contains('젤리') ? shipment.shipment_Amount * 0.375 + 'kg' : shipment.shipment_Amount + 'kg')}" readonly></td>
+                </tr>
+            </table>
+        </form>
+
+        <form action="/carrier/register" method="post" th:object="${carrier}">
+            <input type="hidden" name="shipment_Number" th:value="${shipment.shipment_Number}">
+
+            <div class="form-inline-group">
+                <div class="form-item">
+                    <label class="form-label">운송업체명</label>
+                    <input class="form-control form-control-sm carrier-input" type="text" name="carrier_Name" th:field="*{carrier_Name}">
+                </div>
+                <div class="form-item">
+                    <label class="form-label">연락처</label>
+                    <input class="form-control form-control-sm carrier-input" type="text" name="carrier_PhoneNumber" th:field="*{carrier_PhoneNumber}">
+                </div>
+                <div class="form-item">
+                    <label class="form-label">운송수단</label>
+                    <input class="form-control form-control-sm carrier-input" type="text" name="carrier_Vehicle" th:field="*{carrier_Vehicle}">
+                </div>
+                <div class="form-item">
+                    <label class="form-label">운송비용</label>
+                    <input class="form-control form-control-sm carrier-input" type="number" name="carrier_Price" th:field="*{carrier_Price}">
+                </div>
+                <div class="form-item">
+                    <label class="form-label">담당자</label>
+                    <input class="form-control form-control-sm carrier-input" type="text" name="carrier_manager" th:field="*{carrier_manager}">
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button id="registerShipmentDetail" class="btn btn-secondary" th:text="${status == 'completed'} ? '출하지시서 수정' : '출하지시서 등록'"></button>
+            </div>
+
+        </form>
+
+
+    </div>
+</th:block>
+</body>
+</html>

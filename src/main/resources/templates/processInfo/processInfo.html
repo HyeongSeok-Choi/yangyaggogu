@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang='en' xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+<head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>(주)양약고구</title>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!--    <link-->
+<!--            rel="stylesheet"-->
+<!--            href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"-->
+<!--    />-->
+    <link
+            href="https://fonts.googleapis.com/css?family=Montserrat"
+            rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/styles.css" />
+    <style>
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+        .chart-box {
+            flex: 1 0 20%;
+            /*min-width: 300px;*/
+            padding: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="container1">
+        <div id="wrapper">
+            <div class="content-area">
+                <div class="container-fluid">
+                    <div class="main">
+                        <h1>공정 정보</h1>
+                        <div class="row mt-4">
+                            <table id="Table" class="table table-striped table-bordered table-hover" style="text-align: center">
+                                <thead>
+                                <tr>
+                                    <th rowspan="4">공정코드</th>
+                                    <th>공정명</th>
+                                    <th colspan="4">소요시간</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>A1</td>
+                                    <td>전처리</td>
+                                    <td>2h</td>
+                                </tr>
+                                <tr>
+                                    <td>A2</td>
+                                    <td>칭량</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>A3</td>
+                                    <td>착즙</td>
+                                    <td>24h</td>
+                                </tr>
+                                <tr>
+                                    <td>A4</td>
+                                    <td>여과</td>
+                                    <td>4h</td>
+                                </tr>
+                                <tr>
+                                    <td>A5</td>
+                                    <td>살균</td>
+                                    <td>2h</td>
+                                </tr>
+                                <tr>
+                                    <td>A6</td>
+                                    <td>충진</td>
+                                    <td>8h</td>
+                                </tr>
+                                <tr>
+                                    <td>A7</td>
+                                    <td>검사</td>
+                                    <td>2h</td>
+                                </tr>
+                                <tr>
+                                    <td>A8</td>
+                                    <td>포장</td>
+                                    <td>2h</td>
+                                </tr>
+                                <tr>
+                                    <td>B1</td>
+                                    <td>칭량</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>B2</td>
+                                    <td>혼합</td>
+                                    <td>8h</td>
+                                </tr>
+                                <tr>
+                                    <td>B3</td>
+                                    <td>살균</td>
+                                    <td>2h</td>
+                                </tr>
+                                <tr>
+                                    <td>B4</td>
+                                    <td>충진</td>
+                                    <td>2h</td>
+                                </tr>
+                                <tr>
+                                    <td>B5</td>
+                                    <td>냉각</td>
+                                    <td>8h</td>
+                                </tr>
+                                <tr>
+                                    <td>B6</td>
+                                    <td>검사</td>
+                                    <td>1h</td>
+                                </tr>
+                                <tr>
+                                    <td>B7</td>
+                                    <td>포장</td>
+                                    <td>1h</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        <div class="row">
+                            <div class="box mt-4">
+                            <h4 style="padding-bottom: 20px">금일 생산계획별 공정 작업률</h4>
+                                <select id="operate" class="form-select" aria-label="Default select example">
+                                    <option value="생계" selected>생산계획번호 선택</option>
+                                    <option th:each="plan:${plans}" th:text="${plan.getProductionPlanCode()}" th:value="${plan.getProductionPlanCode()}">One</option>
+                                </select>
+                            <div class="box mt-4 chart-container">
+                                <div class="chart-box">
+                                        <div th:id="'circleChart'" style="min-height:300px"><h3 class="box mt-4 chart-container">선택된 계획이 없습니다.</h3></div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+
+    <script>
+
+        $("select[id=operate]").change(function(){
+
+
+            var chart3 = document.querySelector("#circleChart")
+            chart3.replaceChildren();
+
+          var ProductPlanCode=  $(this).val();
+
+          console.log(ProductPlanCode);
+
+
+
+            if($(this).val()==="생계"){
+
+                return false;
+
+            }else {
+
+                fetch('/api/getProcessOperate', {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method: 'POST',
+                    body: JSON.stringify({
+                        productionPlanCode: ProductPlanCode,
+                    }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+
+                        console.log("나와바라");
+                        if (data.data.length === 8) {
+
+                            console.log("즙");
+
+
+                            var options3 = {
+
+                                series: [{
+                                    name: "todayPro",
+                                    data: data.data
+                                }],
+                                chart: {
+                                    height: 350,
+                                    type: 'bar',
+                                    events: {
+                                        click: function (chart, w, e) {
+                                            // console.log(chart, w, e)
+                                        }
+                                    }
+                                },
+                                colors: ['#369bf4', '#369bf4', '#369bf4', '#369bf4', '#369bf4', '#369bf4', '#369bf4', '#369bf4'],
+                                plotOptions: {
+                                    bar: {
+                                        columnWidth: '30%',
+                                        distributed: true,
+                                    }
+                                },
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                legend: {
+                                    show: false
+                                },
+                                title: {
+                                    text: '공정별 진행률',
+                                },
+                                xaxis: {
+                                    categories: [
+                                        '전처리',
+                                        '칭량',
+                                        '착즙',
+                                        '여과',
+                                        '살균',
+                                        '충진',
+                                        '검사',
+                                        '포장'
+                                    ],
+                                    labels: {
+                                        style: {
+                                            colors: ['#1e1f22', '#1e1f22', '#1e1f22', '#1e1f22', '#1e1f22', '#1e1f22', '#1e1f22', '#1e1f22'],
+                                            fontSize: '15px'
+                                        }
+                                    }
+                                }
+                            };
+                            var chart4 = new ApexCharts(document.querySelector("#circleChart"), options3);
+                            chart4.render();
+
+
+                        } else if (data.data.length === 7) {
+                            console.log("젤리");
+
+                            var options6 = {
+
+                                series: [{
+                                    name: "todayPro",
+                                    data: data.data,
+                                }],
+                                chart: {
+                                    height: 350,
+                                    type: 'bar',
+                                    events: {
+                                        click: function (chart, w, e) {
+                                            // console.log(chart, w, e)
+                                        }
+                                    }
+                                },
+                                colors: ['#369bf4','#369bf4','#369bf4','#369bf4','#369bf4','#369bf4','#369bf4'],
+                                plotOptions: {
+                                    bar: {
+                                        columnWidth: '30%',
+                                        distributed: true,
+                                    }
+                                },
+                                dataLabels: {
+                                    enabled: false
+                                },
+                                legend: {
+                                    show: false
+                                },
+                                title: {
+                                    text: '공정별 진행률',
+                                },
+                                xaxis: {
+                                    categories: [
+                                        '칭량',
+                                        '혼합',
+                                        '살균',
+                                        '충진',
+                                        '냉각',
+                                        '검사',
+                                        '포장',
+                                    ],
+                                    labels: {
+                                        style: {
+                                            colors: ['#1e1f22','#1e1f22','#1e1f22','#1e1f22','#1e1f22','#1e1f22','#1e1f22'],
+                                            fontSize: '12px'
+                                        }
+                                    }
+                                }
+                            };
+                            var chart5 = new ApexCharts(document.querySelector("#circleChart"), options6);
+                            chart5.render();
+
+                        }
+                    })
+            }
+
+        });
+
+    </script>
+</th:block>
+</body>
+</html>
